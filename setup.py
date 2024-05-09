@@ -6,7 +6,7 @@ with open("README.md", mode="r", encoding="utf-8") as f:
 VERSION = "v1.0.1"
 
 setup(
-    name="wemeet-openapi-sdk",
+    name="wemeet-openapi-sdk-python",
     version=VERSION[1:],
     description="OpenAPI SDK for Python",
     long_description=readme,

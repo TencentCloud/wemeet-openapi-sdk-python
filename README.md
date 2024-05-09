@@ -12,7 +12,7 @@
 请在命令行中执行以下命令:
 
 ```bash
-pip install --upgrade wemeet-openapi-sdk
+pip install --upgrade wemeet-openapi-sdk-python
 ```
 请注意，如果同时有 python2 和 python3 环境， python3 环境需要使用 pip3 命令安装。
 ## 通过源码包安装
