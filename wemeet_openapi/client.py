@@ -32,6 +32,11 @@ class Client(object):
 
         # 注册服务
         self.meetings_api = MeetingsApi(self.__config)
-        self.records_api = RecordsApi(self.__config)
+        self.application_group_api = ApplicationGroupApi(self.__config)
         self.meeting_control_api = MeetingControlApi(self.__config)
+        self.user_manager_api = UserManagerApi(self.__config)
+        self.records_api = RecordsApi(self.__config)
+        self.record_intelligence_api = RecordIntelligenceApi(self.__config)
         self.meeting_guest_api = MeetingGuestApi(self.__config)
+        self.meeting_room_api = MeetingRoomApi(self.__config)
+        self.layout_api = LayoutApi(self.__config)

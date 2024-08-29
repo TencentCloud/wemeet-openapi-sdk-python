@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 with open("README.md", mode="r", encoding="utf-8") as f:
     readme = f.read()
 
-VERSION = "v1.0.1"
+VERSION = "v1.0.2"
 
 setup(
     name="wemeet-openapi-sdk-python",

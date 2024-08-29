@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.1
+    API version: v1.0.2
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -74,6 +74,48 @@ class V1MeetingsMeetingIdDismissPostRequest(object):
         self.reason_detail = reason_detail
         self.retrieve_code = retrieve_code
         self.userid = userid
+
+
+class V1RealControlMeetingsMeetingIdAsrPutRequest(object):
+    """V1RealControlMeetingsMeetingIdAsrPutRequest
+
+    :param instance_id: 用户的终端设备类型：  0：PSTN  1：PC  2：Mac  3：Android  4：iOS  5：Web  6：iPad  7：Android Pad  8：小程序  9：voip、sip 设备  10：Linux  20：Rooms for Touch Windows  21：Rooms for Touch MacOS  22：Rooms for Touch Android  30：Controller for Touch Windows  32：Controller for Touch Android  33：Controller for Touch iOS (required) 
+    :type instance_id: int
+
+    :param is_open: 开启/关闭实时转写 true：开启实时转写 false：关闭实时转写 (required) 
+    :type is_open: bool
+
+    :param open_asr_view: 是否自动打开转写侧边栏，仅在is_open 为 true 时生效，默认为 0， 0：打开实时转写页面 。1：不打开实时转写页面 
+    :type open_asr_view: Optional[int]
+
+    :param operator_id: 操作者 ID。operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 
+    :type operator_id: Optional[str]
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid 
+    :type operator_id_type: Optional[int]
+    """  # noqa: E501
+
+    instance_id: int
+    is_open: bool
+    open_asr_view: Optional[int] = None
+    operator_id: Optional[str] = None
+    operator_id_type: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        instance_id: int,
+        is_open: bool,
+        open_asr_view: Optional[int] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[int] = None,
+        **kwargs
+    ):
+        self.instance_id = instance_id
+        self.is_open = is_open
+        self.open_asr_view = open_asr_view
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
 
 
 class V1RealControlMeetingsMeetingIdCohostsPutRequest(object):

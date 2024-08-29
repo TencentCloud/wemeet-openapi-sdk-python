@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.1
+    API version: v1.0.2
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -193,7 +193,7 @@ class V1AddressesRecordFileIdGet200Response(object):
     :param meeting_id: 会议唯一 ID。 
     :type meeting_id: Optional[str]
 
-    :param meeting_summary: 会议纪要文件列表。OAuth 鉴权方式下，账号类型为个人免费版、企微创建企业时，该值返回为空。 
+    :param meeting_summary: 会议转写文件列表。OAuth 鉴权方式下，账号类型为个人免费版、企微创建企业时，该值返回为空。 
     :type meeting_summary: Optional[List[V1AddressesGet200ResponseRecordFilesInnerMeetingSummaryInner]]
 
     :param record_file_id: 录制文件 ID。 
@@ -277,6 +277,138 @@ class V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner(object):
         self.file_type = file_type
 
 
+class V1FilesRecordsUploadAllPost200Response(object):
+    """V1FilesRecordsUploadAllPost200Response
+
+    :param job_id: 任务ID 
+    :type job_id: Optional[str]
+    """  # noqa: E501
+
+    job_id: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        job_id: Optional[str] = None,
+        **kwargs
+    ):
+        self.job_id = job_id
+
+
+class V1FilesRecordsUploadFinishPostRequest(object):
+    """V1FilesRecordsUploadFinishPostRequest
+
+    :param ai_record: 自动生成智能转写和智能纪要：true：自动生成（默认）  false：不生成 
+    :type ai_record: Optional[bool]
+
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型 (required) 
+    :type operator_id_type: int
+
+    :param speak_number: 上传文件中的发言人数：传具体数值代表几人发言，最多支持12人，其中0代表多人发言 (required) 
+    :type speak_number: int
+
+    :param upload_id: 上传事务ID，由upload-prepare接口返回 (required) 
+    :type upload_id: str
+    """  # noqa: E501
+
+    ai_record: Optional[bool] = None
+    operator_id: str
+    operator_id_type: int
+    speak_number: int
+    upload_id: str
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        operator_id: str,
+        operator_id_type: int,
+        speak_number: int,
+        upload_id: str,
+        ai_record: Optional[bool] = None,
+        **kwargs
+    ):
+        self.ai_record = ai_record
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.speak_number = speak_number
+        self.upload_id = upload_id
+
+
+class V1FilesRecordsUploadPreparePost200Response(object):
+    """V1FilesRecordsUploadPreparePost200Response
+
+    :param block_num: 分块数量 
+    :type block_num: Optional[int]
+
+    :param block_size: 分块大小策略（以字节为单位） 
+    :type block_size: Optional[int]
+
+    :param upload_id: 上传事务 ID 
+    :type upload_id: Optional[str]
+    """  # noqa: E501
+
+    block_num: Optional[int] = None
+    block_size: Optional[int] = None
+    upload_id: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        block_num: Optional[int] = None,
+        block_size: Optional[int] = None,
+        upload_id: Optional[str] = None,
+        **kwargs
+    ):
+        self.block_num = block_num
+        self.block_size = block_size
+        self.upload_id = upload_id
+
+
+class V1FilesRecordsUploadPreparePostRequest(object):
+    """V1FilesRecordsUploadPreparePostRequest
+
+    :param file_name: 文件名base64编码 (required) 
+    :type file_name: str
+
+    :param file_size: 文件大小（以字节为单位） (required) 
+    :type file_size: int
+
+    :param file_type: 文件类型。voice：音频；video：视频 (required) 
+    :type file_type: str
+
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型 (required) 
+    :type operator_id_type: int
+    """  # noqa: E501
+
+    file_name: str
+    file_size: int
+    file_type: str
+    operator_id: str
+    operator_id_type: int
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        file_name: str,
+        file_size: int,
+        file_type: str,
+        operator_id: str,
+        operator_id_type: int,
+        **kwargs
+    ):
+        self.file_name = file_name
+        self.file_size = file_size
+        self.file_type = file_type
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+
+
 class V1MetricsRecordsGet200Response(object):
     """V1MetricsRecordsGet200Response
 
@@ -326,6 +458,177 @@ class V1MetricsRecordsGet200ResponseSummariesInner(object):
         self.var_date = var_date
         self.download_counts = download_counts
         self.view_counts = view_counts
+
+
+class V1RecordsAccessMeetingRecordIdDeleteRequest(object):
+    """V1RecordsAccessMeetingRecordIdDeleteRequest
+
+    :param access_members: 成员列表，如果传入非有权限的成员，则不生效 (required) 
+    :type access_members: List[V1RecordsAccessMeetingRecordIdDeleteRequestAccessMembersInner]
+
+    :param operator_id: 操作者 ID。operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1:userid 2:open_id (required) 
+    :type operator_id_type: int
+    """  # noqa: E501
+
+    access_members: List[V1RecordsAccessMeetingRecordIdDeleteRequestAccessMembersInner]
+    operator_id: str
+    operator_id_type: int
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        access_members: List[V1RecordsAccessMeetingRecordIdDeleteRequestAccessMembersInner] | List[Dict[str, Any]],
+        operator_id: str,
+        operator_id_type: int,
+        **kwargs
+    ):
+        
+        if access_members and isinstance(access_members, (list, List)):
+            self.access_members = [V1RecordsAccessMeetingRecordIdDeleteRequestAccessMembersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in access_members]
+        
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+
+
+class V1RecordsAccessMeetingRecordIdDeleteRequestAccessMembersInner(object):
+    """V1RecordsAccessMeetingRecordIdDeleteRequestAccessMembersInner
+
+    :param to_operator_id: 被操作者ID，根据 to_operator_id_type 的值，使用不同的类型 (required) 
+    :type to_operator_id: str
+
+    :param to_operator_id_type: 被操作者ID类型  1:userid  2:open_id  4:ms_open_id (required) 
+    :type to_operator_id_type: int
+    """  # noqa: E501
+
+    to_operator_id: str
+    to_operator_id_type: int
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        to_operator_id: str,
+        to_operator_id_type: int,
+        **kwargs
+    ):
+        self.to_operator_id = to_operator_id
+        self.to_operator_id_type = to_operator_id_type
+
+
+class V1RecordsAccessMeetingRecordIdPost200Response(object):
+    """V1RecordsAccessMeetingRecordIdPost200Response
+
+    :param fail_access_members: 未添加成功的成员列表 
+    :type fail_access_members: Optional[List[V1RecordsAccessMeetingRecordIdPost200ResponseFailAccessMembersInner]]
+    """  # noqa: E501
+
+    fail_access_members: Optional[List[V1RecordsAccessMeetingRecordIdPost200ResponseFailAccessMembersInner]] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        fail_access_members: Optional[List[V1RecordsAccessMeetingRecordIdPost200ResponseFailAccessMembersInner] | List[Dict[str, Any]]] = None,
+        **kwargs
+    ):
+        
+        if fail_access_members and isinstance(fail_access_members, (list, List)):
+            self.fail_access_members = [V1RecordsAccessMeetingRecordIdPost200ResponseFailAccessMembersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in fail_access_members]
+        
+
+
+class V1RecordsAccessMeetingRecordIdPost200ResponseFailAccessMembersInner(object):
+    """V1RecordsAccessMeetingRecordIdPost200ResponseFailAccessMembersInner
+
+    :param permission: 成员访问权限，默认为 0 ； 0：仅查看，1：可管理 
+    :type permission: Optional[int]
+
+    :param to_operator_id: 被操作者ID，根据 to_operator_id_type 的值，使用不同的类型 
+    :type to_operator_id: Optional[str]
+
+    :param to_operator_id_type: 被操作者ID类型  1:userid  2:open_id  4:ms_open_id 
+    :type to_operator_id_type: Optional[int]
+    """  # noqa: E501
+
+    permission: Optional[int] = None
+    to_operator_id: Optional[str] = None
+    to_operator_id_type: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        permission: Optional[int] = None,
+        to_operator_id: Optional[str] = None,
+        to_operator_id_type: Optional[int] = None,
+        **kwargs
+    ):
+        self.permission = permission
+        self.to_operator_id = to_operator_id
+        self.to_operator_id_type = to_operator_id_type
+
+
+class V1RecordsAccessMeetingRecordIdPostRequest(object):
+    """V1RecordsAccessMeetingRecordIdPostRequest
+
+    :param access_members: 成员列表，一次最多传入200个，可以多次调用接口，累加型接口 (required) 
+    :type access_members: List[V1RecordsAccessMeetingRecordIdPostRequestAccessMembersInner]
+
+    :param operator_id: 操作者 ID。operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1:userid 2:open_id (required) 
+    :type operator_id_type: int
+    """  # noqa: E501
+
+    access_members: List[V1RecordsAccessMeetingRecordIdPostRequestAccessMembersInner]
+    operator_id: str
+    operator_id_type: int
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        access_members: List[V1RecordsAccessMeetingRecordIdPostRequestAccessMembersInner] | List[Dict[str, Any]],
+        operator_id: str,
+        operator_id_type: int,
+        **kwargs
+    ):
+        
+        if access_members and isinstance(access_members, (list, List)):
+            self.access_members = [V1RecordsAccessMeetingRecordIdPostRequestAccessMembersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in access_members]
+        
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+
+
+class V1RecordsAccessMeetingRecordIdPostRequestAccessMembersInner(object):
+    """V1RecordsAccessMeetingRecordIdPostRequestAccessMembersInner
+
+    :param permission: 成员访问权限，默认为 0 ； 0：仅查看，1：可管理 
+    :type permission: Optional[int]
+
+    :param to_operator_id: 被操作者ID，根据 to_operator_id_type 的值，使用不同的类型 (required) 
+    :type to_operator_id: str
+
+    :param to_operator_id_type: 被操作者ID类型,只支持设置参会成员  1:userid  2:open_id  4:ms_open_id (required) 
+    :type to_operator_id_type: int
+    """  # noqa: E501
+
+    permission: Optional[int] = None
+    to_operator_id: str
+    to_operator_id_type: int
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        to_operator_id: str,
+        to_operator_id_type: int,
+        permission: Optional[int] = None,
+        **kwargs
+    ):
+        self.permission = permission
+        self.to_operator_id = to_operator_id
+        self.to_operator_id_type = to_operator_id_type
 
 
 class V1RecordsApprovalsMeetingRecordIdPutRequest(object):
@@ -514,6 +817,9 @@ class V1RecordsGet200ResponseRecordMeetingsInner(object):
     :param record_files: 录制文件列表。 
     :type record_files: Optional[List[V1RecordsGet200ResponseRecordMeetingsInnerRecordFilesInner]]
 
+    :param record_type: 返回的录制文件类型，0：云录制、2：上传录制 
+    :type record_type: Optional[int]
+
     :param state: 录制状态。1：录制中，2：转码中，3：转码完成，当状态为转码完成才会返回录制文件列表。 
     :type state: Optional[int]
 
@@ -528,6 +834,7 @@ class V1RecordsGet200ResponseRecordMeetingsInner(object):
     meeting_id: Optional[str] = None
     meeting_record_id: Optional[str] = None
     record_files: Optional[List[V1RecordsGet200ResponseRecordMeetingsInnerRecordFilesInner]] = None
+    record_type: Optional[int] = None
     state: Optional[int] = None
     subject: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
@@ -541,6 +848,7 @@ class V1RecordsGet200ResponseRecordMeetingsInner(object):
         meeting_id: Optional[str] = None,
         meeting_record_id: Optional[str] = None,
         record_files: Optional[List[V1RecordsGet200ResponseRecordMeetingsInnerRecordFilesInner] | List[Dict[str, Any]]] = None,
+        record_type: Optional[int] = None,
         state: Optional[int] = None,
         subject: Optional[str] = None,
         **kwargs
@@ -555,6 +863,7 @@ class V1RecordsGet200ResponseRecordMeetingsInner(object):
         if record_files and isinstance(record_files, (list, List)):
             self.record_files = [V1RecordsGet200ResponseRecordMeetingsInnerRecordFilesInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in record_files]
         
+        self.record_type = record_type
         self.state = state
         self.subject = subject
 
@@ -637,11 +946,107 @@ class V1RecordsGet200ResponseRecordMeetingsInnerRecordFilesInner(object):
         self.sharing_url = sharing_url
 
 
+class V1RecordsSettingsMeetingRecordIdGet200Response(object):
+    """V1RecordsSettingsMeetingRecordIdGet200Response
+
+    :param meeting_id: 会议ID 
+    :type meeting_id: Optional[str]
+
+    :param meeting_record_name: 录制名称 
+    :type meeting_record_name: Optional[str]
+
+    :param sharing_config:
+    :type sharing_config: Optional[V1RecordsSettingsMeetingRecordIdGet200ResponseSharingConfig]
+    """  # noqa: E501
+
+    meeting_id: Optional[str] = None
+    meeting_record_name: Optional[str] = None
+    sharing_config: Optional[V1RecordsSettingsMeetingRecordIdGet200ResponseSharingConfig] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        meeting_id: Optional[str] = None,
+        meeting_record_name: Optional[str] = None,
+        sharing_config: Optional[V1RecordsSettingsMeetingRecordIdGet200ResponseSharingConfig | Dict[str, Any]] = None,
+        **kwargs
+    ):
+        self.meeting_id = meeting_id
+        self.meeting_record_name = meeting_record_name
+        self.sharing_config = V1RecordsSettingsMeetingRecordIdGet200ResponseSharingConfig(**sharing_config) if isinstance(sharing_config, (dict, Dict)) else sharing_config
+
+
+class V1RecordsSettingsMeetingRecordIdGet200ResponseSharingConfig(object):
+    """共享配置对象
+
+    :param allow_download: 是否允许下载 
+    :type allow_download: Optional[bool]
+
+    :param allow_view_transcripts: 是否允许查看录制转写 
+    :type allow_view_transcripts: Optional[bool]
+
+    :param enable_approve: 是否需要审批 
+    :type enable_approve: Optional[bool]
+
+    :param enable_password: 是否开启秘密 
+    :type enable_password: Optional[bool]
+
+    :param enable_sharing: 共享链接开关，true-开启，false-未开启 
+    :type enable_sharing: Optional[bool]
+
+    :param enable_sharing_expire: 是否开启共享链接有效期 
+    :type enable_sharing_expire: Optional[bool]
+
+    :param password: 录制上传者、会议创建者、企业超级管理员或有企业录制管理权限的用户返回， 
+    :type password: Optional[str]
+
+    :param share_scope: 访问范围，0-所有人，1-同企业 
+    :type share_scope: Optional[int]
+
+    :param sharing_expire: 共享链接有效期，毫秒级时间戳 
+    :type sharing_expire: Optional[int]
+    """  # noqa: E501
+
+    allow_download: Optional[bool] = None
+    allow_view_transcripts: Optional[bool] = None
+    enable_approve: Optional[bool] = None
+    enable_password: Optional[bool] = None
+    enable_sharing: Optional[bool] = None
+    enable_sharing_expire: Optional[bool] = None
+    password: Optional[str] = None
+    share_scope: Optional[int] = None
+    sharing_expire: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        allow_download: Optional[bool] = None,
+        allow_view_transcripts: Optional[bool] = None,
+        enable_approve: Optional[bool] = None,
+        enable_password: Optional[bool] = None,
+        enable_sharing: Optional[bool] = None,
+        enable_sharing_expire: Optional[bool] = None,
+        password: Optional[str] = None,
+        share_scope: Optional[int] = None,
+        sharing_expire: Optional[int] = None,
+        **kwargs
+    ):
+        self.allow_download = allow_download
+        self.allow_view_transcripts = allow_view_transcripts
+        self.enable_approve = enable_approve
+        self.enable_password = enable_password
+        self.enable_sharing = enable_sharing
+        self.enable_sharing_expire = enable_sharing_expire
+        self.password = password
+        self.share_scope = share_scope
+        self.sharing_expire = sharing_expire
+
+
 class V1RecordsSettingsMeetingRecordIdPutRequest(object):
     """V1RecordsSettingsMeetingRecordIdPutRequest
 
-    :param meeting_id: 会议id (required) 
-    :type meeting_id: str
+    :param meeting_id: 会议id 
+    :type meeting_id: Optional[str]
 
     :param operator_id: 操作者ID 
     :type operator_id: Optional[str]
@@ -656,7 +1061,7 @@ class V1RecordsSettingsMeetingRecordIdPutRequest(object):
     :type userid: Optional[str]
     """  # noqa: E501
 
-    meeting_id: str
+    meeting_id: Optional[str] = None
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
     sharing_config: Optional[V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig] = None
@@ -665,7 +1070,7 @@ class V1RecordsSettingsMeetingRecordIdPutRequest(object):
 
     def __init__(
         self,
-        meeting_id: str,
+        meeting_id: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
         sharing_config: Optional[V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig | Dict[str, Any]] = None,

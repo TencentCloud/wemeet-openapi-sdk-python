@@ -4,6 +4,8 @@ import requests
 from abc import ABC, abstractmethod
 from typing import *
 
+from requests_toolbelt import MultipartEncoder
+
 from wemeet_openapi.core.xhttp.authenticator import Authenticator
 from wemeet_openapi.core.xhttp.request import ApiRequest
 from wemeet_openapi.core.xhttp.response import ApiResponse
@@ -83,7 +85,9 @@ class Client(AbstractClient):
         # 序列化请求体
         data: Optional[bytes] = b''
         if req.body is not None:
-            if serializer is not None:
+            if isinstance(req.body, MultipartEncoder):
+                data = req.body
+            elif serializer is not None:
                 data = serializer.serialize(req.body)
             elif isinstance(req.body, (str, bytes)):
                 data = req.body.encode("utf-8")

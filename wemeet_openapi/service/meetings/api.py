@@ -5,13 +5,13 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.1
+    API version: v1.0.2
 
     Do not edit the class manually.
 """  # noqa: E501
 
 
-from typing import Dict, List, Optional, Callable
+from typing import Dict, List, Optional, Callable, BinaryIO
 
 from wemeet_openapi.core import Config, DEFAULT_AUTHENTICATOR, DEFAULT_SERIALIZER
 from wemeet_openapi.core.xhttp import ApiRequest, ApiResponse
@@ -20,9 +20,40 @@ from wemeet_openapi.core.serializer import Serializer
 from wemeet_openapi.core.exception import ServiceException, ClientException
 from wemeet_openapi.service.meetings.model import *
 
+from requests_toolbelt import MultipartEncoder
+
+
+class ApiV1AsrConfigPutRequest(object):
+    """设置语音识别热词
+
+    用户可以通过接口进行您创建的会议的语音识别设置。 权限点：查看或管理您的会议
+    
+    :param body:
+    :type body: V1AsrConfigPutRequest
+    """  # noqa: E501
+
+
+    def __init__(
+        self,
+        body: Optional[V1AsrConfigPutRequest] = None
+    ):
+        self.body = body
+
+class ApiV1AsrConfigPutResponse(ApiResponse):
+    data: Optional[V1AsrConfigPut200Response] = None
+
+    def __init__(self, api_resp: ApiResponse, data: Optional[V1AsrConfigPut200Response] = None):
+        super().__init__(
+            status_code=api_resp.status_code,
+            raw_body=api_resp.raw_body,
+            header=api_resp.header,
+            serializer=api_resp.serializer()
+        )
+        self.data = data
+
 
 class ApiV1AsrDetailsGetRequest(object):
-    """导出会议转写记录
+    """导出实时转写记录
 
     如果会议开启了会议转写，可以导出转写记录。主持人可以设置导出权限，默认主持人可以导出，支持会中和会后导出。
     
@@ -34,6 +65,9 @@ class ApiV1AsrDetailsGetRequest(object):
 
     :param meeting_id: 可以查询某次会议的数据 (required)
     :type meeting_id: str
+
+    :param start_time: 查询起始时间戳，UNIX 时间戳（单位秒）。
+    :type start_time: str
 
     :param end_time: 查询结束时间戳，UNIX 时间戳（单位秒）。
     :type end_time: str
@@ -47,40 +81,66 @@ class ApiV1AsrDetailsGetRequest(object):
     :param page_size: 分页大小，默认10，最大50
     :type page_size: str
 
-    :param start_time: 查询起始时间戳，UNIX 时间戳（单位秒）。
-    :type start_time: str
-
     :param body:
     :type body: object
     """  # noqa: E501
+
 
     def __init__(
         self,
         operator_id_type: Optional[str] = None,
         operator_id: Optional[str] = None,
         meeting_id: Optional[str] = None,
+        start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         file_type: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
-        start_time: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.operator_id_type = operator_id_type
         self.operator_id = operator_id
         self.meeting_id = meeting_id
+        self.start_time = start_time
         self.end_time = end_time
         self.file_type = file_type
         self.page = page
         self.page_size = page_size
-        self.start_time = start_time
         self.body = body
-
 
 class ApiV1AsrDetailsGetResponse(ApiResponse):
     data: Optional[V1AsrDetailsGet200Response] = None
 
     def __init__(self, api_resp: ApiResponse, data: Optional[V1AsrDetailsGet200Response] = None):
+        super().__init__(
+            status_code=api_resp.status_code,
+            raw_body=api_resp.raw_body,
+            header=api_resp.header,
+            serializer=api_resp.serializer()
+        )
+        self.data = data
+
+
+class ApiV1AsrPushStatusPostRequest(object):
+    """开启/关闭实时转写推送
+
+     会议创建者可开启本场会议的实时转写内容推送，待开始的会议或未打开实时转写功能的会议也支持开启推送，开启推送后如果会议打开转写，则可通过webhook 实时转写推送 实时获取到转写内容。 企业 secret 鉴权用户可开启该用户所属企业下的所有会议转写推送，OAuth2.0 鉴权用户只能开启通过 OAuth2.0 鉴权创建的会议转写推送。 企业级自建应用通过 webhook 可以接收到企业下所有开启推送的会议的转写内容，应用级自建应用通过 webhook 可以接收到本应用创建的会议的转写内容。OAuth2.0 应用通过 webhook 可以接收到 OAuth2.0 鉴权创建的会议的转写内容。 
+    
+    :param body:
+    :type body: V1AsrPushStatusPostRequest
+    """  # noqa: E501
+
+
+    def __init__(
+        self,
+        body: Optional[V1AsrPushStatusPostRequest] = None
+    ):
+        self.body = body
+
+class ApiV1AsrPushStatusPostResponse(ApiResponse):
+    data: Optional[object] = None
+
+    def __init__(self, api_resp: ApiResponse, data: Optional[object] = None):
         super().__init__(
             status_code=api_resp.status_code,
             raw_body=api_resp.raw_body,
@@ -98,11 +158,11 @@ class ApiV1HistoryMeetingsUseridGetRequest(object):
     :param userid: (required)
     :type userid: str
 
-    :param page: 当前页，从1开始。 (required)
-    :type page: str
-
     :param page_size: 当前页大小，最小值为1，最大值为20。 (required)
     :type page_size: str
+
+    :param page: 当前页，从1开始。 (required)
+    :type page: str
 
     :param meeting_code: 会议号。
     :type meeting_code: str
@@ -117,24 +177,24 @@ class ApiV1HistoryMeetingsUseridGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         userid: str,
-        page: Optional[str] = None,
         page_size: Optional[str] = None,
+        page: Optional[str] = None,
         meeting_code: Optional[str] = None,
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.userid = userid
-        self.page = page
         self.page_size = page_size
+        self.page = page
         self.meeting_code = meeting_code
         self.start_time = start_time
         self.end_time = end_time
         self.body = body
-
 
 class ApiV1HistoryMeetingsUseridGetResponse(ApiResponse):
     data: Optional[V1HistoryMeetingsUseridGet200Response] = None
@@ -150,7 +210,7 @@ class ApiV1HistoryMeetingsUseridGetResponse(ApiResponse):
 
 
 class ApiV1MeetingJobIdGetRequest(object):
-    """获取异步导出任务结果
+    """获取导出 PSTN 通话详单任务结果
 
     获取异步导出任务的结果。
     
@@ -167,6 +227,7 @@ class ApiV1MeetingJobIdGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         job_id: str,
@@ -178,7 +239,6 @@ class ApiV1MeetingJobIdGetRequest(object):
         self.operator_id_type = operator_id_type
         self.operator_id = operator_id
         self.body = body
-
 
 class ApiV1MeetingJobIdGetResponse(ApiResponse):
     data: Optional[V1MeetingJobIdGet200Response] = None
@@ -217,6 +277,7 @@ class ApiV1MeetingMeetingIdWaitingRoomGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -232,7 +293,6 @@ class ApiV1MeetingMeetingIdWaitingRoomGetRequest(object):
         self.page = page
         self.page_size = page_size
         self.body = body
-
 
 class ApiV1MeetingMeetingIdWaitingRoomGetResponse(ApiResponse):
     data: Optional[V1MeetingMeetingIdWaitingRoomGet200Response] = None
@@ -265,6 +325,7 @@ class ApiV1MeetingMeetingIdWaitingRoomWelcomeMessageGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -276,7 +337,6 @@ class ApiV1MeetingMeetingIdWaitingRoomWelcomeMessageGetRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.body = body
-
 
 class ApiV1MeetingMeetingIdWaitingRoomWelcomeMessageGetResponse(ApiResponse):
     data: Optional[V1MeetingSetWaitingRoomWelcomeMessagePost200Response] = None
@@ -300,12 +360,12 @@ class ApiV1MeetingSetWaitingRoomWelcomeMessagePostRequest(object):
     :type body: V1MeetingSetWaitingRoomWelcomeMessagePostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         body: Optional[V1MeetingSetWaitingRoomWelcomeMessagePostRequest] = None
     ):
         self.body = body
-
 
 class ApiV1MeetingSetWaitingRoomWelcomeMessagePostResponse(ApiResponse):
     data: Optional[V1MeetingSetWaitingRoomWelcomeMessagePost200Response] = None
@@ -321,7 +381,7 @@ class ApiV1MeetingSetWaitingRoomWelcomeMessagePostResponse(ApiResponse):
 
 
 class ApiV1MeetingsCustomerShortUrlPostRequest(object):
-    """创建用户专属链接
+    """创建用户专属参会链接
 
     使用该接口，可用 `customer_data` 进行区分，为一场会议生成多个会议链接。通过用户入会、用户进入等候室等事件，或通过获取等候室成员列表的 API 查询到该参数。 该接口不支持个人会议号会议、网络研讨会（Webinar）。支持企业品牌化链接。 参会者腾讯会议客户端版本需大于等于 3.2.0。 暂不支持 OAuth 2.0 鉴权方式访问。
     
@@ -329,12 +389,12 @@ class ApiV1MeetingsCustomerShortUrlPostRequest(object):
     :type body: V1MeetingsCustomerShortUrlPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         body: Optional[V1MeetingsCustomerShortUrlPostRequest] = None
     ):
         self.body = body
-
 
 class ApiV1MeetingsCustomerShortUrlPostResponse(ApiResponse):
     data: Optional[V1MeetingsCustomerShortUrlPost200Response] = None
@@ -350,7 +410,7 @@ class ApiV1MeetingsCustomerShortUrlPostResponse(ApiResponse):
 
 
 class ApiV1MeetingsGetRequest(object):
-    """通过会议CODE查询会议详情/查询用户的会议列表
+    """查询用户的会议列表
 
     通过会议CODE查询会议详情/查询用户的会议列表 ① 通过会议CODE查询会议详情 企业 secret 鉴权用户可查询到任何该用户创建的企业下的会议，OAuth2.0 鉴权用户只能查询到通过 OAuth2.0 鉴权创建的会议。 支持企业管理员查询企业下的会议。 本接口的邀请参会成员限制调整至300人。 当会议为周期性会议时，主持人密钥每场会议固定，但单场会议只能获取一次。支持查询周期性会议的主持人密钥。 支持查询 MRA 当前所在会议信息。 若会议号被回收则无法通过 Code 查询，您可以通过会议 ID 查询到该会议。 ② 查询用户的会议列表 获取某指定用户的进行中或待开始的会议列表。企业 secret 鉴权用户可查询任何该企业该用户创建的有效会议，OAuth2.0 鉴权用户只能查询通过 OAuth2.0 鉴权创建的有效会议。
     
@@ -382,6 +442,7 @@ class ApiV1MeetingsGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         instanceid: Optional[str] = None,
@@ -403,7 +464,6 @@ class ApiV1MeetingsGetRequest(object):
         self.pos = pos
         self.is_show_all_sub_meetings = is_show_all_sub_meetings
         self.body = body
-
 
 class ApiV1MeetingsGetResponse(ApiResponse):
     data: Optional[V1MeetingsGet200Response] = None
@@ -430,6 +490,7 @@ class ApiV1MeetingsMeetingIdCancelPostRequest(object):
     :type body: V1MeetingsMeetingIdCancelPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -437,7 +498,6 @@ class ApiV1MeetingsMeetingIdCancelPostRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdCancelPostResponse(ApiResponse):
     data: Optional[object] = None
@@ -464,6 +524,7 @@ class ApiV1MeetingsMeetingIdCustomerShortUrlGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -471,7 +532,6 @@ class ApiV1MeetingsMeetingIdCustomerShortUrlGetRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdCustomerShortUrlGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdCustomerShortUrlGet200Response] = None
@@ -503,21 +563,22 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsGetRequest(object):
     :param page_size: 分页大小，最大50条 (required)
     :type page_size: str
 
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）为了防止现网应用报错，此参数实则仍然兼容openid，如无oauth应用使用报名接口则也可做成不兼容变更。
-    :type userid: str
-
-    :param status: 审批状态筛选字段，审批状态：0 全部，1 待审批，2 已拒绝，3 已批准，默认返回全部
-    :type status: str
-
     :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。
     :type operator_id: str
 
     :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准；
     :type operator_id_type: str
 
+    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）为了防止现网应用报错，此参数实则仍然兼容openid，如无oauth应用使用报名接口则也可做成不兼容变更。
+    :type userid: str
+
+    :param status: 审批状态筛选字段，审批状态：0 全部，1 待审批，2 已拒绝，3 已批准，默认返回全部
+    :type status: str
+
     :param body:
     :type body: object
     """  # noqa: E501
+
 
     def __init__(
         self,
@@ -525,22 +586,21 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsGetRequest(object):
         instanceid: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
-        userid: Optional[str] = None,
-        status: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
+        userid: Optional[str] = None,
+        status: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
         self.instanceid = instanceid
         self.page = page
         self.page_size = page_size
-        self.userid = userid
-        self.status = status
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
+        self.userid = userid
+        self.status = status
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollApprovalsGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollApprovalsGet200Response] = None
@@ -556,7 +616,7 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsGetResponse(ApiResponse):
 
 
 class ApiV1MeetingsMeetingIdEnrollApprovalsPutRequest(object):
-    """审批云会议报名信息
+    """审批会议报名信息
 
     批量云会议的报名信息，仅会议创建者可审批。 企业 secret 鉴权用户可审批任何该企业该用户创建的有效会议，OAuth2.0 鉴权用户只能审批通过 OAuth2.0 鉴权创建的有效会议。 用户必须是注册用户，请求头部 X-TC-Registered 字段必须传入为1。
     
@@ -567,6 +627,7 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsPutRequest(object):
     :type body: V1MeetingsMeetingIdEnrollApprovalsPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -574,7 +635,6 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollApprovalsPutResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollApprovalsPut200Response] = None
@@ -600,35 +660,35 @@ class ApiV1MeetingsMeetingIdEnrollConfigGetRequest(object):
     :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 (required)
     :type instanceid: str
 
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）
-    :type userid: str
+    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。
+    :type operator_id: str
 
     :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准；
     :type operator_id_type: str
 
-    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。
-    :type operator_id: str
+    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）
+    :type userid: str
 
     :param body:
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
         instanceid: Optional[str] = None,
-        userid: Optional[str] = None,
-        operator_id_type: Optional[str] = None,
         operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
+        userid: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
         self.instanceid = instanceid
-        self.userid = userid
-        self.operator_id_type = operator_id_type
         self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.userid = userid
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollConfigGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollConfigGet200Response] = None
@@ -655,6 +715,7 @@ class ApiV1MeetingsMeetingIdEnrollConfigPutRequest(object):
     :type body: V1MeetingsMeetingIdEnrollConfigPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -662,7 +723,6 @@ class ApiV1MeetingsMeetingIdEnrollConfigPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollConfigPutResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollConfigPut200Response] = None
@@ -678,7 +738,7 @@ class ApiV1MeetingsMeetingIdEnrollConfigPutResponse(ApiResponse):
 
 
 class ApiV1MeetingsMeetingIdEnrollIdsPostRequest(object):
-    """查询会议成员报名ID
+    """查询会议成员报名 ID
 
     描述： 支持查询会议中已报名成员的报名 ID，仅会议创建者可查询。
     
@@ -689,6 +749,7 @@ class ApiV1MeetingsMeetingIdEnrollIdsPostRequest(object):
     :type body: V1MeetingsMeetingIdEnrollIdsPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -696,7 +757,6 @@ class ApiV1MeetingsMeetingIdEnrollIdsPostRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollIdsPostResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollIdsPost200Response] = None
@@ -723,6 +783,7 @@ class ApiV1MeetingsMeetingIdEnrollImportPostRequest(object):
     :type body: V1MeetingsMeetingIdEnrollImportPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -730,7 +791,6 @@ class ApiV1MeetingsMeetingIdEnrollImportPostRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollImportPostResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollImportPost200Response] = None
@@ -757,6 +817,7 @@ class ApiV1MeetingsMeetingIdEnrollUnregistrationDeleteRequest(object):
     :type body: V1MeetingsMeetingIdEnrollUnregistrationDeleteRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -764,7 +825,6 @@ class ApiV1MeetingsMeetingIdEnrollUnregistrationDeleteRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdEnrollUnregistrationDeleteResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdEnrollUnregistrationDelete200Response] = None
@@ -780,7 +840,7 @@ class ApiV1MeetingsMeetingIdEnrollUnregistrationDeleteResponse(ApiResponse):
 
 
 class ApiV1MeetingsMeetingIdGetRequest(object):
-    """通过会议ID查询会议列表
+    """查询会议
 
     通过会议 ID 查询会议详情。 企业 secret 鉴权用户可查询到任何该用户创建的企业下的会议，OAuth2.0 鉴权用户只能查询到通过 OAuth2.0 鉴权创建的会议。 本接口的邀请参会成员限制调整至300人。 当会议为周期性会议时，主持人密钥每场会议固定，但单场会议只能获取一次。支持查询周期性会议的主持人密钥。 支持查询 MRA 当前所在会议信息。
     
@@ -790,35 +850,35 @@ class ApiV1MeetingsMeetingIdGetRequest(object):
     :param instanceid: 用户的终端设备类型： 0：PSTN 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch MacOS 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch iOS (required)
     :type instanceid: str
 
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）
-    :type userid: str
-
     :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型
     :type operator_id: str
 
     :param operator_id_type: 操作者ID的类型：1.userid 2.openid 3.rooms_id
     :type operator_id_type: str
 
+    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）
+    :type userid: str
+
     :param body:
     :type body: object
     """  # noqa: E501
+
 
     def __init__(
         self,
         meeting_id: str,
         instanceid: Optional[str] = None,
-        userid: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
+        userid: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
         self.instanceid = instanceid
-        self.userid = userid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
+        self.userid = userid
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdGet200Response] = None
@@ -854,6 +914,7 @@ class ApiV1MeetingsMeetingIdInviteesGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -867,7 +928,6 @@ class ApiV1MeetingsMeetingIdInviteesGetRequest(object):
         self.instanceid = instanceid
         self.pos = pos
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdInviteesGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdInviteesGet200Response] = None
@@ -894,6 +954,7 @@ class ApiV1MeetingsMeetingIdInviteesPutRequest(object):
     :type body: V1MeetingsMeetingIdInviteesPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -901,7 +962,6 @@ class ApiV1MeetingsMeetingIdInviteesPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdInviteesPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -924,11 +984,17 @@ class ApiV1MeetingsMeetingIdParticipantsGetRequest(object):
     :param meeting_id: (required)
     :type meeting_id: str
 
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。
-    :type userid: str
-
     :param sub_meeting_id: 周期性会议子会议 ID。说明：可通过查询用户的会议列表、查询会议接口获取返回的子会议 ID，即 current_sub_meeting_id；如果是周期性会议，此参数必传。
     :type sub_meeting_id: str
+
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID的类型：1.userid 2.open_id 3.rooms_id
+    :type operator_id_type: str
+
+    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。
+    :type userid: str
 
     :param pos: 分页获取参会成员列表的查询起始位置值。当参会成员较多时，建议使用此参数进行分页查询，避免查询超时。此参数为非必选参数，默认值为0，从头开始查询。设置每页返回的数量，请参考参数“size”的说明。查询返回输出参数“has_remaining”为 true，表示该会议人数较多，还有一定数量的参会成员需要继续查询。返回参数“next_pos”的值即为下一次查询的 pos 的值。多次调用该查询接口直到输出参数“has_remaining”值为 false。
     :type pos: str
@@ -942,40 +1008,34 @@ class ApiV1MeetingsMeetingIdParticipantsGetRequest(object):
     :param end_time:  参会时间过滤终止时间（单位秒）。说明：时间区间不允许超过31天，如果为空默认取当前时间；start_time 和 end_time 都没传时最大查询时间跨度90天；对于周期性会议查询暂时不生效，请使用分页参数查询。
     :type end_time: str
 
-    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型
-    :type operator_id: str
-
-    :param operator_id_type: 操作者ID的类型：1.userid 2.open_id 3.rooms_id
-    :type operator_id_type: str
-
     :param body:
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
-        userid: Optional[str] = None,
         sub_meeting_id: Optional[str] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
+        userid: Optional[str] = None,
         pos: Optional[str] = None,
         size: Optional[str] = None,
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
-        self.userid = userid
         self.sub_meeting_id = sub_meeting_id
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.userid = userid
         self.pos = pos
         self.size = size
         self.start_time = start_time
         self.end_time = end_time
-        self.operator_id = operator_id
-        self.operator_id_type = operator_id_type
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdParticipantsGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdParticipantsGet200Response] = None
@@ -1002,6 +1062,7 @@ class ApiV1MeetingsMeetingIdPutRequest(object):
     :type body: V1MeetingsMeetingIdPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -1010,11 +1071,89 @@ class ApiV1MeetingsMeetingIdPutRequest(object):
         self.meeting_id = meeting_id
         self.body = body
 
-
 class ApiV1MeetingsMeetingIdPutResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdPut200Response] = None
 
     def __init__(self, api_resp: ApiResponse, data: Optional[V1MeetingsMeetingIdPut200Response] = None):
+        super().__init__(
+            status_code=api_resp.status_code,
+            raw_body=api_resp.raw_body,
+            header=api_resp.header,
+            serializer=api_resp.serializer()
+        )
+        self.data = data
+
+
+class ApiV1MeetingsMeetingIdQosGetRequest(object):
+    """获取会议实时质量检测数据
+
+    拥有企业“会议列表--会控”权限的成员，能够获取实时会议质量检测数据。 支持云会议和Webinar会议的数据。会议状态为进行中。
+    
+    :param meeting_id: 会议ID (required)
+    :type meeting_id: str
+
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型 (required)
+    :type operator_id_type: str
+
+    :param page_size: 分页大小，20-100
+    :type page_size: str
+
+    :param page: 页码
+    :type page: str
+
+    :param to_operator_id: 筛选的用户ID
+    :type to_operator_id: str
+
+    :param to_operator_id_type: 筛选的用户ID类型 4:ms_open_id
+    :type to_operator_id_type: str
+
+    :param key: 搜索key(格式：模块_指标)
+    :type key: str
+
+    :param min_value: 搜索值,搜索大于等于该值的数据
+    :type min_value: str
+
+    :param max_value: 最大搜索值，搜索小于等于该值的数据
+    :type max_value: str
+
+    :param body:
+    :type body: object
+    """  # noqa: E501
+
+
+    def __init__(
+        self,
+        meeting_id: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
+        page_size: Optional[str] = None,
+        page: Optional[str] = None,
+        to_operator_id: Optional[str] = None,
+        to_operator_id_type: Optional[str] = None,
+        key: Optional[str] = None,
+        min_value: Optional[str] = None,
+        max_value: Optional[str] = None,
+        body: Optional[object] = None
+    ):
+        self.meeting_id = meeting_id
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.page_size = page_size
+        self.page = page
+        self.to_operator_id = to_operator_id
+        self.to_operator_id_type = to_operator_id_type
+        self.key = key
+        self.min_value = min_value
+        self.max_value = max_value
+        self.body = body
+
+class ApiV1MeetingsMeetingIdQosGetResponse(ApiResponse):
+    data: Optional[V1MeetingsMeetingIdQosGet200Response] = None
+
+    def __init__(self, api_resp: ApiResponse, data: Optional[V1MeetingsMeetingIdQosGet200Response] = None):
         super().__init__(
             status_code=api_resp.status_code,
             raw_body=api_resp.raw_body,
@@ -1057,6 +1196,7 @@ class ApiV1MeetingsMeetingIdQualityGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -1079,7 +1219,6 @@ class ApiV1MeetingsMeetingIdQualityGetRequest(object):
         self.sub_meeting_id = sub_meeting_id
         self.body = body
 
-
 class ApiV1MeetingsMeetingIdQualityGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdQualityGet200Response] = None
 
@@ -1094,7 +1233,7 @@ class ApiV1MeetingsMeetingIdQualityGetResponse(ApiResponse):
 
 
 class ApiV1MeetingsMeetingIdRealTimeParticipantsGetRequest(object):
-    """查询会议实时信息状态
+    """查询实时会中成员列表
 
     查询当前会中成员列表，仅包括会中的成员，如果已离会，则不展示 企业超级管理员、会议创建者、会议主持人、会议联席主持人可以查询该数据。
     
@@ -1120,6 +1259,7 @@ class ApiV1MeetingsMeetingIdRealTimeParticipantsGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -1137,7 +1277,6 @@ class ApiV1MeetingsMeetingIdRealTimeParticipantsGetRequest(object):
         self.page_size = page_size
         self.sub_meeting_id = sub_meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdRealTimeParticipantsGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdRealTimeParticipantsGet200Response] = None
@@ -1164,6 +1303,7 @@ class ApiV1MeetingsMeetingIdVirtualBackgroundPostRequest(object):
     :type body: V1MeetingsMeetingIdVirtualBackgroundPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -1171,7 +1311,6 @@ class ApiV1MeetingsMeetingIdVirtualBackgroundPostRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdVirtualBackgroundPostResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdVirtualBackgroundPost200Response] = None
@@ -1207,6 +1346,7 @@ class ApiV1MeetingsMeetingIdWaitingRoomParticipantsGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -1220,7 +1360,6 @@ class ApiV1MeetingsMeetingIdWaitingRoomParticipantsGetRequest(object):
         self.page_size = page_size
         self.page = page
         self.body = body
-
 
 class ApiV1MeetingsMeetingIdWaitingRoomParticipantsGetResponse(ApiResponse):
     data: Optional[V1MeetingsMeetingIdWaitingRoomParticipantsGet200Response] = None
@@ -1244,12 +1383,12 @@ class ApiV1MeetingsPostRequest(object):
     :type body: V1MeetingsPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         body: Optional[V1MeetingsPostRequest] = None
     ):
         self.body = body
-
 
 class ApiV1MeetingsPostResponse(ApiResponse):
     data: Optional[V1MeetingsPost200Response] = None
@@ -1273,12 +1412,12 @@ class ApiV1MeetingsQueryMeetingidForDevicePostRequest(object):
     :type body: V1MeetingsQueryMeetingidForDevicePostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         body: Optional[V1MeetingsQueryMeetingidForDevicePostRequest] = None
     ):
         self.body = body
-
 
 class ApiV1MeetingsQueryMeetingidForDevicePostResponse(ApiResponse):
     data: Optional[V1MeetingsQueryMeetingidForDevicePost200Response] = None
@@ -1294,7 +1433,7 @@ class ApiV1MeetingsQueryMeetingidForDevicePostResponse(ApiResponse):
 
 
 class ApiV1PmiMeetingsGetRequest(object):
-    """查询个人PMI会议列表
+    """查询个人会议号会议列表
 
     查询个人会议号（PMI）会议的会议列表（待开始、进行中、已结束），目前暂不支持 OAuth2.0 鉴权访问。
     
@@ -1323,6 +1462,7 @@ class ApiV1PmiMeetingsGetRequest(object):
     :type body: object
     """  # noqa: E501
 
+
     def __init__(
         self,
         operator_id: Optional[str] = None,
@@ -1343,7 +1483,6 @@ class ApiV1PmiMeetingsGetRequest(object):
         self.page_size = page_size
         self.body = body
 
-
 class ApiV1PmiMeetingsGetResponse(ApiResponse):
     data: Optional[V1PmiMeetingsGet200Response] = None
 
@@ -1361,6 +1500,52 @@ class MeetingsApi:
     def __init__(self, config: Config):
         self.__config = config
 
+    def v1_asr_config_put(
+        self,
+        request: ApiV1AsrConfigPutRequest,
+        serializer: Optional[Serializer] = None,
+        authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
+        header: Optional[Dict[str, str]] = None
+    ) -> ApiV1AsrConfigPutResponse:
+        """v1_asr_config_put 设置语音识别热词[/v1/asr/config - PUT]
+
+            用户可以通过接口进行您创建的会议的语音识别设置。 权限点：查看或管理您的会议
+        """
+        try:
+            # 生成鉴权器
+            authenticators: List[Authenticator] = []
+            for option in authenticator_options:
+                authenticators.append(option(self.__config))
+
+            # 增加 SDK Version 标识
+            authenticators.append(DEFAULT_AUTHENTICATOR)
+            
+            # 构造请求
+            api_req = ApiRequest(api_uri="/v1/asr/config",
+                                 authenticators=authenticators,
+                                 header=header, 
+                                 body=request.body,
+                                 serializer=serializer)
+
+            # path 参数
+            # query 参数
+            # 发送请求
+            api_resp = self.__config.clt.put(api_req)
+
+            if api_resp.status_code >= 300:
+                raise ServiceException(api_resp=api_resp)
+            try:
+                response = ApiV1AsrConfigPutResponse(api_resp=api_resp)
+                response.data = api_resp.translate(dst_t=V1AsrConfigPut200Response)
+            except Exception as e:
+                raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
+                                                f"response: {api_resp.raw_body}, err: {e.__str__()}"))
+            return response
+        except (ClientException, ServiceException):
+            raise
+        except Exception as e:
+            raise ClientException(e)
+
     def v1_asr_details_get(
         self,
         request: ApiV1AsrDetailsGetRequest,
@@ -1368,7 +1553,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1AsrDetailsGetResponse:
-        """v1_asr_details_get 导出会议转写记录[/v1/asr/details - GET]
+        """v1_asr_details_get 导出实时转写记录[/v1/asr/details - GET]
 
             如果会议开启了会议转写，可以导出转写记录。主持人可以设置导出权限，默认主持人可以导出，支持会中和会后导出。
         """
@@ -1380,6 +1565,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/asr/details",
                                  authenticators=authenticators,
@@ -1404,6 +1590,8 @@ class MeetingsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.meeting_id is not None:
                 api_req.query_params.append(('meeting_id', request.meeting_id))
+            if request.start_time is not None:
+                api_req.query_params.append(('start_time', request.start_time))
             if request.end_time is not None:
                 api_req.query_params.append(('end_time', request.end_time))
             if request.file_type is not None:
@@ -1412,8 +1600,6 @@ class MeetingsApi:
                 api_req.query_params.append(('page', request.page))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
-            if request.start_time is not None:
-                api_req.query_params.append(('start_time', request.start_time))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1422,6 +1608,52 @@ class MeetingsApi:
             try:
                 response = ApiV1AsrDetailsGetResponse(api_resp=api_resp)
                 response.data = api_resp.translate(dst_t=V1AsrDetailsGet200Response)
+            except Exception as e:
+                raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
+                                                f"response: {api_resp.raw_body}, err: {e.__str__()}"))
+            return response
+        except (ClientException, ServiceException):
+            raise
+        except Exception as e:
+            raise ClientException(e)
+
+    def v1_asr_push_status_post(
+        self,
+        request: ApiV1AsrPushStatusPostRequest,
+        serializer: Optional[Serializer] = None,
+        authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
+        header: Optional[Dict[str, str]] = None
+    ) -> ApiV1AsrPushStatusPostResponse:
+        """v1_asr_push_status_post 开启/关闭实时转写推送[/v1/asr/push-status - POST]
+
+             会议创建者可开启本场会议的实时转写内容推送，待开始的会议或未打开实时转写功能的会议也支持开启推送，开启推送后如果会议打开转写，则可通过webhook 实时转写推送 实时获取到转写内容。 企业 secret 鉴权用户可开启该用户所属企业下的所有会议转写推送，OAuth2.0 鉴权用户只能开启通过 OAuth2.0 鉴权创建的会议转写推送。 企业级自建应用通过 webhook 可以接收到企业下所有开启推送的会议的转写内容，应用级自建应用通过 webhook 可以接收到本应用创建的会议的转写内容。OAuth2.0 应用通过 webhook 可以接收到 OAuth2.0 鉴权创建的会议的转写内容。 
+        """
+        try:
+            # 生成鉴权器
+            authenticators: List[Authenticator] = []
+            for option in authenticator_options:
+                authenticators.append(option(self.__config))
+
+            # 增加 SDK Version 标识
+            authenticators.append(DEFAULT_AUTHENTICATOR)
+            
+            # 构造请求
+            api_req = ApiRequest(api_uri="/v1/asr/push-status",
+                                 authenticators=authenticators,
+                                 header=header, 
+                                 body=request.body,
+                                 serializer=serializer)
+
+            # path 参数
+            # query 参数
+            # 发送请求
+            api_resp = self.__config.clt.post(api_req)
+
+            if api_resp.status_code >= 300:
+                raise ServiceException(api_resp=api_resp)
+            try:
+                response = ApiV1AsrPushStatusPostResponse(api_resp=api_resp)
+                response.data = api_resp.translate(dst_t=object)
             except Exception as e:
                 raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
                                                 f"response: {api_resp.raw_body}, err: {e.__str__()}"))
@@ -1450,6 +1682,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/history/meetings/{userid}",
                                  authenticators=authenticators,
@@ -1460,20 +1693,20 @@ class MeetingsApi:
             # verify the required parameter 'userid' is set
             if request.userid is None:
                 raise Exception("userid is required and must be specified")
-            # verify the required parameter 'page' is set
-            if request.page is None:
-                raise Exception("page is required and must be specified")
             # verify the required parameter 'page_size' is set
             if request.page_size is None:
                 raise Exception("page_size is required and must be specified")
+            # verify the required parameter 'page' is set
+            if request.page is None:
+                raise Exception("page is required and must be specified")
             # path 参数
             if request.userid is not None:
                 api_req.path_params['userid'] = request.userid
             # query 参数
-            if request.page is not None:
-                api_req.query_params.append(('page', request.page))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
+            if request.page is not None:
+                api_req.query_params.append(('page', request.page))
             if request.meeting_code is not None:
                 api_req.query_params.append(('meeting_code', request.meeting_code))
             if request.start_time is not None:
@@ -1504,7 +1737,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingJobIdGetResponse:
-        """v1_meeting_job_id_get 获取异步导出任务结果[/v1/meeting/{job_id} - GET]
+        """v1_meeting_job_id_get 获取导出 PSTN 通话详单任务结果[/v1/meeting/{job_id} - GET]
 
             获取异步导出任务的结果。
         """
@@ -1516,6 +1749,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meeting/{job_id}",
                                  authenticators=authenticators,
@@ -1576,6 +1810,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meeting/{meeting_id}/waiting-room",
                                  authenticators=authenticators,
@@ -1646,6 +1881,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meeting/{meeting_id}/waiting-room-welcome-message",
                                  authenticators=authenticators,
@@ -1706,6 +1942,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meeting/set-waiting-room-welcome-message",
                                  authenticators=authenticators,
@@ -1739,7 +1976,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingsCustomerShortUrlPostResponse:
-        """v1_meetings_customer_short_url_post 创建用户专属链接[/v1/meetings/customer-short-url - POST]
+        """v1_meetings_customer_short_url_post 创建用户专属参会链接[/v1/meetings/customer-short-url - POST]
 
             使用该接口，可用 `customer_data` 进行区分，为一场会议生成多个会议链接。通过用户入会、用户进入等候室等事件，或通过获取等候室成员列表的 API 查询到该参数。 该接口不支持个人会议号会议、网络研讨会（Webinar）。支持企业品牌化链接。 参会者腾讯会议客户端版本需大于等于 3.2.0。 暂不支持 OAuth 2.0 鉴权方式访问。
         """
@@ -1751,6 +1988,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/customer-short-url",
                                  authenticators=authenticators,
@@ -1784,7 +2022,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingsGetResponse:
-        """v1_meetings_get 通过会议CODE查询会议详情/查询用户的会议列表[/v1/meetings - GET]
+        """v1_meetings_get 查询用户的会议列表[/v1/meetings - GET]
 
             通过会议CODE查询会议详情/查询用户的会议列表 ① 通过会议CODE查询会议详情 企业 secret 鉴权用户可查询到任何该用户创建的企业下的会议，OAuth2.0 鉴权用户只能查询到通过 OAuth2.0 鉴权创建的会议。 支持企业管理员查询企业下的会议。 本接口的邀请参会成员限制调整至300人。 当会议为周期性会议时，主持人密钥每场会议固定，但单场会议只能获取一次。支持查询周期性会议的主持人密钥。 支持查询 MRA 当前所在会议信息。 若会议号被回收则无法通过 Code 查询，您可以通过会议 ID 查询到该会议。 ② 查询用户的会议列表 获取某指定用户的进行中或待开始的会议列表。企业 secret 鉴权用户可查询任何该企业该用户创建的有效会议，OAuth2.0 鉴权用户只能查询通过 OAuth2.0 鉴权创建的有效会议。
         """
@@ -1796,6 +2034,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings",
                                  authenticators=authenticators,
@@ -1860,6 +2099,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/cancel",
                                  authenticators=authenticators,
@@ -1910,6 +2150,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/customer-short-url",
                                  authenticators=authenticators,
@@ -1960,6 +2201,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/approvals",
                                  authenticators=authenticators,
@@ -1983,6 +2225,10 @@ class MeetingsApi:
             if request.meeting_id is not None:
                 api_req.path_params['meeting_id'] = request.meeting_id
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             if request.userid is not None:
                 api_req.query_params.append(('userid', request.userid))
             if request.instanceid is not None:
@@ -1993,10 +2239,6 @@ class MeetingsApi:
                 api_req.query_params.append(('page_size', request.page_size))
             if request.status is not None:
                 api_req.query_params.append(('status', request.status))
-            if request.operator_id is not None:
-                api_req.query_params.append(('operator_id', request.operator_id))
-            if request.operator_id_type is not None:
-                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -2021,7 +2263,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingsMeetingIdEnrollApprovalsPutResponse:
-        """v1_meetings_meeting_id_enroll_approvals_put 审批云会议报名信息[/v1/meetings/{meeting_id}/enroll/approvals - PUT]
+        """v1_meetings_meeting_id_enroll_approvals_put 审批会议报名信息[/v1/meetings/{meeting_id}/enroll/approvals - PUT]
 
             批量云会议的报名信息，仅会议创建者可审批。 企业 secret 鉴权用户可审批任何该企业该用户创建的有效会议，OAuth2.0 鉴权用户只能审批通过 OAuth2.0 鉴权创建的有效会议。 用户必须是注册用户，请求头部 X-TC-Registered 字段必须传入为1。
         """
@@ -2033,6 +2275,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/approvals",
                                  authenticators=authenticators,
@@ -2083,6 +2326,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/config",
                                  authenticators=authenticators,
@@ -2100,14 +2344,14 @@ class MeetingsApi:
             if request.meeting_id is not None:
                 api_req.path_params['meeting_id'] = request.meeting_id
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             if request.userid is not None:
                 api_req.query_params.append(('userid', request.userid))
             if request.instanceid is not None:
                 api_req.query_params.append(('instanceid', request.instanceid))
-            if request.operator_id_type is not None:
-                api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.operator_id is not None:
-                api_req.query_params.append(('operator_id', request.operator_id))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -2144,6 +2388,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/config",
                                  authenticators=authenticators,
@@ -2182,7 +2427,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingsMeetingIdEnrollIdsPostResponse:
-        """v1_meetings_meeting_id_enroll_ids_post 查询会议成员报名ID[/v1/meetings/{meeting_id}/enroll/ids - POST]
+        """v1_meetings_meeting_id_enroll_ids_post 查询会议成员报名 ID[/v1/meetings/{meeting_id}/enroll/ids - POST]
 
             描述： 支持查询会议中已报名成员的报名 ID，仅会议创建者可查询。
         """
@@ -2194,6 +2439,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/ids",
                                  authenticators=authenticators,
@@ -2244,6 +2490,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/import",
                                  authenticators=authenticators,
@@ -2294,6 +2541,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/enroll/unregistration",
                                  authenticators=authenticators,
@@ -2332,7 +2580,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingsMeetingIdGetResponse:
-        """v1_meetings_meeting_id_get 通过会议ID查询会议列表[/v1/meetings/{meeting_id} - GET]
+        """v1_meetings_meeting_id_get 查询会议[/v1/meetings/{meeting_id} - GET]
 
             通过会议 ID 查询会议详情。 企业 secret 鉴权用户可查询到任何该用户创建的企业下的会议，OAuth2.0 鉴权用户只能查询到通过 OAuth2.0 鉴权创建的会议。 本接口的邀请参会成员限制调整至300人。 当会议为周期性会议时，主持人密钥每场会议固定，但单场会议只能获取一次。支持查询周期性会议的主持人密钥。 支持查询 MRA 当前所在会议信息。
         """
@@ -2344,6 +2592,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}",
                                  authenticators=authenticators,
@@ -2361,14 +2610,14 @@ class MeetingsApi:
             if request.meeting_id is not None:
                 api_req.path_params['meeting_id'] = request.meeting_id
             # query 参数
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
-            if request.instanceid is not None:
-                api_req.query_params.append(('instanceid', request.instanceid))
             if request.operator_id is not None:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
+            if request.userid is not None:
+                api_req.query_params.append(('userid', request.userid))
+            if request.instanceid is not None:
+                api_req.query_params.append(('instanceid', request.instanceid))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -2405,6 +2654,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/invitees",
                                  authenticators=authenticators,
@@ -2467,6 +2717,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/invitees",
                                  authenticators=authenticators,
@@ -2517,6 +2768,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meetingId}/participants",
                                  authenticators=authenticators,
@@ -2531,10 +2783,14 @@ class MeetingsApi:
             if request.meeting_id is not None:
                 api_req.path_params['meetingId'] = request.meeting_id
             # query 参数
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             if request.sub_meeting_id is not None:
                 api_req.query_params.append(('sub_meeting_id', request.sub_meeting_id))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
+            if request.userid is not None:
+                api_req.query_params.append(('userid', request.userid))
             if request.pos is not None:
                 api_req.query_params.append(('pos', request.pos))
             if request.size is not None:
@@ -2543,10 +2799,6 @@ class MeetingsApi:
                 api_req.query_params.append(('start_time', request.start_time))
             if request.end_time is not None:
                 api_req.query_params.append(('end_time', request.end_time))
-            if request.operator_id is not None:
-                api_req.query_params.append(('operator_id', request.operator_id))
-            if request.operator_id_type is not None:
-                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -2583,6 +2835,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}",
                                  authenticators=authenticators,
@@ -2614,6 +2867,81 @@ class MeetingsApi:
         except Exception as e:
             raise ClientException(e)
 
+    def v1_meetings_meeting_id_qos_get(
+        self,
+        request: ApiV1MeetingsMeetingIdQosGetRequest,
+        serializer: Optional[Serializer] = None,
+        authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
+        header: Optional[Dict[str, str]] = None
+    ) -> ApiV1MeetingsMeetingIdQosGetResponse:
+        """v1_meetings_meeting_id_qos_get 获取会议实时质量检测数据[/v1/meetings/{meeting_id}/qos - GET]
+
+            拥有企业“会议列表--会控”权限的成员，能够获取实时会议质量检测数据。 支持云会议和Webinar会议的数据。会议状态为进行中。
+        """
+        try:
+            # 生成鉴权器
+            authenticators: List[Authenticator] = []
+            for option in authenticator_options:
+                authenticators.append(option(self.__config))
+
+            # 增加 SDK Version 标识
+            authenticators.append(DEFAULT_AUTHENTICATOR)
+            
+            # 构造请求
+            api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/qos",
+                                 authenticators=authenticators,
+                                 header=header, 
+                                 body=request.body,
+                                 serializer=serializer)
+
+            # verify the required parameter 'meeting_id' is set
+            if request.meeting_id is None:
+                raise Exception("meeting_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
+            # path 参数
+            if request.meeting_id is not None:
+                api_req.path_params['meeting_id'] = request.meeting_id
+            # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
+            if request.page_size is not None:
+                api_req.query_params.append(('page_size', request.page_size))
+            if request.page is not None:
+                api_req.query_params.append(('page', request.page))
+            if request.to_operator_id is not None:
+                api_req.query_params.append(('to_operator_id', request.to_operator_id))
+            if request.to_operator_id_type is not None:
+                api_req.query_params.append(('to_operator_id_type', request.to_operator_id_type))
+            if request.key is not None:
+                api_req.query_params.append(('key', request.key))
+            if request.min_value is not None:
+                api_req.query_params.append(('min_value', request.min_value))
+            if request.max_value is not None:
+                api_req.query_params.append(('max_value', request.max_value))
+            # 发送请求
+            api_resp = self.__config.clt.get(api_req)
+
+            if api_resp.status_code >= 300:
+                raise ServiceException(api_resp=api_resp)
+            try:
+                response = ApiV1MeetingsMeetingIdQosGetResponse(api_resp=api_resp)
+                response.data = api_resp.translate(dst_t=V1MeetingsMeetingIdQosGet200Response)
+            except Exception as e:
+                raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
+                                                f"response: {api_resp.raw_body}, err: {e.__str__()}"))
+            return response
+        except (ClientException, ServiceException):
+            raise
+        except Exception as e:
+            raise ClientException(e)
+
     def v1_meetings_meeting_id_quality_get(
         self,
         request: ApiV1MeetingsMeetingIdQualityGetRequest,
@@ -2633,6 +2961,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/quality",
                                  authenticators=authenticators,
@@ -2700,7 +3029,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1MeetingsMeetingIdRealTimeParticipantsGetResponse:
-        """v1_meetings_meeting_id_real_time_participants_get 查询会议实时信息状态[/v1/meetings/{meeting_id}/real-time-participants - GET]
+        """v1_meetings_meeting_id_real_time_participants_get 查询实时会中成员列表[/v1/meetings/{meeting_id}/real-time-participants - GET]
 
             查询当前会中成员列表，仅包括会中的成员，如果已离会，则不展示 企业超级管理员、会议创建者、会议主持人、会议联席主持人可以查询该数据。
         """
@@ -2712,6 +3041,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/real-time-participants",
                                  authenticators=authenticators,
@@ -2784,6 +3114,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/virtual-background",
                                  authenticators=authenticators,
@@ -2834,6 +3165,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/waiting-room-participants",
                                  authenticators=authenticators,
@@ -2893,6 +3225,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings",
                                  authenticators=authenticators,
@@ -2938,6 +3271,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/query/meetingid-for-device",
                                  authenticators=authenticators,
@@ -2971,7 +3305,7 @@ class MeetingsApi:
         authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
         header: Optional[Dict[str, str]] = None
     ) -> ApiV1PmiMeetingsGetResponse:
-        """v1_pmi_meetings_get 查询个人PMI会议列表[/v1/pmi-meetings - GET]
+        """v1_pmi_meetings_get 查询个人会议号会议列表[/v1/pmi-meetings - GET]
 
             查询个人会议号（PMI）会议的会议列表（待开始、进行中、已结束），目前暂不支持 OAuth2.0 鉴权访问。
         """
@@ -2983,6 +3317,7 @@ class MeetingsApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/pmi-meetings",
                                  authenticators=authenticators,

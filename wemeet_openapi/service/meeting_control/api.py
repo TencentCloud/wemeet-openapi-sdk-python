@@ -5,13 +5,13 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.1
+    API version: v1.0.2
 
     Do not edit the class manually.
 """  # noqa: E501
 
 
-from typing import Dict, List, Optional, Callable
+from typing import Dict, List, Optional, Callable, BinaryIO
 
 from wemeet_openapi.core import Config, DEFAULT_AUTHENTICATOR, DEFAULT_SERIALIZER
 from wemeet_openapi.core.xhttp import ApiRequest, ApiResponse
@@ -19,6 +19,8 @@ from wemeet_openapi.core.authenticator import Authenticator
 from wemeet_openapi.core.serializer import Serializer
 from wemeet_openapi.core.exception import ServiceException, ClientException
 from wemeet_openapi.service.meeting_control.model import *
+
+from requests_toolbelt import MultipartEncoder
 
 
 class ApiV1MeetingsMeetingIdDismissPostRequest(object):
@@ -33,6 +35,7 @@ class ApiV1MeetingsMeetingIdDismissPostRequest(object):
     :type body: V1MeetingsMeetingIdDismissPostRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -41,8 +44,41 @@ class ApiV1MeetingsMeetingIdDismissPostRequest(object):
         self.meeting_id = meeting_id
         self.body = body
 
-
 class ApiV1MeetingsMeetingIdDismissPostResponse(ApiResponse):
+    data: Optional[object] = None
+
+    def __init__(self, api_resp: ApiResponse, data: Optional[object] = None):
+        super().__init__(
+            status_code=api_resp.status_code,
+            raw_body=api_resp.raw_body,
+            header=api_resp.header,
+            serializer=api_resp.serializer()
+        )
+        self.data = data
+
+
+class ApiV1RealControlMeetingsMeetingIdAsrPutRequest(object):
+    """开启或关闭实时转写
+
+    以创建者的身份开启/关闭会中实时转写，调用时需要会议处于进行中的状态；
+    
+    :param meeting_id: (required)
+    :type meeting_id: str
+
+    :param body:
+    :type body: V1RealControlMeetingsMeetingIdAsrPutRequest
+    """  # noqa: E501
+
+
+    def __init__(
+        self,
+        meeting_id: str,
+        body: Optional[V1RealControlMeetingsMeetingIdAsrPutRequest] = None
+    ):
+        self.meeting_id = meeting_id
+        self.body = body
+
+class ApiV1RealControlMeetingsMeetingIdAsrPutResponse(ApiResponse):
     data: Optional[object] = None
 
     def __init__(self, api_resp: ApiResponse, data: Optional[object] = None):
@@ -67,6 +103,7 @@ class ApiV1RealControlMeetingsMeetingIdCohostsPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdCohostsPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -74,7 +111,6 @@ class ApiV1RealControlMeetingsMeetingIdCohostsPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdCohostsPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -101,6 +137,7 @@ class ApiV1RealControlMeetingsMeetingIdDocPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdDocPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -108,7 +145,6 @@ class ApiV1RealControlMeetingsMeetingIdDocPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdDocPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -135,6 +171,7 @@ class ApiV1RealControlMeetingsMeetingIdKickoutPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdKickoutPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -142,7 +179,6 @@ class ApiV1RealControlMeetingsMeetingIdKickoutPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdKickoutPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -169,6 +205,7 @@ class ApiV1RealControlMeetingsMeetingIdMutesPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdMutesPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -176,7 +213,6 @@ class ApiV1RealControlMeetingsMeetingIdMutesPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdMutesPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -203,6 +239,7 @@ class ApiV1RealControlMeetingsMeetingIdNamesPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdNamesPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -210,7 +247,6 @@ class ApiV1RealControlMeetingsMeetingIdNamesPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdNamesPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -237,6 +273,7 @@ class ApiV1RealControlMeetingsMeetingIdScreenSharedPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdScreenSharedPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -244,7 +281,6 @@ class ApiV1RealControlMeetingsMeetingIdScreenSharedPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdScreenSharedPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -271,6 +307,7 @@ class ApiV1RealControlMeetingsMeetingIdStatusPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdStatusPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -278,7 +315,6 @@ class ApiV1RealControlMeetingsMeetingIdStatusPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdStatusPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -305,6 +341,7 @@ class ApiV1RealControlMeetingsMeetingIdVideoPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdVideoPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -312,7 +349,6 @@ class ApiV1RealControlMeetingsMeetingIdVideoPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdVideoPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -339,6 +375,7 @@ class ApiV1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
     :type body: V1RealControlMeetingsMeetingIdWaitingRoomPutRequest
     """  # noqa: E501
 
+
     def __init__(
         self,
         meeting_id: str,
@@ -346,7 +383,6 @@ class ApiV1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
     ):
         self.meeting_id = meeting_id
         self.body = body
-
 
 class ApiV1RealControlMeetingsMeetingIdWaitingRoomPutResponse(ApiResponse):
     data: Optional[object] = None
@@ -384,6 +420,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/meetings/{meeting_id}/dismiss",
                                  authenticators=authenticators,
@@ -415,6 +452,57 @@ class MeetingControlApi:
         except Exception as e:
             raise ClientException(e)
 
+    def v1_real_control_meetings_meeting_id_asr_put(
+        self,
+        request: ApiV1RealControlMeetingsMeetingIdAsrPutRequest,
+        serializer: Optional[Serializer] = None,
+        authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
+        header: Optional[Dict[str, str]] = None
+    ) -> ApiV1RealControlMeetingsMeetingIdAsrPutResponse:
+        """v1_real_control_meetings_meeting_id_asr_put 开启或关闭实时转写[/v1/real-control/meetings/{meeting_id}/asr - PUT]
+
+            以创建者的身份开启/关闭会中实时转写，调用时需要会议处于进行中的状态；
+        """
+        try:
+            # 生成鉴权器
+            authenticators: List[Authenticator] = []
+            for option in authenticator_options:
+                authenticators.append(option(self.__config))
+
+            # 增加 SDK Version 标识
+            authenticators.append(DEFAULT_AUTHENTICATOR)
+            
+            # 构造请求
+            api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/asr",
+                                 authenticators=authenticators,
+                                 header=header, 
+                                 body=request.body,
+                                 serializer=serializer)
+
+            # verify the required parameter 'meeting_id' is set
+            if request.meeting_id is None:
+                raise Exception("meeting_id is required and must be specified")
+            # path 参数
+            if request.meeting_id is not None:
+                api_req.path_params['meeting_id'] = request.meeting_id
+            # query 参数
+            # 发送请求
+            api_resp = self.__config.clt.put(api_req)
+
+            if api_resp.status_code >= 300:
+                raise ServiceException(api_resp=api_resp)
+            try:
+                response = ApiV1RealControlMeetingsMeetingIdAsrPutResponse(api_resp=api_resp)
+                response.data = api_resp.translate(dst_t=object)
+            except Exception as e:
+                raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
+                                                f"response: {api_resp.raw_body}, err: {e.__str__()}"))
+            return response
+        except (ClientException, ServiceException):
+            raise
+        except Exception as e:
+            raise ClientException(e)
+
     def v1_real_control_meetings_meeting_id_cohosts_put(
         self,
         request: ApiV1RealControlMeetingsMeetingIdCohostsPutRequest,
@@ -434,6 +522,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/cohosts",
                                  authenticators=authenticators,
@@ -484,6 +573,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/doc",
                                  authenticators=authenticators,
@@ -534,6 +624,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/kickout",
                                  authenticators=authenticators,
@@ -584,6 +675,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/mutes",
                                  authenticators=authenticators,
@@ -634,6 +726,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/names",
                                  authenticators=authenticators,
@@ -684,6 +777,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/screen-shared",
                                  authenticators=authenticators,
@@ -734,6 +828,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/status",
                                  authenticators=authenticators,
@@ -784,6 +879,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/video",
                                  authenticators=authenticators,
@@ -834,6 +930,7 @@ class MeetingControlApi:
 
             # 增加 SDK Version 标识
             authenticators.append(DEFAULT_AUTHENTICATOR)
+            
             # 构造请求
             api_req = ApiRequest(api_uri="/v1/real-control/meetings/{meeting_id}/waiting-room",
                                  authenticators=authenticators,
