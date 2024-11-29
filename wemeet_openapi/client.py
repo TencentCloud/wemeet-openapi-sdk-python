@@ -38,6 +38,5 @@ class Client(object):
         self.records_api = RecordsApi(self.__config)
         self.record_intelligence_api = RecordIntelligenceApi(self.__config)
         self.meeting_guest_api = MeetingGuestApi(self.__config)
-        self.pstn_api = PstnApi(self.__config)
         self.meeting_room_api = MeetingRoomApi(self.__config)
         self.layout_api = LayoutApi(self.__config)
