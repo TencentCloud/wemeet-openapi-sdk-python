@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -472,6 +472,210 @@ class V1UsersAccountStatisticsGet200ResponseUserAccountDetailsInner(object):
         self.user_account_used_count = user_account_used_count
 
 
+class V1UsersAdvanceListGet200Response(object):
+    """V1UsersAdvanceListGet200Response
+
+    :param has_remaining: 是否还有未拉取的数据 
+    :type has_remaining: Optional[bool]
+
+    :param next_pos: 下一次查询pos位置 
+    :type next_pos: Optional[str]
+
+    :param users:
+    :type users: Optional[List[V1UsersAdvanceListGet200ResponseUsersInner]]
+    """  # noqa: E501
+
+    has_remaining: Optional[bool] = None
+    next_pos: Optional[str] = None
+    users: Optional[List[V1UsersAdvanceListGet200ResponseUsersInner]] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        has_remaining: Optional[bool] = None,
+        next_pos: Optional[str] = None,
+        users: Optional[List[V1UsersAdvanceListGet200ResponseUsersInner] | List[Dict[str, Any]]] = None,
+        **kwargs
+    ):
+        self.has_remaining = has_remaining
+        self.next_pos = next_pos
+        
+        if users and isinstance(users, (list, List)):
+            self.users = [V1UsersAdvanceListGet200ResponseUsersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in users]
+        
+
+
+class V1UsersAdvanceListGet200ResponseUsersInner(object):
+    """V1UsersAdvanceListGet200ResponseUsersInner
+
+    :param account_version: 账号版本。 0：其他 1：商业版 2：企业版 3：教育版 
+    :type account_version: Optional[int]
+
+    :param ai_account_type: AI 账号类型。 0：无账号 1：购买版 2：赠送版 
+    :type ai_account_type: Optional[int]
+
+    :param area: 手机区号 
+    :type area: Optional[str]
+
+    :param avatar_url: 头像地址 
+    :type avatar_url: Optional[str]
+
+    :param department_list: 用户部门信息 
+    :type department_list: Optional[List[V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner]]
+
+    :param email: 邮箱 
+    :type email: Optional[str]
+
+    :param enable_ai_account: 是否有 AI 账号能力。 true：有  false：无  教育版/企业版存在有 AI 账号，商业版都具有 AI 能力，其余为 false。 
+    :type enable_ai_account: Optional[bool]
+
+    :param entry_time: 入职时间 
+    :type entry_time: Optional[str]
+
+    :param job_title: 员工职位 
+    :type job_title: Optional[str]
+
+    :param phone: 手机号 
+    :type phone: Optional[str]
+
+    :param phone_status: 手机号验证状态。 0：未知 1：已验证 2：未验证 
+    :type phone_status: Optional[int]
+
+    :param role_code: 角色类型 
+    :type role_code: Optional[str]
+
+    :param role_name: 角色名称 
+    :type role_name: Optional[str]
+
+    :param staff_id: 员工工号 
+    :type staff_id: Optional[str]
+
+    :param status: 账号状态。账号状态： 1：正常 2：注销 3：未激活 4：禁用 5：预注册 
+    :type status: Optional[str]
+
+    :param update_time: 更新时间 
+    :type update_time: Optional[str]
+
+    :param user_account_type: 账号类型。 1：高级账号（企业版/教育版） 2：免费账号（企业版/教育版） 3：免费账号100方 （商业版） 4：高级账号300方（商业版） 5：高级账号500方（商业版） 6：高级账号1000方（商业版） 7：高级账号2000方（商业版） 8：高级账号100方（商业版） 
+    :type user_account_type: Optional[int]
+
+    :param userid: 用户userid 
+    :type userid: Optional[str]
+
+    :param username: 用户名称 
+    :type username: Optional[str]
+
+    :param uuid: 用户uuid 
+    :type uuid: Optional[str]
+    """  # noqa: E501
+
+    account_version: Optional[int] = None
+    ai_account_type: Optional[int] = None
+    area: Optional[str] = None
+    avatar_url: Optional[str] = None
+    department_list: Optional[List[V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner]] = None
+    email: Optional[str] = None
+    enable_ai_account: Optional[bool] = None
+    entry_time: Optional[str] = None
+    job_title: Optional[str] = None
+    phone: Optional[str] = None
+    phone_status: Optional[int] = None
+    role_code: Optional[str] = None
+    role_name: Optional[str] = None
+    staff_id: Optional[str] = None
+    status: Optional[str] = None
+    update_time: Optional[str] = None
+    user_account_type: Optional[int] = None
+    userid: Optional[str] = None
+    username: Optional[str] = None
+    uuid: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        account_version: Optional[int] = None,
+        ai_account_type: Optional[int] = None,
+        area: Optional[str] = None,
+        avatar_url: Optional[str] = None,
+        department_list: Optional[List[V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner] | List[Dict[str, Any]]] = None,
+        email: Optional[str] = None,
+        enable_ai_account: Optional[bool] = None,
+        entry_time: Optional[str] = None,
+        job_title: Optional[str] = None,
+        phone: Optional[str] = None,
+        phone_status: Optional[int] = None,
+        role_code: Optional[str] = None,
+        role_name: Optional[str] = None,
+        staff_id: Optional[str] = None,
+        status: Optional[str] = None,
+        update_time: Optional[str] = None,
+        user_account_type: Optional[int] = None,
+        userid: Optional[str] = None,
+        username: Optional[str] = None,
+        uuid: Optional[str] = None,
+        **kwargs
+    ):
+        self.account_version = account_version
+        self.ai_account_type = ai_account_type
+        self.area = area
+        self.avatar_url = avatar_url
+        
+        if department_list and isinstance(department_list, (list, List)):
+            self.department_list = [V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in department_list]
+        
+        self.email = email
+        self.enable_ai_account = enable_ai_account
+        self.entry_time = entry_time
+        self.job_title = job_title
+        self.phone = phone
+        self.phone_status = phone_status
+        self.role_code = role_code
+        self.role_name = role_name
+        self.staff_id = staff_id
+        self.status = status
+        self.update_time = update_time
+        self.user_account_type = user_account_type
+        self.userid = userid
+        self.username = username
+        self.uuid = uuid
+
+
+class V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner(object):
+    """V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner
+
+    :param department_full_name: 部门全路径 
+    :type department_full_name: Optional[str]
+
+    :param department_id: 部门ID 
+    :type department_id: Optional[str]
+
+    :param department_name: 部门名称 
+    :type department_name: Optional[str]
+
+    :param is_main: 是否主部门 
+    :type is_main: Optional[bool]
+    """  # noqa: E501
+
+    department_full_name: Optional[str] = None
+    department_id: Optional[str] = None
+    department_name: Optional[str] = None
+    is_main: Optional[bool] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        department_full_name: Optional[str] = None,
+        department_id: Optional[str] = None,
+        department_name: Optional[str] = None,
+        is_main: Optional[bool] = None,
+        **kwargs
+    ):
+        self.department_full_name = department_full_name
+        self.department_id = department_id
+        self.department_name = department_name
+        self.is_main = is_main
+
+
 class V1UsersDeleteTransferPostRequest(object):
     """V1UsersDeleteTransferPostRequest
 
@@ -679,6 +883,9 @@ class V1UsersInfoBasicGet200Response(object):
     :param account_type:
     :type account_type: Optional[int]
 
+    :param account_version: 商企版计费需求，账号版本 
+    :type account_version: Optional[int]
+
     :param ai_account_type: AI账号类型 1:购买版 2:赠送版 
     :type ai_account_type: Optional[int]
 
@@ -708,6 +915,7 @@ class V1UsersInfoBasicGet200Response(object):
     """  # noqa: E501
 
     account_type: Optional[int] = None
+    account_version: Optional[int] = None
     ai_account_type: Optional[int] = None
     avatar_url: Optional[str] = None
     enable_ai_account: Optional[bool] = None
@@ -722,6 +930,7 @@ class V1UsersInfoBasicGet200Response(object):
     def __init__(
         self,
         account_type: Optional[int] = None,
+        account_version: Optional[int] = None,
         ai_account_type: Optional[int] = None,
         avatar_url: Optional[str] = None,
         enable_ai_account: Optional[bool] = None,
@@ -734,6 +943,7 @@ class V1UsersInfoBasicGet200Response(object):
         **kwargs
     ):
         self.account_type = account_type
+        self.account_version = account_version
         self.ai_account_type = ai_account_type
         self.avatar_url = avatar_url
         self.enable_ai_account = enable_ai_account
@@ -793,18 +1003,30 @@ class V1UsersInviteActivatePost200ResponseInactivateUserListInner(object):
 class V1UsersInviteActivatePostRequest(object):
     """V1UsersInviteActivatePostRequest
 
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required) 
+    :type operator_id_type: int
+
     :param userid_list: 未激活的账号列表，最多支持传100个 (required) 
     :type userid_list: List[str]
     """  # noqa: E501
 
+    operator_id: str
+    operator_id_type: int
     userid_list: List[str]
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        operator_id: str,
+        operator_id_type: int,
         userid_list: List[str],
         **kwargs
     ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         
         if userid_list and isinstance(userid_list, (list, List)):
             self.userid_list = userid_list
@@ -1180,18 +1402,30 @@ class V1UsersOpenIdToUseridPost200ResponseUseridListInner(object):
 class V1UsersOpenIdToUseridPostRequest(object):
     """V1UsersOpenIdToUseridPostRequest
 
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型 (required) 
+    :type operator_id_type: int
+
     :param sdkid: 第三方应用的sdkid。需要转换的open_id应为腾讯会议为该三方应用提供的open_id。 (required) 
     :type sdkid: str
     """  # noqa: E501
 
+    operator_id: str
+    operator_id_type: int
     sdkid: str
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        operator_id: str,
+        operator_id_type: int,
         sdkid: str,
         **kwargs
     ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.sdkid = sdkid
 
 
@@ -1255,6 +1489,12 @@ class V1UsersPostRequest(object):
     :param job_title:
     :type job_title: Optional[str]
 
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required) 
+    :type operator_id_type: int
+
     :param phone:(required) 
     :type phone: str
 
@@ -1276,6 +1516,8 @@ class V1UsersPostRequest(object):
     email: Optional[str] = None
     entry_time: Optional[int] = None
     job_title: Optional[str] = None
+    operator_id: str
+    operator_id_type: int
     phone: str
     staff_id: Optional[str] = None
     user_account_type: Optional[int] = None
@@ -1285,6 +1527,8 @@ class V1UsersPostRequest(object):
 
     def __init__(
         self,
+        operator_id: str,
+        operator_id_type: int,
         phone: str,
         userid: str,
         username: str,
@@ -1302,10 +1546,87 @@ class V1UsersPostRequest(object):
         self.email = email
         self.entry_time = entry_time
         self.job_title = job_title
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.phone = phone
         self.staff_id = staff_id
         self.user_account_type = user_account_type
         self.userid = userid
+        self.username = username
+
+
+class V1UsersPutRequest(object):
+    """V1UsersPutRequest
+
+    :param avatar_url:
+    :type avatar_url: Optional[str]
+
+    :param department_list: 员工部门，暂只支持为用户分配1个部门。 
+    :type department_list: Optional[List[str]]
+
+    :param email:
+    :type email: Optional[str]
+
+    :param entry_time:
+    :type entry_time: Optional[int]
+
+    :param job_title:
+    :type job_title: Optional[str]
+
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required) 
+    :type operator_id_type: int
+
+    :param phone:
+    :type phone: Optional[str]
+
+    :param staff_id:
+    :type staff_id: Optional[str]
+
+    :param username:
+    :type username: Optional[str]
+    """  # noqa: E501
+
+    avatar_url: Optional[str] = None
+    department_list: Optional[List[str]] = None
+    email: Optional[str] = None
+    entry_time: Optional[int] = None
+    job_title: Optional[str] = None
+    operator_id: str
+    operator_id_type: int
+    phone: Optional[str] = None
+    staff_id: Optional[str] = None
+    username: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        operator_id: str,
+        operator_id_type: int,
+        avatar_url: Optional[str] = None,
+        department_list: Optional[List[str]] = None,
+        email: Optional[str] = None,
+        entry_time: Optional[int] = None,
+        job_title: Optional[str] = None,
+        phone: Optional[str] = None,
+        staff_id: Optional[str] = None,
+        username: Optional[str] = None,
+        **kwargs
+    ):
+        self.avatar_url = avatar_url
+        
+        if department_list and isinstance(department_list, (list, List)):
+            self.department_list = department_list
+        
+        self.email = email
+        self.entry_time = entry_time
+        self.job_title = job_title
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.phone = phone
+        self.staff_id = staff_id
         self.username = username
 
 
@@ -1314,17 +1635,29 @@ class V1UsersUseridEnablePutRequest(object):
 
     :param enable: 是否启用用户： true：启用 false：禁用 (required) 
     :type enable: bool
+
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required) 
+    :type operator_id_type: int
     """  # noqa: E501
 
     enable: bool
+    operator_id: str
+    operator_id_type: int
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         enable: bool,
+        operator_id: str,
+        operator_id_type: int,
         **kwargs
     ):
         self.enable = enable
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
 
 
 class V1UsersUseridGet200Response(object):
@@ -1534,6 +1867,12 @@ class V1UsersUseridPutRequest(object):
     :param job_title:
     :type job_title: Optional[str]
 
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required) 
+    :type operator_id_type: int
+
     :param phone:
     :type phone: Optional[str]
 
@@ -1555,6 +1894,8 @@ class V1UsersUseridPutRequest(object):
     email: Optional[str] = None
     entry_time: Optional[int] = None
     job_title: Optional[str] = None
+    operator_id: str
+    operator_id_type: int
     phone: Optional[str] = None
     staff_id: Optional[str] = None
     user_account_type: Optional[int] = None
@@ -1564,6 +1905,8 @@ class V1UsersUseridPutRequest(object):
 
     def __init__(
         self,
+        operator_id: str,
+        operator_id_type: int,
         area: Optional[str] = None,
         avatar_url: Optional[str] = None,
         email: Optional[str] = None,
@@ -1581,6 +1924,8 @@ class V1UsersUseridPutRequest(object):
         self.email = email
         self.entry_time = entry_time
         self.job_title = job_title
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.phone = phone
         self.staff_id = staff_id
         self.user_account_type = user_account_type

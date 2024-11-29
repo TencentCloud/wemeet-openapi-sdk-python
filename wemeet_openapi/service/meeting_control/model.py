@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -74,6 +74,30 @@ class V1MeetingsMeetingIdDismissPostRequest(object):
         self.reason_detail = reason_detail
         self.retrieve_code = retrieve_code
         self.userid = userid
+
+
+class V1RealControlMeetingsMeetingIdAsrPut200Response(object):
+    """V1RealControlMeetingsMeetingIdAsrPut200Response
+
+    :param code:
+    :type code: Optional[int]
+
+    :param message:
+    :type message: Optional[str]
+    """  # noqa: E501
+
+    code: Optional[int] = None
+    message: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        code: Optional[int] = None,
+        message: Optional[str] = None,
+        **kwargs
+    ):
+        self.code = code
+        self.message = message
 
 
 class V1RealControlMeetingsMeetingIdAsrPutRequest(object):

@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -637,6 +637,9 @@ class V1RecordsApprovalsMeetingRecordIdPutRequest(object):
     :param action: 审批动作。 1：同意 2：忽略 (required) 
     :type action: int
 
+    :param apply_id_list: 申请 ID 列表，通过订阅云录制查看申请事件（可跳转链接），可以获取申请 ID。 (required) 
+    :type apply_id_list: List[str]
+
     :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 operator_id_type=2，operator_id 必须和公共参数的 openid 一致。 operator_id 和 userid 至少填写一个，两个参数如果都传了以 operator_id 为准。 使用 OAuth 公参鉴权后不能使用 userid 为入参。 (required) 
     :type operator_id: str
 
@@ -645,6 +648,7 @@ class V1RecordsApprovalsMeetingRecordIdPutRequest(object):
     """  # noqa: E501
 
     action: int
+    apply_id_list: List[str]
     operator_id: str
     operator_id_type: int
     additional_properties: Dict[str, Any] = {}
@@ -652,11 +656,16 @@ class V1RecordsApprovalsMeetingRecordIdPutRequest(object):
     def __init__(
         self,
         action: int,
+        apply_id_list: List[str],
         operator_id: str,
         operator_id_type: int,
         **kwargs
     ):
         self.action = action
+        
+        if apply_id_list and isinstance(apply_id_list, (list, List)):
+            self.apply_id_list = apply_id_list
+        
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
 

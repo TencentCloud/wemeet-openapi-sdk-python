@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -121,6 +121,9 @@ class V1SmartSpeakersGet200Response(object):
 class V1SmartSpeakersGet200ResponseSpeakerListInner(object):
     """V1SmartSpeakersGet200ResponseSpeakerListInner
 
+    :param ms_open_id: 会议中为每个参会成员授予的临时 ID，以会议为维度，表示同一场会议内用户的唯一标识，不同会议间 ms_open_id 隔离。 
+    :type ms_open_id: Optional[str]
+
     :param speaker_id: 发言人ID。speaker_id 必须与 speaker_id_type 配合使用。根据 speaker_id_type 的值，speaker_id 代表不同类型。 
     :type speaker_id: Optional[str]
 
@@ -137,6 +140,7 @@ class V1SmartSpeakersGet200ResponseSpeakerListInner(object):
     :type total_time: Optional[int]
     """  # noqa: E501
 
+    ms_open_id: Optional[str] = None
     speaker_id: Optional[str] = None
     speaker_id_type: Optional[int] = None
     speaker_name: Optional[str] = None
@@ -146,6 +150,7 @@ class V1SmartSpeakersGet200ResponseSpeakerListInner(object):
 
     def __init__(
         self,
+        ms_open_id: Optional[str] = None,
         speaker_id: Optional[str] = None,
         speaker_id_type: Optional[int] = None,
         speaker_name: Optional[str] = None,
@@ -153,6 +158,7 @@ class V1SmartSpeakersGet200ResponseSpeakerListInner(object):
         total_time: Optional[int] = None,
         **kwargs
     ):
+        self.ms_open_id = ms_open_id
         self.speaker_id = speaker_id
         self.speaker_id_type = speaker_id_type
         self.speaker_name = speaker_name

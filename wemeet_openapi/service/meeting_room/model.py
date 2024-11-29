@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -304,9 +304,6 @@ class V1MeetingRoomsGet200ResponseMeetingRoomListInner(object):
     :param participant_number: 容纳人数 
     :type participant_number: Optional[int]
 
-    :param pro_account_type: 1-预装 2-体验 3-付费 
-    :type pro_account_type: Optional[int]
-
     :param scheduled_status: 预定状态 
     :type scheduled_status: Optional[int]
     """  # noqa: E501
@@ -320,7 +317,6 @@ class V1MeetingRoomsGet200ResponseMeetingRoomListInner(object):
     meeting_room_name: Optional[str] = None
     meeting_room_status: Optional[int] = None
     participant_number: Optional[int] = None
-    pro_account_type: Optional[int] = None
     scheduled_status: Optional[int] = None
     additional_properties: Dict[str, Any] = {}
 
@@ -335,7 +331,6 @@ class V1MeetingRoomsGet200ResponseMeetingRoomListInner(object):
         meeting_room_name: Optional[str] = None,
         meeting_room_status: Optional[int] = None,
         participant_number: Optional[int] = None,
-        pro_account_type: Optional[int] = None,
         scheduled_status: Optional[int] = None,
         **kwargs
     ):
@@ -348,7 +343,6 @@ class V1MeetingRoomsGet200ResponseMeetingRoomListInner(object):
         self.meeting_room_name = meeting_room_name
         self.meeting_room_status = meeting_room_status
         self.participant_number = participant_number
-        self.pro_account_type = pro_account_type
         self.scheduled_status = scheduled_status
 
 

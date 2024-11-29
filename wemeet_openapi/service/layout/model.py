@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -646,6 +646,12 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
     :param layout_list: 布局对象列表 (required) 
     :type layout_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner]
 
+    :param operator_id: 操作者ID  (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者id的类型，1:userid (required) 
+    :type operator_id_type: int
+
     :param userid: 会议创建者ID (required) 
     :type userid: str
     """  # noqa: E501
@@ -653,6 +659,8 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
     default_layout_order: Optional[int] = None
     instanceid: int
     layout_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner]
+    operator_id: str
+    operator_id_type: int
     userid: str
     additional_properties: Dict[str, Any] = {}
 
@@ -660,6 +668,8 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
         self,
         instanceid: int,
         layout_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner] | List[Dict[str, Any]],
+        operator_id: str,
+        operator_id_type: int,
         userid: str,
         default_layout_order: Optional[int] = None,
         **kwargs
@@ -670,6 +680,8 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
         if layout_list and isinstance(layout_list, (list, List)):
             self.layout_list = [V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in layout_list]
         
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.userid = userid
 
 

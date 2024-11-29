@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -81,6 +81,9 @@ class ApiV1AsrDetailsGetRequest(object):
     :param page_size: 分页大小，默认10，最大50
     :type page_size: str
 
+    :param show_bilingual: 是否展示双语，默认不展示双语
+    :type show_bilingual: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -96,6 +99,7 @@ class ApiV1AsrDetailsGetRequest(object):
         file_type: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
+        show_bilingual: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.operator_id_type = operator_id_type
@@ -106,6 +110,7 @@ class ApiV1AsrDetailsGetRequest(object):
         self.file_type = file_type
         self.page = page
         self.page_size = page_size
+        self.show_bilingual = show_bilingual
         self.body = body
 
 class ApiV1AsrDetailsGetResponse(ApiResponse):
@@ -1098,6 +1103,9 @@ class ApiV1MeetingsMeetingIdQosGetRequest(object):
     :param operator_id_type: 操作者ID类型 (required)
     :type operator_id_type: str
 
+    :param sub_meeting_id: 周期性会议子id (required)
+    :type sub_meeting_id: str
+
     :param page_size: 分页大小，20-100
     :type page_size: str
 
@@ -1129,6 +1137,7 @@ class ApiV1MeetingsMeetingIdQosGetRequest(object):
         meeting_id: str,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
+        sub_meeting_id: Optional[str] = None,
         page_size: Optional[str] = None,
         page: Optional[str] = None,
         to_operator_id: Optional[str] = None,
@@ -1141,6 +1150,7 @@ class ApiV1MeetingsMeetingIdQosGetRequest(object):
         self.meeting_id = meeting_id
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
+        self.sub_meeting_id = sub_meeting_id
         self.page_size = page_size
         self.page = page
         self.to_operator_id = to_operator_id
@@ -1600,6 +1610,8 @@ class MeetingsApi:
                 api_req.query_params.append(('page', request.page))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
+            if request.show_bilingual is not None:
+                api_req.query_params.append(('show_bilingual', request.show_bilingual))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -2903,6 +2915,9 @@ class MeetingsApi:
             # verify the required parameter 'operator_id_type' is set
             if request.operator_id_type is None:
                 raise Exception("operator_id_type is required and must be specified")
+            # verify the required parameter 'sub_meeting_id' is set
+            if request.sub_meeting_id is None:
+                raise Exception("sub_meeting_id is required and must be specified")
             # path 参数
             if request.meeting_id is not None:
                 api_req.path_params['meeting_id'] = request.meeting_id
@@ -2925,6 +2940,8 @@ class MeetingsApi:
                 api_req.query_params.append(('min_value', request.min_value))
             if request.max_value is not None:
                 api_req.query_params.append(('max_value', request.max_value))
+            if request.sub_meeting_id is not None:
+                api_req.query_params.append(('sub_meeting_id', request.sub_meeting_id))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 

@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -19,18 +19,27 @@ from typing import *
 class V1AsrConfigPut200Response(object):
     """V1AsrConfigPut200Response
 
+    :param customize_words: 热词设置结果 
+    :type customize_words: Optional[List[str]]
+
     :param tag: 自定义热词标签 
     :type tag: Optional[str]
     """  # noqa: E501
 
+    customize_words: Optional[List[str]] = None
     tag: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        customize_words: Optional[List[str]] = None,
         tag: Optional[str] = None,
         **kwargs
     ):
+        
+        if customize_words and isinstance(customize_words, (list, List)):
+            self.customize_words = customize_words
+        
         self.tag = tag
 
 
@@ -88,6 +97,9 @@ class V1AsrDetailsGet200Response(object):
     :param curr_size: 分页查询返回当前页码 
     :type curr_size: Optional[int]
 
+    :param download_url: 文件下载链接列表，有效期2个小时 
+    :type download_url: Optional[List[str]]
+
     :param total_count: 分页查询返回数据总数 
     :type total_count: Optional[int]
 
@@ -97,6 +109,7 @@ class V1AsrDetailsGet200Response(object):
 
     curr_page: Optional[int] = None
     curr_size: Optional[int] = None
+    download_url: Optional[List[str]] = None
     total_count: Optional[int] = None
     total_page: Optional[int] = None
     additional_properties: Dict[str, Any] = {}
@@ -105,12 +118,17 @@ class V1AsrDetailsGet200Response(object):
         self,
         curr_page: Optional[int] = None,
         curr_size: Optional[int] = None,
+        download_url: Optional[List[str]] = None,
         total_count: Optional[int] = None,
         total_page: Optional[int] = None,
         **kwargs
     ):
         self.curr_page = curr_page
         self.curr_size = curr_size
+        
+        if download_url and isinstance(download_url, (list, List)):
+            self.download_url = download_url
+        
         self.total_count = total_count
         self.total_page = total_page
 
@@ -2258,7 +2276,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInner(object):
     :type remain_sub_meetings: Optional[int]
 
     :param settings:
-    :type settings: Optional[V1MeetingsGet200ResponseMeetingInfoListInnerSettings]
+    :type settings: Optional[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings]
 
     :param start_time:
     :type start_time: Optional[str]
@@ -2306,7 +2324,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInner(object):
     password: Optional[str] = None
     recurring_rule: Optional[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerRecurringRule] = None
     remain_sub_meetings: Optional[int] = None
-    settings: Optional[V1MeetingsGet200ResponseMeetingInfoListInnerSettings] = None
+    settings: Optional[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings] = None
     start_time: Optional[str] = None
     status: Optional[str] = None
     sub_meetings: Optional[List[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSubMeetingsInner]] = None
@@ -2342,7 +2360,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInner(object):
         password: Optional[str] = None,
         recurring_rule: Optional[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerRecurringRule | Dict[str, Any]] = None,
         remain_sub_meetings: Optional[int] = None,
-        settings: Optional[V1MeetingsGet200ResponseMeetingInfoListInnerSettings | Dict[str, Any]] = None,
+        settings: Optional[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings | Dict[str, Any]] = None,
         start_time: Optional[str] = None,
         status: Optional[str] = None,
         sub_meetings: Optional[List[V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSubMeetingsInner] | List[Dict[str, Any]]] = None,
@@ -2391,7 +2409,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInner(object):
         self.password = password
         self.recurring_rule = V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerRecurringRule(**recurring_rule) if isinstance(recurring_rule, (dict, Dict)) else recurring_rule
         self.remain_sub_meetings = remain_sub_meetings
-        self.settings = V1MeetingsGet200ResponseMeetingInfoListInnerSettings(**settings) if isinstance(settings, (dict, Dict)) else settings
+        self.settings = V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings(**settings) if isinstance(settings, (dict, Dict)) else settings
         self.start_time = start_time
         self.status = status
         
@@ -2510,6 +2528,96 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerRecurringRule(object)
         self.until_count = until_count
         self.until_date = until_date
         self.until_type = until_type
+
+
+class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings(object):
+    """V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings
+
+    :param allow_in_before_host:
+    :type allow_in_before_host: Optional[bool]
+
+    :param allow_screen_shared_watermark:
+    :type allow_screen_shared_watermark: Optional[bool]
+
+    :param allow_unmute_self:
+    :type allow_unmute_self: Optional[bool]
+
+    :param auto_in_waiting_room:
+    :type auto_in_waiting_room: Optional[bool]
+
+    :param auto_record_type:
+    :type auto_record_type: Optional[str]
+
+    :param change_nickname: 是否允许用户自己改名 1:允许用户自己改名，2:不允许用户自己改名，默认为1 
+    :type change_nickname: Optional[int]
+
+    :param enable_host_pause_auto_record:
+    :type enable_host_pause_auto_record: Optional[bool]
+
+    :param mute_enable_join:
+    :type mute_enable_join: Optional[bool]
+
+    :param mute_enable_type_join:
+    :type mute_enable_type_join: Optional[int]
+
+    :param only_allow_enterprise_user_join:
+    :type only_allow_enterprise_user_join: Optional[bool]
+
+    :param only_invitees_allowed: 是否仅受邀成员可入会，默认值为false，true：仅受邀成员可入会，false：所有成员可入会 
+    :type only_invitees_allowed: Optional[bool]
+
+    :param participant_join_auto_record:
+    :type participant_join_auto_record: Optional[bool]
+
+    :param water_mark_type:
+    :type water_mark_type: Optional[int]
+    """  # noqa: E501
+
+    allow_in_before_host: Optional[bool] = None
+    allow_screen_shared_watermark: Optional[bool] = None
+    allow_unmute_self: Optional[bool] = None
+    auto_in_waiting_room: Optional[bool] = None
+    auto_record_type: Optional[str] = None
+    change_nickname: Optional[int] = None
+    enable_host_pause_auto_record: Optional[bool] = None
+    mute_enable_join: Optional[bool] = None
+    mute_enable_type_join: Optional[int] = None
+    only_allow_enterprise_user_join: Optional[bool] = None
+    only_invitees_allowed: Optional[bool] = None
+    participant_join_auto_record: Optional[bool] = None
+    water_mark_type: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        allow_in_before_host: Optional[bool] = None,
+        allow_screen_shared_watermark: Optional[bool] = None,
+        allow_unmute_self: Optional[bool] = None,
+        auto_in_waiting_room: Optional[bool] = None,
+        auto_record_type: Optional[str] = None,
+        change_nickname: Optional[int] = None,
+        enable_host_pause_auto_record: Optional[bool] = None,
+        mute_enable_join: Optional[bool] = None,
+        mute_enable_type_join: Optional[int] = None,
+        only_allow_enterprise_user_join: Optional[bool] = None,
+        only_invitees_allowed: Optional[bool] = None,
+        participant_join_auto_record: Optional[bool] = None,
+        water_mark_type: Optional[int] = None,
+        **kwargs
+    ):
+        self.allow_in_before_host = allow_in_before_host
+        self.allow_screen_shared_watermark = allow_screen_shared_watermark
+        self.allow_unmute_self = allow_unmute_self
+        self.auto_in_waiting_room = auto_in_waiting_room
+        self.auto_record_type = auto_record_type
+        self.change_nickname = change_nickname
+        self.enable_host_pause_auto_record = enable_host_pause_auto_record
+        self.mute_enable_join = mute_enable_join
+        self.mute_enable_type_join = mute_enable_type_join
+        self.only_allow_enterprise_user_join = only_allow_enterprise_user_join
+        self.only_invitees_allowed = only_invitees_allowed
+        self.participant_join_auto_record = participant_join_auto_record
+        self.water_mark_type = water_mark_type
 
 
 class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSubMeetingsInner(object):
@@ -2907,6 +3015,9 @@ class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInner(object):
 
     :param meeting_id: 会议的唯一 ID 
     :type meeting_id: Optional[str]
+
+    :param settings:
+    :type settings: Optional[V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerSettings]
     """  # noqa: E501
 
     enable_live: Optional[bool] = None
@@ -2914,6 +3025,7 @@ class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInner(object):
     live_config: Optional[V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerLiveConfig] = None
     meeting_code: Optional[str] = None
     meeting_id: Optional[str] = None
+    settings: Optional[V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerSettings] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -2923,6 +3035,7 @@ class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInner(object):
         live_config: Optional[V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerLiveConfig | Dict[str, Any]] = None,
         meeting_code: Optional[str] = None,
         meeting_id: Optional[str] = None,
+        settings: Optional[V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerSettings | Dict[str, Any]] = None,
         **kwargs
     ):
         self.enable_live = enable_live
@@ -2930,6 +3043,7 @@ class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInner(object):
         self.live_config = V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerLiveConfig(**live_config) if isinstance(live_config, (dict, Dict)) else live_config
         self.meeting_code = meeting_code
         self.meeting_id = meeting_id
+        self.settings = V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerSettings(**settings) if isinstance(settings, (dict, Dict)) else settings
 
 
 class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerLiveConfig(object):
@@ -2948,6 +3062,30 @@ class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerLiveConfig(object):
         **kwargs
     ):
         self.live_addr = live_addr
+
+
+class V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerSettings(object):
+    """V1MeetingsMeetingIdPut200ResponseMeetingInfoListInnerSettings
+
+    :param change_nickname: 是否允许用户自己改名 1:允许用户自己改名，2:不允许用户自己改名，默认为1 
+    :type change_nickname: Optional[int]
+
+    :param only_invitees_allowed: 是否仅受邀成员可入会，默认值为false，true：仅受邀成员可入会，false：所有成员可入会 
+    :type only_invitees_allowed: Optional[bool]
+    """  # noqa: E501
+
+    change_nickname: Optional[int] = None
+    only_invitees_allowed: Optional[bool] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        change_nickname: Optional[int] = None,
+        only_invitees_allowed: Optional[bool] = None,
+        **kwargs
+    ):
+        self.change_nickname = change_nickname
+        self.only_invitees_allowed = only_invitees_allowed
 
 
 class V1MeetingsMeetingIdPutRequest(object):
@@ -3286,6 +3424,9 @@ class V1MeetingsMeetingIdPutRequestSettings(object):
     :param auto_record_type: 自动录制类型： none：禁用，代表不开启自动会议录制。 local：本地录制，代表主持人入会后自动开启本地录制。 cloud：云录制，代表主持人入会后自动开启云录制。 说明： 该参数依赖企业账户设置，当企业强制锁定后，该参数必须与企业配置保持一致。 仅客户端2.7及以上版本可生效。 
     :type auto_record_type: Optional[str]
 
+    :param change_nickname: 是否允许用户自己改名 1:允许用户自己改名，2:不允许用户自己改名，默认为1 
+    :type change_nickname: Optional[int]
+
     :param enable_host_pause_auto_record: 允许主持人暂停或者停止云录制，默认值为 true 开启，开启时，主持人允许暂停和停止云录制；当设置为关闭时，则主持人不允许暂停和关闭云录制。 说明： 该参数必须将 auto_record_type 设置为“cloud”时才生效，该参数依赖企业账户设置，当企业强制锁定后，该参数必须与企业配置保持一致。 仅客户端2.7及以上版本生效。 
     :type enable_host_pause_auto_record: Optional[bool]
 
@@ -3297,6 +3438,9 @@ class V1MeetingsMeetingIdPutRequestSettings(object):
 
     :param only_enterprise_user_allowed: 是否仅企业内部成员可入会，默认值为 false。 true：仅企业内部用户可入会 false：所有人可入会 
     :type only_enterprise_user_allowed: Optional[bool]
+
+    :param only_invitees_allowed: 是否仅受邀成员可入会，默认值为false，true：仅受邀成员可入会，false：所有成员可入会 
+    :type only_invitees_allowed: Optional[bool]
 
     :param participant_join_auto_record: 当有参会成员入会时立即开启云录制，默认值为 false 关闭，关闭时，主持人入会自动开启云录制；当设置为开启时，则有参会成员入会自动开启云录制。 说明： 该参数必须 auto_record_type 设置为“cloud”时才生效，该参数依赖企业账户设置，当企业强制锁定后，该参数必须与企业配置保持一致。 仅客户端2.7及以上版本生效。 
     :type participant_join_auto_record: Optional[bool]
@@ -3317,10 +3461,12 @@ class V1MeetingsMeetingIdPutRequestSettings(object):
     allow_unmute_self: Optional[bool] = None
     auto_in_waiting_room: Optional[bool] = None
     auto_record_type: Optional[str] = None
+    change_nickname: Optional[int] = None
     enable_host_pause_auto_record: Optional[bool] = None
     mute_enable_join: Optional[bool] = None
     mute_enable_type_join: Optional[int] = None
     only_enterprise_user_allowed: Optional[bool] = None
+    only_invitees_allowed: Optional[bool] = None
     participant_join_auto_record: Optional[bool] = None
     play_ivr_on_join: Optional[bool] = None
     play_ivr_on_leave: Optional[bool] = None
@@ -3335,10 +3481,12 @@ class V1MeetingsMeetingIdPutRequestSettings(object):
         allow_unmute_self: Optional[bool] = None,
         auto_in_waiting_room: Optional[bool] = None,
         auto_record_type: Optional[str] = None,
+        change_nickname: Optional[int] = None,
         enable_host_pause_auto_record: Optional[bool] = None,
         mute_enable_join: Optional[bool] = None,
         mute_enable_type_join: Optional[int] = None,
         only_enterprise_user_allowed: Optional[bool] = None,
+        only_invitees_allowed: Optional[bool] = None,
         participant_join_auto_record: Optional[bool] = None,
         play_ivr_on_join: Optional[bool] = None,
         play_ivr_on_leave: Optional[bool] = None,
@@ -3351,10 +3499,12 @@ class V1MeetingsMeetingIdPutRequestSettings(object):
         self.allow_unmute_self = allow_unmute_self
         self.auto_in_waiting_room = auto_in_waiting_room
         self.auto_record_type = auto_record_type
+        self.change_nickname = change_nickname
         self.enable_host_pause_auto_record = enable_host_pause_auto_record
         self.mute_enable_join = mute_enable_join
         self.mute_enable_type_join = mute_enable_type_join
         self.only_enterprise_user_allowed = only_enterprise_user_allowed
+        self.only_invitees_allowed = only_invitees_allowed
         self.participant_join_auto_record = participant_join_auto_record
         self.play_ivr_on_join = play_ivr_on_join
         self.play_ivr_on_leave = play_ivr_on_leave
@@ -4026,6 +4176,9 @@ class V1MeetingsMeetingIdVirtualBackgroundPostRequest(object):
 
     :param type: 背景生效类型。0-全部用户，1-部分用户 (required) 
     :type type: int
+
+    :param users: userid数组 
+    :type users: Optional[List[str]]
     """  # noqa: E501
 
     image: Optional[str] = None
@@ -4033,6 +4186,7 @@ class V1MeetingsMeetingIdVirtualBackgroundPostRequest(object):
     operator_id: str
     operator_id_type: int
     type: int
+    users: Optional[List[str]] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -4042,6 +4196,7 @@ class V1MeetingsMeetingIdVirtualBackgroundPostRequest(object):
         operator_id_type: int,
         type: int,
         image: Optional[str] = None,
+        users: Optional[List[str]] = None,
         **kwargs
     ):
         self.image = image
@@ -4049,6 +4204,10 @@ class V1MeetingsMeetingIdVirtualBackgroundPostRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.type = type
+        
+        if users and isinstance(users, (list, List)):
+            self.users = users
+        
 
 
 class V1MeetingsMeetingIdWaitingRoomParticipantsGet200Response(object):
@@ -4257,6 +4416,9 @@ class V1MeetingsPost200ResponseMeetingInfoListInner(object):
 
     :param subject: 会议主题 
     :type subject: Optional[str]
+
+    :param user_non_registered: 邀请的参会者中未注册用户。注意：仅腾讯会议商业版和企业版可获取该参数。 
+    :type user_non_registered: Optional[List[str]]
     """  # noqa: E501
 
     current_co_hosts: Optional[List[V1MeetingsPost200ResponseMeetingInfoListInnerCurrentCoHostsInner]] = None
@@ -4273,6 +4435,7 @@ class V1MeetingsPost200ResponseMeetingInfoListInner(object):
     settings: Optional[V1MeetingsPost200ResponseMeetingInfoListInnerSettings] = None
     start_time: Optional[str] = None
     subject: Optional[str] = None
+    user_non_registered: Optional[List[str]] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -4291,6 +4454,7 @@ class V1MeetingsPost200ResponseMeetingInfoListInner(object):
         settings: Optional[V1MeetingsPost200ResponseMeetingInfoListInnerSettings | Dict[str, Any]] = None,
         start_time: Optional[str] = None,
         subject: Optional[str] = None,
+        user_non_registered: Optional[List[str]] = None,
         **kwargs
     ):
         
@@ -4316,6 +4480,10 @@ class V1MeetingsPost200ResponseMeetingInfoListInner(object):
         self.settings = V1MeetingsPost200ResponseMeetingInfoListInnerSettings(**settings) if isinstance(settings, (dict, Dict)) else settings
         self.start_time = start_time
         self.subject = subject
+        
+        if user_non_registered and isinstance(user_non_registered, (list, List)):
+            self.user_non_registered = user_non_registered
+        
 
 
 class V1MeetingsPost200ResponseMeetingInfoListInnerCurrentCoHostsInner(object):
@@ -4375,12 +4543,24 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerHostsInner(object):
     :param nick_name: 用户匿名字符串。如果字段“is_anonymous”设置为“true”，但是无指定匿名字符串, 会议将分配缺省名称，例如 “会议用户xxxx”，其中“xxxx”为随机数字 
     :type nick_name: Optional[str]
 
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型 
+    :type operator_id: Optional[str]
+
+    :param operator_id_type: 操作者ID的类型：1:userid  2:openid 3:rooms_id  4: ms_open_id 
+    :type operator_id_type: Optional[int]
+
+    :param profile_photo: 头像地址 
+    :type profile_photo: Optional[str]
+
     :param userid:
     :type userid: Optional[str]
     """  # noqa: E501
 
     is_anonymous: Optional[bool] = None
     nick_name: Optional[str] = None
+    operator_id: Optional[str] = None
+    operator_id_type: Optional[int] = None
+    profile_photo: Optional[str] = None
     userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
@@ -4388,11 +4568,17 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerHostsInner(object):
         self,
         is_anonymous: Optional[bool] = None,
         nick_name: Optional[str] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[int] = None,
+        profile_photo: Optional[str] = None,
         userid: Optional[str] = None,
         **kwargs
     ):
         self.is_anonymous = is_anonymous
         self.nick_name = nick_name
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.profile_photo = profile_photo
         self.userid = userid
 
 
@@ -4477,12 +4663,24 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerParticipantsInner(object):
     :param nick_name: 用户匿名字符串。如果字段“is_anonymous”设置为“true”，但是无指定匿名字符串, 会议将分配缺省名称，例如 “会议用户xxxx”，其中“xxxx”为随机数字 
     :type nick_name: Optional[str]
 
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型 
+    :type operator_id: Optional[str]
+
+    :param operator_id_type: 操作者ID的类型：1:userid  2:openid 3:rooms_id  4: ms_open_id 
+    :type operator_id_type: Optional[int]
+
+    :param profile_photo: 头像地址 
+    :type profile_photo: Optional[str]
+
     :param userid:
     :type userid: Optional[str]
     """  # noqa: E501
 
     is_anonymous: Optional[bool] = None
     nick_name: Optional[str] = None
+    operator_id: Optional[str] = None
+    operator_id_type: Optional[int] = None
+    profile_photo: Optional[str] = None
     userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
@@ -4490,11 +4688,17 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerParticipantsInner(object):
         self,
         is_anonymous: Optional[bool] = None,
         nick_name: Optional[str] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[int] = None,
+        profile_photo: Optional[str] = None,
         userid: Optional[str] = None,
         **kwargs
     ):
         self.is_anonymous = is_anonymous
         self.nick_name = nick_name
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.profile_photo = profile_photo
         self.userid = userid
 
 
@@ -4519,6 +4723,9 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerSettings(object):
     :param auto_record_type: 自动录制类型，仅客户端2.7及以上版本生效 none：禁用 local：本地录制 cloud：云录制 
     :type auto_record_type: Optional[str]
 
+    :param change_nickname: 是否允许用户自己改名 1:允许用户自己改名，2:不允许用户自己改名，默认为1 
+    :type change_nickname: Optional[int]
+
     :param enable_host_pause_auto_record: 允许主持人暂停或者停止云录制，默认值为 true 开启，开启时，主持人允许暂停和停止云录制；当设置为关闭时，则主持人不允许暂停和关闭云录制 
     :type enable_host_pause_auto_record: Optional[bool]
 
@@ -4530,6 +4737,9 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerSettings(object):
 
     :param only_enterprise_user_allowed: 是否仅企业内部成员可入会，默认值为 false。true：仅企业内部用户可入会 false：所有人可入会 
     :type only_enterprise_user_allowed: Optional[bool]
+
+    :param only_user_join_type: 成员入会限制，1：所有成员可入会，2：仅受邀成员可入会，3：仅企业内部成员可入会 ；当only_user_join_type和only_allow_enterprise_user_join同时传的时候，以only_user_join_type为准 
+    :type only_user_join_type: Optional[int]
 
     :param participant_join_auto_record: 当有参会成员入会时立即开启云录制，默认值为 false 关闭，关闭时，主持人入会自动开启云录制；当设置为开启时，则有参会成员入会自动开启云录制。 
     :type participant_join_auto_record: Optional[bool]
@@ -4550,10 +4760,12 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerSettings(object):
     allow_unmute_self: Optional[bool] = None
     auto_in_waiting_room: Optional[bool] = None
     auto_record_type: Optional[str] = None
+    change_nickname: Optional[int] = None
     enable_host_pause_auto_record: Optional[bool] = None
     mute_enable_join: Optional[bool] = None
     mute_enable_type_join: Optional[int] = None
     only_enterprise_user_allowed: Optional[bool] = None
+    only_user_join_type: Optional[int] = None
     participant_join_auto_record: Optional[bool] = None
     play_ivr_on_join: Optional[bool] = None
     play_ivr_on_leave: Optional[bool] = None
@@ -4568,10 +4780,12 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerSettings(object):
         allow_unmute_self: Optional[bool] = None,
         auto_in_waiting_room: Optional[bool] = None,
         auto_record_type: Optional[str] = None,
+        change_nickname: Optional[int] = None,
         enable_host_pause_auto_record: Optional[bool] = None,
         mute_enable_join: Optional[bool] = None,
         mute_enable_type_join: Optional[int] = None,
         only_enterprise_user_allowed: Optional[bool] = None,
+        only_user_join_type: Optional[int] = None,
         participant_join_auto_record: Optional[bool] = None,
         play_ivr_on_join: Optional[bool] = None,
         play_ivr_on_leave: Optional[bool] = None,
@@ -4584,10 +4798,12 @@ class V1MeetingsPost200ResponseMeetingInfoListInnerSettings(object):
         self.allow_unmute_self = allow_unmute_self
         self.auto_in_waiting_room = auto_in_waiting_room
         self.auto_record_type = auto_record_type
+        self.change_nickname = change_nickname
         self.enable_host_pause_auto_record = enable_host_pause_auto_record
         self.mute_enable_join = mute_enable_join
         self.mute_enable_type_join = mute_enable_type_join
         self.only_enterprise_user_allowed = only_enterprise_user_allowed
+        self.only_user_join_type = only_user_join_type
         self.participant_join_auto_record = participant_join_auto_record
         self.play_ivr_on_join = play_ivr_on_join
         self.play_ivr_on_leave = play_ivr_on_leave
@@ -5002,6 +5218,9 @@ class V1MeetingsPostRequestSettings(object):
     :param auto_record_type: 自动会议录制类型。 none：禁用，表示不开启自动会议录制。 local：本地录制，表示主持人入会后自动开启本地录制。 cloud：云录制，表示主持人入会后自动开启云录制。 说明： 该参数依赖企业账户设置，当企业强制锁定后，该参数必须与企业配置保持一致。 仅客户端2.7及以上版本可生效。 
     :type auto_record_type: Optional[str]
 
+    :param change_nickname: 是否允许用户自己改名 1:允许用户自己改名，2:不允许用户自己改名，默认为1 
+    :type change_nickname: Optional[int]
+
     :param enable_host_pause_auto_record: 允许主持人暂停或者停止云录制，默认值为 true 开启，开启时，主持人允许暂停和停止云录制；当设置为关闭时，则主持人不允许暂停和关闭云录制。 说明： 该参数必须 auto_record_type 设置为“cloud”时才生效，该参数依赖企业账户设置，当企业强制锁定后，该参数必须与企业配置保持一致。 仅客户端2.7及以上版本生效。 
     :type enable_host_pause_auto_record: Optional[bool]
 
@@ -5013,6 +5232,9 @@ class V1MeetingsPostRequestSettings(object):
 
     :param only_enterprise_user_allowed: 是否仅企业内部成员可入会，默认值为 false。 true：仅企业内部用户可入会 false：所有人可入会 
     :type only_enterprise_user_allowed: Optional[bool]
+
+    :param only_user_join_type: 成员入会限制，1：所有成员可入会，2：仅受邀成员可入会，3：仅企业内部成员可入会 ；当only_user_join_type和only_allow_enterprise_user_join同时传的时候，以only_user_join_type为准 
+    :type only_user_join_type: Optional[int]
 
     :param participant_join_auto_record: 当有参会成员入会时立即开启云录制，默认值为 false 关闭，关闭时，主持人入会自动开启云录制；当设置为开启时，则有参会成员入会自动开启云录制。 说明： 该参数必须 auto_record_type 设置为“cloud”时才生效，该参数依赖企业账户设置，当企业强制锁定后，该参数必须与企业配置保持一致。 仅客户端2.7及以上版本生效。 
     :type participant_join_auto_record: Optional[bool]
@@ -5033,10 +5255,12 @@ class V1MeetingsPostRequestSettings(object):
     allow_unmute_self: Optional[bool] = None
     auto_in_waiting_room: Optional[bool] = None
     auto_record_type: Optional[str] = None
+    change_nickname: Optional[int] = None
     enable_host_pause_auto_record: Optional[bool] = None
     mute_enable_join: Optional[bool] = None
     mute_enable_type_join: Optional[int] = None
     only_enterprise_user_allowed: Optional[bool] = None
+    only_user_join_type: Optional[int] = None
     participant_join_auto_record: Optional[bool] = None
     play_ivr_on_join: Optional[bool] = None
     play_ivr_on_leave: Optional[bool] = None
@@ -5051,10 +5275,12 @@ class V1MeetingsPostRequestSettings(object):
         allow_unmute_self: Optional[bool] = None,
         auto_in_waiting_room: Optional[bool] = None,
         auto_record_type: Optional[str] = None,
+        change_nickname: Optional[int] = None,
         enable_host_pause_auto_record: Optional[bool] = None,
         mute_enable_join: Optional[bool] = None,
         mute_enable_type_join: Optional[int] = None,
         only_enterprise_user_allowed: Optional[bool] = None,
+        only_user_join_type: Optional[int] = None,
         participant_join_auto_record: Optional[bool] = None,
         play_ivr_on_join: Optional[bool] = None,
         play_ivr_on_leave: Optional[bool] = None,
@@ -5067,10 +5293,12 @@ class V1MeetingsPostRequestSettings(object):
         self.allow_unmute_self = allow_unmute_self
         self.auto_in_waiting_room = auto_in_waiting_room
         self.auto_record_type = auto_record_type
+        self.change_nickname = change_nickname
         self.enable_host_pause_auto_record = enable_host_pause_auto_record
         self.mute_enable_join = mute_enable_join
         self.mute_enable_type_join = mute_enable_type_join
         self.only_enterprise_user_allowed = only_enterprise_user_allowed
+        self.only_user_join_type = only_user_join_type
         self.participant_join_auto_record = participant_join_auto_record
         self.play_ivr_on_join = play_ivr_on_join
         self.play_ivr_on_leave = play_ivr_on_leave

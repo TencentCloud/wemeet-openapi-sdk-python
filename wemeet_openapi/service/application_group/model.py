@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -28,8 +28,8 @@ class V1AppToolkitPostRequest(object):
     :param meeting_id: 会议id (required) 
     :type meeting_id: str
 
-    :param tool_list: 工具箱应用列表 
-    :type tool_list: Optional[List[V1AppToolkitPostRequestToolListInner]]
+    :param tool_list: 工具箱应用列表 (required) 
+    :type tool_list: List[V1AppToolkitPostRequestToolListInner]
 
     :param toolbar_sdkid: 外显在会中工具栏的应用id（需要保证在tool_list列表中，且列表中的可见范围对此设置也生效） 
     :type toolbar_sdkid: Optional[str]
@@ -41,7 +41,7 @@ class V1AppToolkitPostRequest(object):
     auto_open_sdkid: Optional[str] = None
     instanceid: int
     meeting_id: str
-    tool_list: Optional[List[V1AppToolkitPostRequestToolListInner]] = None
+    tool_list: List[V1AppToolkitPostRequestToolListInner]
     toolbar_sdkid: Optional[str] = None
     userid: str
     additional_properties: Dict[str, Any] = {}
@@ -50,9 +50,9 @@ class V1AppToolkitPostRequest(object):
         self,
         instanceid: int,
         meeting_id: str,
+        tool_list: List[V1AppToolkitPostRequestToolListInner] | List[Dict[str, Any]],
         userid: str,
         auto_open_sdkid: Optional[str] = None,
-        tool_list: Optional[List[V1AppToolkitPostRequestToolListInner] | List[Dict[str, Any]]] = None,
         toolbar_sdkid: Optional[str] = None,
         **kwargs
     ):

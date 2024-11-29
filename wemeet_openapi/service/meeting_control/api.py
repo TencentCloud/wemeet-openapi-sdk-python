@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -79,9 +79,9 @@ class ApiV1RealControlMeetingsMeetingIdAsrPutRequest(object):
         self.body = body
 
 class ApiV1RealControlMeetingsMeetingIdAsrPutResponse(ApiResponse):
-    data: Optional[object] = None
+    data: Optional[V1RealControlMeetingsMeetingIdAsrPut200Response] = None
 
-    def __init__(self, api_resp: ApiResponse, data: Optional[object] = None):
+    def __init__(self, api_resp: ApiResponse, data: Optional[V1RealControlMeetingsMeetingIdAsrPut200Response] = None):
         super().__init__(
             status_code=api_resp.status_code,
             raw_body=api_resp.raw_body,
@@ -493,7 +493,7 @@ class MeetingControlApi:
                 raise ServiceException(api_resp=api_resp)
             try:
                 response = ApiV1RealControlMeetingsMeetingIdAsrPutResponse(api_resp=api_resp)
-                response.data = api_resp.translate(dst_t=object)
+                response.data = api_resp.translate(dst_t=V1RealControlMeetingsMeetingIdAsrPut200Response)
             except Exception as e:
                 raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
                                                 f"response: {api_resp.raw_body}, err: {e.__str__()}"))

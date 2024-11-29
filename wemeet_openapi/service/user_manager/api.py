@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -28,6 +28,12 @@ class ApiV1AuthUsersCancelAuthPutRequest(object):
 
     第三方应用可以调用该接口来取消用户的授权，针对商业版和企业版用户仅支持在授权用户所属企业开启允许企业成员自主授权应用模式时取消，且由企业管理员开通的应用无法通过接口进行取消。如果企业开启了仅管理员可授权应用，用户只能在 腾讯会议应用管理页取消授权，无法在第三方平台取消。仅支持 OAuth2.0 鉴权方式调用。
     
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型 (required)
+    :type operator_id_type: str
+
 
 
 
@@ -39,8 +45,12 @@ class ApiV1AuthUsersCancelAuthPutRequest(object):
 
     def __init__(
         self,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         
         
         
@@ -269,12 +279,87 @@ class ApiV1UsersAccountStatisticsGetResponse(ApiResponse):
         self.data = data
 
 
+class ApiV1UsersAdvanceListGetRequest(object):
+    """获取用户列表（新）
+
+    获取企业用户列表，支持高级搜索。企微企业暂不支持使用该接口。 自建应用权限点：查看企业用户，管理企业用户
+    
+    :param operator_id: (required)
+    :type operator_id: str
+
+    :param operator_id_type: (required)
+    :type operator_id_type: str
+
+    :param pos: 分页获取用户列表的查询起始位置值。当企业用户较多时，建议使用此参数进行分页查询，避免查询超时。此参数为非必选参数，默认值为空，从头开始查询。 设置每页返回的数量，请参考参数“size”的说明。查询返回输出参数“has_remaining”为 true，表示人数较多，需要继续查询。返回参数“next_pos”的值即为下一次查询的 pos 的值。多次调用该查询接口直到输出参数“has_remaining”值为 false。
+    :type pos: str
+
+    :param size: 目前每页支持最大100条。
+    :type size: str
+
+    :param status: 账号状态。1：正常  3：未激活 4：禁用 
+    :type status: str
+
+    :param user_account_type: 账号类型。 1：高级 2：免费
+    :type user_account_type: str
+
+    :param enable_ai_account: 是否有 AI 账号能力。 true：有  false：无 
+    :type enable_ai_account: str
+
+    :param department_id: 指定拉取的部门信息，不传则拉取全企业，需有指定范围的管理权限
+    :type department_id: str
+
+    :param body:
+    :type body: object
+    """  # noqa: E501
+
+
+    def __init__(
+        self,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
+        pos: Optional[str] = None,
+        size: Optional[str] = None,
+        status: Optional[str] = None,
+        user_account_type: Optional[str] = None,
+        enable_ai_account: Optional[str] = None,
+        department_id: Optional[str] = None,
+        body: Optional[object] = None
+    ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.pos = pos
+        self.size = size
+        self.status = status
+        self.user_account_type = user_account_type
+        self.enable_ai_account = enable_ai_account
+        self.department_id = department_id
+        self.body = body
+
+class ApiV1UsersAdvanceListGetResponse(ApiResponse):
+    data: Optional[V1UsersAdvanceListGet200Response] = None
+
+    def __init__(self, api_resp: ApiResponse, data: Optional[V1UsersAdvanceListGet200Response] = None):
+        super().__init__(
+            status_code=api_resp.status_code,
+            raw_body=api_resp.raw_body,
+            header=api_resp.header,
+            serializer=api_resp.serializer()
+        )
+        self.data = data
+
+
 class ApiV1UsersDeleteRequest(object):
     """删除用户（通过 uuid 删除用户）
 
     
     :param uuid: (required)
     :type uuid: str
+
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型 (required)
+    :type operator_id_type: str
 
     :param body:
     :type body: object
@@ -284,9 +369,13 @@ class ApiV1UsersDeleteRequest(object):
     def __init__(
         self,
         uuid: Optional[str] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.uuid = uuid
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1UsersDeleteResponse(ApiResponse):
@@ -338,6 +427,12 @@ class ApiV1UsersGetRequest(object):
     :param uuid: (required)
     :type uuid: str
 
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid，2:open_id (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -346,9 +441,13 @@ class ApiV1UsersGetRequest(object):
     def __init__(
         self,
         uuid: Optional[str] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.uuid = uuid
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1UsersGetResponse(ApiResponse):
@@ -471,6 +570,12 @@ class ApiV1UsersListGetRequest(object):
     :param page_size: 分页大小，最大为20。 (required)
     :type page_size: str
 
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid,2:open_id (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -480,10 +585,14 @@ class ApiV1UsersListGetRequest(object):
         self,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.page = page
         self.page_size = page_size
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1UsersListGetResponse(ApiResponse):
@@ -559,19 +668,20 @@ class ApiV1UsersPostResponse(ApiResponse):
 class ApiV1UsersPutRequest(object):
     """更新用户（通过 uuid 更新用户）
 
+    通过 uuid 更新用户
     
     :param uuid: (required)
     :type uuid: str
 
     :param body:
-    :type body: object
+    :type body: V1UsersPutRequest
     """  # noqa: E501
 
 
     def __init__(
         self,
         uuid: Optional[str] = None,
-        body: Optional[object] = None
+        body: Optional[V1UsersPutRequest] = None
     ):
         self.uuid = uuid
         self.body = body
@@ -596,6 +706,12 @@ class ApiV1UsersUseridDeleteRequest(object):
     :param userid: 被删除用户的userid (required)
     :type userid: str
 
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -604,9 +720,13 @@ class ApiV1UsersUseridDeleteRequest(object):
     def __init__(
         self,
         userid: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.userid = userid
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1UsersUseridDeleteResponse(ApiResponse):
@@ -663,6 +783,12 @@ class ApiV1UsersUseridGetRequest(object):
     :param userid: 调用方用于标示用户的唯一 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。 企业唯一用户标识说明： 1. 企业对接 SSO 时使用的员工唯一标识 ID； 2. 企业调用创建用户接口时传递的 userid 参数。  (required)
     :type userid: str
 
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid,2:open_id (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -671,9 +797,13 @@ class ApiV1UsersUseridGetRequest(object):
     def __init__(
         self,
         userid: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.userid = userid
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1UsersUseridGetResponse(ApiResponse):
@@ -697,6 +827,12 @@ class ApiV1UsersUseridInviteActivatePutRequest(object):
     :param userid: 调用方用于标示用户的唯一 ID（例如：企业用户可以为企业账户英文名、个人用户可以为手机号等，暂不支持中文）。 (required)
     :type userid: str
 
+    :param operator_id: 操作者ID (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID类型，1:userid (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -705,9 +841,13 @@ class ApiV1UsersUseridInviteActivatePutRequest(object):
     def __init__(
         self,
         userid: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.userid = userid
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1UsersUseridInviteActivatePutResponse(ApiResponse):
@@ -821,8 +961,18 @@ class UserManagerApi:
                                  body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.put(api_req)
 
@@ -1148,6 +1298,74 @@ class UserManagerApi:
         except Exception as e:
             raise ClientException(e)
 
+    def v1_users_advance_list_get(
+        self,
+        request: ApiV1UsersAdvanceListGetRequest,
+        serializer: Optional[Serializer] = None,
+        authenticator_options: Optional[List[Callable[[Config], Authenticator]]] = None,
+        header: Optional[Dict[str, str]] = None
+    ) -> ApiV1UsersAdvanceListGetResponse:
+        """v1_users_advance_list_get 获取用户列表（新）[/v1/users/advance/list - GET]
+
+            获取企业用户列表，支持高级搜索。企微企业暂不支持使用该接口。 自建应用权限点：查看企业用户，管理企业用户
+        """
+        try:
+            # 生成鉴权器
+            authenticators: List[Authenticator] = []
+            for option in authenticator_options:
+                authenticators.append(option(self.__config))
+
+            # 增加 SDK Version 标识
+            authenticators.append(DEFAULT_AUTHENTICATOR)
+            
+            # 构造请求
+            api_req = ApiRequest(api_uri="/v1/users/advance/list",
+                                 authenticators=authenticators,
+                                 header=header, 
+                                 body=request.body,
+                                 serializer=serializer)
+
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
+            # path 参数
+            # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
+            if request.pos is not None:
+                api_req.query_params.append(('pos', request.pos))
+            if request.size is not None:
+                api_req.query_params.append(('size', request.size))
+            if request.status is not None:
+                api_req.query_params.append(('status', request.status))
+            if request.user_account_type is not None:
+                api_req.query_params.append(('user_account_type', request.user_account_type))
+            if request.enable_ai_account is not None:
+                api_req.query_params.append(('enable_ai_account', request.enable_ai_account))
+            if request.department_id is not None:
+                api_req.query_params.append(('department_id', request.department_id))
+            # 发送请求
+            api_resp = self.__config.clt.get(api_req)
+
+            if api_resp.status_code >= 300:
+                raise ServiceException(api_resp=api_resp)
+            try:
+                response = ApiV1UsersAdvanceListGetResponse(api_resp=api_resp)
+                response.data = api_resp.translate(dst_t=V1UsersAdvanceListGet200Response)
+            except Exception as e:
+                raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
+                                                f"response: {api_resp.raw_body}, err: {e.__str__()}"))
+            return response
+        except (ClientException, ServiceException):
+            raise
+        except Exception as e:
+            raise ClientException(e)
+
     def v1_users_delete(
         self,
         request: ApiV1UsersDeleteRequest,
@@ -1177,10 +1395,20 @@ class UserManagerApi:
             # verify the required parameter 'uuid' is set
             if request.uuid is None:
                 raise Exception("uuid is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.uuid is not None:
                 api_req.query_params.append(('uuid', request.uuid))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.delete(api_req)
 
@@ -1273,10 +1501,20 @@ class UserManagerApi:
             # verify the required parameter 'uuid' is set
             if request.uuid is None:
                 raise Exception("uuid is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.uuid is not None:
                 api_req.query_params.append(('uuid', request.uuid))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1474,12 +1712,22 @@ class UserManagerApi:
             # verify the required parameter 'page_size' is set
             if request.page_size is None:
                 raise Exception("page_size is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.page is not None:
                 api_req.query_params.append(('page', request.page))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1597,6 +1845,7 @@ class UserManagerApi:
     ) -> ApiV1UsersPutResponse:
         """v1_users_put 更新用户（通过 uuid 更新用户）[/v1/users - PUT]
 
+            通过 uuid 更新用户
         """
         try:
             # 生成鉴权器
@@ -1667,10 +1916,20 @@ class UserManagerApi:
             # verify the required parameter 'userid' is set
             if request.userid is None:
                 raise Exception("userid is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.userid is not None:
                 api_req.path_params['userid'] = request.userid
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.delete(api_req)
 
@@ -1768,10 +2027,20 @@ class UserManagerApi:
             # verify the required parameter 'userid' is set
             if request.userid is None:
                 raise Exception("userid is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.userid is not None:
                 api_req.path_params['userid'] = request.userid
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1819,10 +2088,20 @@ class UserManagerApi:
             # verify the required parameter 'userid' is set
             if request.userid is None:
                 raise Exception("userid is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.userid is not None:
                 api_req.path_params['userid'] = request.userid
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.put(api_req)
 

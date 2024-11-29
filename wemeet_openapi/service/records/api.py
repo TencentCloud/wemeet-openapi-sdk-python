@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.2
+    API version: v1.0.3
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -341,6 +341,9 @@ class ApiV1MetricsRecordsGetRequest(object):
 
     :param end_time: 查询结束时间戳，UNIX 时间戳（单位秒）。说明：时间区间不允许超过31天。
     :type end_time: str
+
+    :param body:
+    :type body: object
     """  # noqa: E501
 
 
@@ -348,11 +351,13 @@ class ApiV1MetricsRecordsGetRequest(object):
         self,
         meeting_record_id: Optional[str] = None,
         start_time: Optional[str] = None,
-        end_time: Optional[str] = None
+        end_time: Optional[str] = None,
+        body: Optional[object] = None
     ):
         self.meeting_record_id = meeting_record_id
         self.start_time = start_time
         self.end_time = end_time
+        self.body = body
 
 class ApiV1MetricsRecordsGetResponse(ApiResponse):
     data: Optional[V1MetricsRecordsGet200Response] = None
@@ -1508,6 +1513,7 @@ class RecordsApi:
             api_req = ApiRequest(api_uri="/v1/metrics/records",
                                  authenticators=authenticators,
                                  header=header, 
+                                 body=request.body,
                                  serializer=serializer)
 
             # verify the required parameter 'meeting_record_id' is set
