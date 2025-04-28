@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -559,6 +559,12 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsGetRequest(object):
     :param meeting_id: 会议ID (required)
     :type meeting_id: str
 
+    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准； (required)
+    :type operator_id_type: str
+
     :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 (required)
     :type instanceid: str
 
@@ -567,15 +573,6 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsGetRequest(object):
 
     :param page_size: 分页大小，最大50条 (required)
     :type page_size: str
-
-    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。
-    :type operator_id: str
-
-    :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准；
-    :type operator_id_type: str
-
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）为了防止现网应用报错，此参数实则仍然兼容openid，如无oauth应用使用报名接口则也可做成不兼容变更。
-    :type userid: str
 
     :param status: 审批状态筛选字段，审批状态：0 全部，1 待审批，2 已拒绝，3 已批准，默认返回全部
     :type status: str
@@ -588,22 +585,20 @@ class ApiV1MeetingsMeetingIdEnrollApprovalsGetRequest(object):
     def __init__(
         self,
         meeting_id: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         instanceid: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
         status: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.instanceid = instanceid
         self.page = page
         self.page_size = page_size
-        self.operator_id = operator_id
-        self.operator_id_type = operator_id_type
-        self.userid = userid
         self.status = status
         self.body = body
 
@@ -662,17 +657,14 @@ class ApiV1MeetingsMeetingIdEnrollConfigGetRequest(object):
     :param meeting_id: 会议ID (required)
     :type meeting_id: str
 
-    :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 (required)
-    :type instanceid: str
-
-    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。
+    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。 (required)
     :type operator_id: str
 
-    :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准；
+    :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准； (required)
     :type operator_id_type: str
 
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）
-    :type userid: str
+    :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 (required)
+    :type instanceid: str
 
     :param body:
     :type body: object
@@ -682,17 +674,15 @@ class ApiV1MeetingsMeetingIdEnrollConfigGetRequest(object):
     def __init__(
         self,
         meeting_id: str,
-        instanceid: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
+        instanceid: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
-        self.instanceid = instanceid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
+        self.instanceid = instanceid
         self.body = body
 
 class ApiV1MeetingsMeetingIdEnrollConfigGetResponse(ApiResponse):
@@ -861,9 +851,6 @@ class ApiV1MeetingsMeetingIdGetRequest(object):
     :param operator_id_type: 操作者ID的类型：1.userid 2.openid 3.rooms_id
     :type operator_id_type: str
 
-    :param userid: 会议创建者的用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）
-    :type userid: str
-
     :param body:
     :type body: object
     """  # noqa: E501
@@ -875,14 +862,12 @@ class ApiV1MeetingsMeetingIdGetRequest(object):
         instanceid: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
         self.instanceid = instanceid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
         self.body = body
 
 class ApiV1MeetingsMeetingIdGetResponse(ApiResponse):
@@ -2219,6 +2204,12 @@ class MeetingsApi:
             # verify the required parameter 'meeting_id' is set
             if request.meeting_id is None:
                 raise Exception("meeting_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # verify the required parameter 'instanceid' is set
             if request.instanceid is None:
                 raise Exception("instanceid is required and must be specified")
@@ -2236,8 +2227,6 @@ class MeetingsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             if request.instanceid is not None:
                 api_req.query_params.append(('instanceid', request.instanceid))
             if request.page is not None:
@@ -2344,6 +2333,12 @@ class MeetingsApi:
             # verify the required parameter 'meeting_id' is set
             if request.meeting_id is None:
                 raise Exception("meeting_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # verify the required parameter 'instanceid' is set
             if request.instanceid is None:
                 raise Exception("instanceid is required and must be specified")
@@ -2355,8 +2350,6 @@ class MeetingsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             if request.instanceid is not None:
                 api_req.query_params.append(('instanceid', request.instanceid))
             # 发送请求
@@ -2621,8 +2614,6 @@ class MeetingsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             if request.instanceid is not None:
                 api_req.query_params.append(('instanceid', request.instanceid))
             # 发送请求

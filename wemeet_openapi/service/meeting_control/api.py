@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501

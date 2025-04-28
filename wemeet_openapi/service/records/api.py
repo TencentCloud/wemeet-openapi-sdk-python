@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -587,20 +587,17 @@ class ApiV1RecordsGetRequest(object):
 
     获取用户云录制记录，根据用户 ID、会议 ID、会议 code 进行查询，支持根据时间区间分页获取。 企业 secret 鉴权用户可获取该用户所属企业下的会议录制列表，OAuth2.0 鉴权用户只能获取该企业下 OAuth2.0 应用的会议录制列表。 当您想实时监测会议录制相关状况时，您可以通过订阅 [录制管理](https://cloud.tencent.com/document/product/1095/53226) 中的相关事件，接收事件通知。 当前同一场会议的不同录制文件共用分享链接。
     
+    :param operator_id: 操作者ID，必须与operator_id_type同时出现。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者ID的类型，必须与operator_id同时出现。 (required)
+    :type operator_id_type: str
+
     :param start_time: 查询起始时间戳，UNIX 时间戳（单位秒）。说明：时间区间不允许超过31天。 (required)
     :type start_time: str
 
     :param end_time: 查询结束时间戳，UNIX 时间戳（单位秒）。说明：时间区间不允许超过31天。 (required)
     :type end_time: str
-
-    :param operator_id: 操作者ID，必须与operator_id_type同时出现。
-    :type operator_id: str
-
-    :param operator_id_type: 操作者ID的类型，必须与operator_id同时出现。
-    :type operator_id_type: str
-
-    :param userid: 用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId），当会议 ID 和会议 code 均为空时，表示查询用户所有会议的录制列表。
-    :type userid: str
 
     :param meeting_id: 会议的唯一 ID，不为空时优先根据会议 ID 查询。
     :type meeting_id: str
@@ -627,11 +624,10 @@ class ApiV1RecordsGetRequest(object):
 
     def __init__(
         self,
-        start_time: Optional[str] = None,
-        end_time: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
         meeting_id: Optional[str] = None,
         meeting_code: Optional[str] = None,
         page_size: Optional[str] = None,
@@ -640,11 +636,10 @@ class ApiV1RecordsGetRequest(object):
         query_record_type: Optional[str] = None,
         body: Optional[object] = None
     ):
-        self.start_time = start_time
-        self.end_time = end_time
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
+        self.start_time = start_time
+        self.end_time = end_time
         self.meeting_id = meeting_id
         self.meeting_code = meeting_code
         self.page_size = page_size
@@ -1846,6 +1841,12 @@ class RecordsApi:
                                  body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # verify the required parameter 'start_time' is set
             if request.start_time is None:
                 raise Exception("start_time is required and must be specified")
@@ -1858,8 +1859,6 @@ class RecordsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             if request.meeting_id is not None:
                 api_req.query_params.append(('meeting_id', request.meeting_id))
             if request.meeting_code is not None:

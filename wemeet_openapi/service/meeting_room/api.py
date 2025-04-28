@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -392,6 +392,12 @@ class ApiV1MeetingRoomsOperatorIdMeetingsGetRequest(object):
     :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch Mac 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch Iphone (required)
     :type instanceid: str
 
+    :param target_rooms_id: 目标查询 roomsid。 (required)
+    :type target_rooms_id: str
+
+    :param target_rooms_id_type: 目标查询 roomsid 的类型： 3：rooms 设备 rooms_id 5：会议室 ID meeting_room_id (required)
+    :type target_rooms_id_type: str
+
     :param start_time: Unix 时间戳。查询起始时间，时间区间不超过90天。
     :type start_time: str
 
@@ -414,6 +420,8 @@ class ApiV1MeetingRoomsOperatorIdMeetingsGetRequest(object):
         operator_id: str,
         operator_id_type: Optional[str] = None,
         instanceid: Optional[str] = None,
+        target_rooms_id: Optional[str] = None,
+        target_rooms_id_type: Optional[str] = None,
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         page: Optional[str] = None,
@@ -423,6 +431,8 @@ class ApiV1MeetingRoomsOperatorIdMeetingsGetRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.instanceid = instanceid
+        self.target_rooms_id = target_rooms_id
+        self.target_rooms_id_type = target_rooms_id_type
         self.start_time = start_time
         self.end_time = end_time
         self.page = page
@@ -1225,6 +1235,12 @@ class MeetingRoomApi:
             # verify the required parameter 'instanceid' is set
             if request.instanceid is None:
                 raise Exception("instanceid is required and must be specified")
+            # verify the required parameter 'target_rooms_id' is set
+            if request.target_rooms_id is None:
+                raise Exception("target_rooms_id is required and must be specified")
+            # verify the required parameter 'target_rooms_id_type' is set
+            if request.target_rooms_id_type is None:
+                raise Exception("target_rooms_id_type is required and must be specified")
             # path 参数
             if request.operator_id is not None:
                 api_req.path_params['operator_id'] = request.operator_id
@@ -1241,6 +1257,10 @@ class MeetingRoomApi:
                 api_req.query_params.append(('page', request.page))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
+            if request.target_rooms_id is not None:
+                api_req.query_params.append(('target_rooms_id', request.target_rooms_id))
+            if request.target_rooms_id_type is not None:
+                api_req.query_params.append(('target_rooms_id_type', request.target_rooms_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 

@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -25,11 +25,11 @@ class V1MeetingsMeetingIdDismissPostRequest(object):
     :param instanceid: 设备类型 (required) 
     :type instanceid: int
 
-    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型 
-    :type operator_id: Optional[str]
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型 (required) 
+    :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型：1:userid  2:openid（预留编号，本次不添加，未来新增接口使用）3:rooms_id  4: ms_open_id 
-    :type operator_id_type: Optional[int]
+    :param operator_id_type: 操作者ID的类型：1:userid  2:openid（预留编号，本次不添加，未来新增接口使用）3:rooms_id  4: ms_open_id (required) 
+    :type operator_id_type: int
 
     :param reason_code: 原因代码，可为用户自定义 (required) 
     :type reason_code: int
@@ -39,31 +39,26 @@ class V1MeetingsMeetingIdDismissPostRequest(object):
 
     :param retrieve_code: 是否回收会议号，默认值为0： 0：不回收会议号，可以重新入会 1： 回收会议号，不可重新入会 
     :type retrieve_code: Optional[int]
-
-    :param userid: 调用方用于标示用户的唯一 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。 企业唯一用户标识说明：企业对接 SSO 时使用的员工唯一标识 ID，企业调用创建用户接口时传递的 userid 参数。 
-    :type userid: Optional[str]
     """  # noqa: E501
 
     force_dismiss_meeting: Optional[int] = None
     instanceid: int
-    operator_id: Optional[str] = None
-    operator_id_type: Optional[int] = None
+    operator_id: str
+    operator_id_type: int
     reason_code: int
     reason_detail: Optional[str] = None
     retrieve_code: Optional[int] = None
-    userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         instanceid: int,
+        operator_id: str,
+        operator_id_type: int,
         reason_code: int,
         force_dismiss_meeting: Optional[int] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[int] = None,
         reason_detail: Optional[str] = None,
         retrieve_code: Optional[int] = None,
-        userid: Optional[str] = None,
         **kwargs
     ):
         self.force_dismiss_meeting = force_dismiss_meeting
@@ -73,7 +68,6 @@ class V1MeetingsMeetingIdDismissPostRequest(object):
         self.reason_code = reason_code
         self.reason_detail = reason_detail
         self.retrieve_code = retrieve_code
-        self.userid = userid
 
 
 class V1RealControlMeetingsMeetingIdAsrPut200Response(object):
@@ -112,27 +106,27 @@ class V1RealControlMeetingsMeetingIdAsrPutRequest(object):
     :param open_asr_view: 是否自动打开转写侧边栏，仅在is_open 为 true 时生效，默认为 0， 0：打开实时转写页面 。1：不打开实时转写页面 
     :type open_asr_view: Optional[int]
 
-    :param operator_id: 操作者 ID。operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 
-    :type operator_id: Optional[str]
+    :param operator_id: 操作者 ID。operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required) 
+    :type operator_id: str
 
-    :param operator_id_type: 操作者 ID 的类型： 1：userid 
-    :type operator_id_type: Optional[int]
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required) 
+    :type operator_id_type: int
     """  # noqa: E501
 
     instance_id: int
     is_open: bool
     open_asr_view: Optional[int] = None
-    operator_id: Optional[str] = None
-    operator_id_type: Optional[int] = None
+    operator_id: str
+    operator_id_type: int
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         instance_id: int,
         is_open: bool,
+        operator_id: str,
+        operator_id_type: int,
         open_asr_view: Optional[int] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[int] = None,
         **kwargs
     ):
         self.instance_id = instance_id
@@ -159,9 +153,6 @@ class V1RealControlMeetingsMeetingIdCohostsPutRequest(object):
 
     :param user:(required) 
     :type user: V1RealControlMeetingsMeetingIdCohostsPutRequestUser
-
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     action: bool
@@ -169,7 +160,6 @@ class V1RealControlMeetingsMeetingIdCohostsPutRequest(object):
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
     user: V1RealControlMeetingsMeetingIdCohostsPutRequestUser
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -179,7 +169,6 @@ class V1RealControlMeetingsMeetingIdCohostsPutRequest(object):
         user: V1RealControlMeetingsMeetingIdCohostsPutRequestUser | Dict[str, Any],
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.action = action
@@ -187,7 +176,6 @@ class V1RealControlMeetingsMeetingIdCohostsPutRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.user = V1RealControlMeetingsMeetingIdCohostsPutRequestUser(**user) if isinstance(user, (dict, Dict)) else user
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdCohostsPutRequestUser(object):
@@ -201,15 +189,11 @@ class V1RealControlMeetingsMeetingIdCohostsPutRequestUser(object):
 
     :param to_operator_id_type: 用户ID的类型：  4: ms_open_id 
     :type to_operator_id_type: Optional[int]
-
-    :param uuid: 用户的唯一标识uuid 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
     to_operator_id: Optional[str] = None
     to_operator_id_type: Optional[int] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -217,13 +201,11 @@ class V1RealControlMeetingsMeetingIdCohostsPutRequestUser(object):
         instanceid: int,
         to_operator_id: Optional[str] = None,
         to_operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
         self.to_operator_id = to_operator_id
         self.to_operator_id_type = to_operator_id_type
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdDocPutRequest(object):
@@ -240,16 +222,12 @@ class V1RealControlMeetingsMeetingIdDocPutRequest(object):
 
     :param operator_id_type: 操作者ID的类型：  2:openid  4: ms_open_id 
     :type operator_id_type: Optional[int]
-
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人和联席主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     enable_upload_doc: bool
     instanceid: int
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -258,14 +236,12 @@ class V1RealControlMeetingsMeetingIdDocPutRequest(object):
         instanceid: int,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.enable_upload_doc = enable_upload_doc
         self.instanceid = instanceid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdKickoutPutRequest(object):
@@ -288,9 +264,6 @@ class V1RealControlMeetingsMeetingIdKickoutPutRequest(object):
 
     :param users: 被操作用户对象信息列表 (required) 
     :type users: List[V1RealControlMeetingsMeetingIdKickoutPutRequestUsersInner]
-
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人和联席主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     allow_rejoin: bool
@@ -299,7 +272,6 @@ class V1RealControlMeetingsMeetingIdKickoutPutRequest(object):
     operator_id_type: Optional[int] = None
     reason: Optional[str] = None
     users: List[V1RealControlMeetingsMeetingIdKickoutPutRequestUsersInner]
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -310,7 +282,6 @@ class V1RealControlMeetingsMeetingIdKickoutPutRequest(object):
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
         reason: Optional[str] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.allow_rejoin = allow_rejoin
@@ -322,7 +293,6 @@ class V1RealControlMeetingsMeetingIdKickoutPutRequest(object):
         if users and isinstance(users, (list, List)):
             self.users = [V1RealControlMeetingsMeetingIdKickoutPutRequestUsersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in users]
         
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdKickoutPutRequestUsersInner(object):
@@ -378,9 +348,6 @@ class V1RealControlMeetingsMeetingIdMutesPutRequest(object):
 
     :param user:(required) 
     :type user: V1RealControlMeetingsMeetingIdMutesPutRequestUser
-
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人和联席主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
@@ -388,7 +355,6 @@ class V1RealControlMeetingsMeetingIdMutesPutRequest(object):
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
     user: V1RealControlMeetingsMeetingIdMutesPutRequestUser
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -398,7 +364,6 @@ class V1RealControlMeetingsMeetingIdMutesPutRequest(object):
         user: V1RealControlMeetingsMeetingIdMutesPutRequestUser | Dict[str, Any],
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
@@ -406,7 +371,6 @@ class V1RealControlMeetingsMeetingIdMutesPutRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.user = V1RealControlMeetingsMeetingIdMutesPutRequestUser(**user) if isinstance(user, (dict, Dict)) else user
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdMutesPutRequestUser(object):
@@ -420,15 +384,11 @@ class V1RealControlMeetingsMeetingIdMutesPutRequestUser(object):
 
     :param to_operator_id_type: 用户ID的类型：  4: ms_open_id 
     :type to_operator_id_type: Optional[int]
-
-    :param uuid: 用户的唯一标识uuid 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
     to_operator_id: Optional[str] = None
     to_operator_id_type: Optional[int] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -436,13 +396,11 @@ class V1RealControlMeetingsMeetingIdMutesPutRequestUser(object):
         instanceid: int,
         to_operator_id: Optional[str] = None,
         to_operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
         self.to_operator_id = to_operator_id
         self.to_operator_id_type = to_operator_id_type
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdNamesPutRequest(object):
@@ -528,16 +486,12 @@ class V1RealControlMeetingsMeetingIdScreenSharedPutRequest(object):
 
     :param user:(required) 
     :type user: V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser
-
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人和联席主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
     user: V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -546,14 +500,12 @@ class V1RealControlMeetingsMeetingIdScreenSharedPutRequest(object):
         user: V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser | Dict[str, Any],
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.user = V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser(**user) if isinstance(user, (dict, Dict)) else user
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser(object):
@@ -567,15 +519,11 @@ class V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser(object):
 
     :param to_operator_id_type: 用户ID的类型：4: ms_open_id 
     :type to_operator_id_type: Optional[int]
-
-    :param uuid: 用户的唯一标识uuid 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
     to_operator_id: Optional[str] = None
     to_operator_id_type: Optional[int] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -583,13 +531,11 @@ class V1RealControlMeetingsMeetingIdScreenSharedPutRequestUser(object):
         instanceid: int,
         to_operator_id: Optional[str] = None,
         to_operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
         self.to_operator_id = to_operator_id
         self.to_operator_id_type = to_operator_id_type
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdStatusPutRequest(object):
@@ -636,9 +582,6 @@ class V1RealControlMeetingsMeetingIdStatusPutRequest(object):
 
     :param share_screen: 是否允许参会者发起屏幕共享 true：允许 false：不允许 
     :type share_screen: Optional[bool]
-
-    :param uuid: 用户的唯一标识uuid 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     allow_chat: Optional[int] = None
@@ -655,7 +598,6 @@ class V1RealControlMeetingsMeetingIdStatusPutRequest(object):
     participant_join_mute: Optional[int] = None
     play_ivr_on_join: Optional[bool] = None
     share_screen: Optional[bool] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -674,7 +616,6 @@ class V1RealControlMeetingsMeetingIdStatusPutRequest(object):
         participant_join_mute: Optional[int] = None,
         play_ivr_on_join: Optional[bool] = None,
         share_screen: Optional[bool] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.allow_chat = allow_chat
@@ -691,7 +632,6 @@ class V1RealControlMeetingsMeetingIdStatusPutRequest(object):
         self.participant_join_mute = participant_join_mute
         self.play_ivr_on_join = play_ivr_on_join
         self.share_screen = share_screen
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdVideoPutRequest(object):
@@ -709,9 +649,6 @@ class V1RealControlMeetingsMeetingIdVideoPutRequest(object):
     :param user:(required) 
     :type user: V1RealControlMeetingsMeetingIdVideoPutRequestUser
 
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人和联席主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
-
     :param video: 是否开启视频： false：关闭视频（默认值）。 true：开启视频， 仅支持 MRA 设备。 
     :type video: Optional[bool]
     """  # noqa: E501
@@ -720,7 +657,6 @@ class V1RealControlMeetingsMeetingIdVideoPutRequest(object):
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
     user: V1RealControlMeetingsMeetingIdVideoPutRequestUser
-    uuid: Optional[str] = None
     video: Optional[bool] = None
     additional_properties: Dict[str, Any] = {}
 
@@ -730,7 +666,6 @@ class V1RealControlMeetingsMeetingIdVideoPutRequest(object):
         user: V1RealControlMeetingsMeetingIdVideoPutRequestUser | Dict[str, Any],
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         video: Optional[bool] = None,
         **kwargs
     ):
@@ -738,7 +673,6 @@ class V1RealControlMeetingsMeetingIdVideoPutRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.user = V1RealControlMeetingsMeetingIdVideoPutRequestUser(**user) if isinstance(user, (dict, Dict)) else user
-        self.uuid = uuid
         self.video = video
 
 
@@ -752,6 +686,87 @@ class V1RealControlMeetingsMeetingIdVideoPutRequestUser(object):
     :type to_operator_id: Optional[str]
 
     :param to_operator_id_type: 用户ID的类型： 4: ms_open_id 
+    :type to_operator_id_type: Optional[int]
+    """  # noqa: E501
+
+    instanceid: int
+    to_operator_id: Optional[str] = None
+    to_operator_id_type: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        instanceid: int,
+        to_operator_id: Optional[str] = None,
+        to_operator_id_type: Optional[int] = None,
+        **kwargs
+    ):
+        self.instanceid = instanceid
+        self.to_operator_id = to_operator_id
+        self.to_operator_id_type = to_operator_id_type
+
+
+class V1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
+    """V1RealControlMeetingsMeetingIdWaitingRoomPutRequest
+
+    :param allow_rejoin: 移出后是否允许再次加入会议  true：允许 false：不允许  说明：操作类型参数 operete_type = 3 时才允许设置 
+    :type allow_rejoin: Optional[bool]
+
+    :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch Mac 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch Iphone (required) 
+    :type instanceid: int
+
+    :param operate_type: 操作类型： 1：主持人将等候室成员移入会议  2：主持人将会中成员移入等候室  3：主持人将等候室成员移出等候室 (required) 
+    :type operate_type: int
+
+    :param operator_id: 操作者 ID。 1：operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 2：接口输入参数如果需要传用户 ID 时，operator_id 和 uuid 不可以同时为空，两个参数如果都传了以 operator_id 为准。 3：如果 operator_id_type=2，operator_id 必须和公共参数的 openid 一致。 
+    :type operator_id: Optional[str]
+
+    :param operator_id_type: 操作者ID的类型： 2:openid 4: ms_open_id 
+    :type operator_id_type: Optional[int]
+
+    :param users: 被操作用户对象信息列表 (required) 
+    :type users: List[V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner]
+    """  # noqa: E501
+
+    allow_rejoin: Optional[bool] = None
+    instanceid: int
+    operate_type: int
+    operator_id: Optional[str] = None
+    operator_id_type: Optional[int] = None
+    users: List[V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner]
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        instanceid: int,
+        operate_type: int,
+        users: List[V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner] | List[Dict[str, Any]],
+        allow_rejoin: Optional[bool] = None,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[int] = None,
+        **kwargs
+    ):
+        self.allow_rejoin = allow_rejoin
+        self.instanceid = instanceid
+        self.operate_type = operate_type
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        
+        if users and isinstance(users, (list, List)):
+            self.users = [V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in users]
+        
+
+
+class V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner(object):
+    """V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner
+
+    :param instanceid: 用户的终端设备类型： 0：PSTN 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch MacOS 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch iOS 说明：请与被操作者的设备类型保持一致，否则不生效。 (required) 
+    :type instanceid: int
+
+    :param to_operator_id: 用户ID，根据to_operator_id_type的值，使用不同的类型 
+    :type to_operator_id: Optional[str]
+
+    :param to_operator_id_type: 用户ID的类型：  4: ms_open_id 
     :type to_operator_id_type: Optional[int]
 
     :param uuid: 用户的唯一标识uuid 
@@ -775,62 +790,5 @@ class V1RealControlMeetingsMeetingIdVideoPutRequestUser(object):
         self.instanceid = instanceid
         self.to_operator_id = to_operator_id
         self.to_operator_id_type = to_operator_id_type
-        self.uuid = uuid
-
-
-class V1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
-    """V1RealControlMeetingsMeetingIdWaitingRoomPutRequest
-
-    :param allow_rejoin: 移出后是否允许再次加入会议  true：允许 false：不允许  说明：操作类型参数 operete_type = 3 时才允许设置 
-    :type allow_rejoin: Optional[bool]
-
-    :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch Mac 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch Iphone (required) 
-    :type instanceid: int
-
-    :param operate_type: 操作类型： 1：主持人将等候室成员移入会议  2：主持人将会中成员移入等候室  3：主持人将等候室成员移出等候室 (required) 
-    :type operate_type: int
-
-    :param operator_id: 操作者 ID。 1：operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 2：接口输入参数如果需要传用户 ID 时，operator_id 和 uuid 不可以同时为空，两个参数如果都传了以 operator_id 为准。 3：如果 operator_id_type=2，operator_id 必须和公共参数的 openid 一致。 
-    :type operator_id: Optional[str]
-
-    :param operator_id_type: 操作者ID的类型： 2:openid 4: ms_open_id 
-    :type operator_id_type: Optional[int]
-
-    :param users: 被操作用户对象信息列表 (required) 
-    :type users: List[V1RealControlMeetingsMeetingIdMutesPutRequestUser]
-
-    :param uuid: 操作者用户唯一身份 ID，仅支持主持人和联席主持人，且只适用于单场会议。即将废弃，推荐使用ms_open_id。 
-    :type uuid: Optional[str]
-    """  # noqa: E501
-
-    allow_rejoin: Optional[bool] = None
-    instanceid: int
-    operate_type: int
-    operator_id: Optional[str] = None
-    operator_id_type: Optional[int] = None
-    users: List[V1RealControlMeetingsMeetingIdMutesPutRequestUser]
-    uuid: Optional[str] = None
-    additional_properties: Dict[str, Any] = {}
-
-    def __init__(
-        self,
-        instanceid: int,
-        operate_type: int,
-        users: List[V1RealControlMeetingsMeetingIdMutesPutRequestUser] | List[Dict[str, Any]],
-        allow_rejoin: Optional[bool] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
-        **kwargs
-    ):
-        self.allow_rejoin = allow_rejoin
-        self.instanceid = instanceid
-        self.operate_type = operate_type
-        self.operator_id = operator_id
-        self.operator_id_type = operator_id_type
-        
-        if users and isinstance(users, (list, List)):
-            self.users = [V1RealControlMeetingsMeetingIdMutesPutRequestUser(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in users]
-        
         self.uuid = uuid
 

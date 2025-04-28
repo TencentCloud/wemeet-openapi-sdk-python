@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -651,9 +651,6 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
 
     :param operator_id_type: 操作者id的类型，1:userid (required) 
     :type operator_id_type: int
-
-    :param userid: 会议创建者ID (required) 
-    :type userid: str
     """  # noqa: E501
 
     default_layout_order: Optional[int] = None
@@ -661,7 +658,6 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
     layout_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner]
     operator_id: str
     operator_id_type: int
-    userid: str
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -670,7 +666,6 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
         layout_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner] | List[Dict[str, Any]],
         operator_id: str,
         operator_id_type: int,
-        userid: str,
         default_layout_order: Optional[int] = None,
         **kwargs
     ):
@@ -682,7 +677,6 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
         
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
 
 
 class V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner(object):

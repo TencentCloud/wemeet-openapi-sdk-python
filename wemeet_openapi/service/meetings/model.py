@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.4
+    API version: v1.0.5
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -1444,32 +1444,27 @@ class V1MeetingsMeetingIdEnrollApprovalsPutRequest(object):
     :param instanceid: 设备类型 
     :type instanceid: Optional[int]
 
-    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。 
-    :type operator_id: Optional[str]
+    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。 (required) 
+    :type operator_id: str
 
     :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准； (required) 
     :type operator_id_type: int
-
-    :param userid: 用户id 
-    :type userid: Optional[str]
     """  # noqa: E501
 
     action: int
     enroll_id_list: List[int]
     instanceid: Optional[int] = None
-    operator_id: Optional[str] = None
+    operator_id: str
     operator_id_type: int
-    userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         action: int,
         enroll_id_list: List[int],
+        operator_id: str,
         operator_id_type: int,
         instanceid: Optional[int] = None,
-        operator_id: Optional[str] = None,
-        userid: Optional[str] = None,
         **kwargs
     ):
         self.action = action
@@ -1480,7 +1475,6 @@ class V1MeetingsMeetingIdEnrollApprovalsPutRequest(object):
         self.instanceid = instanceid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
 
 
 class V1MeetingsMeetingIdEnrollConfigGet200Response(object):
@@ -1690,17 +1684,14 @@ class V1MeetingsMeetingIdEnrollConfigPutRequest(object):
     :param no_registration_needed_for_staff: 本企业用户无需报名。 true: 本企业用户无需报名。 false：默认配置，所有用户需要报名。  
     :type no_registration_needed_for_staff: Optional[bool]
 
-    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。 
-    :type operator_id: Optional[str]
+    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。  operator_id_type=2，operator_id必须和公共参数的openid一致。  operator_id和userid至少填写一个，两个参数如果都传了以operator_id为准。  使用OAuth公参鉴权后不能使用userid为入参。 (required) 
+    :type operator_id: str
 
-    :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准； 
-    :type operator_id_type: Optional[int]
+    :param operator_id_type: 操作者 ID 的类型：  1: userid 2: open_id  如果operator_id和userid具有值，则以operator_id为准； (required) 
+    :type operator_id_type: int
 
     :param question_list: 报名问题列表，非特殊问题按传入的顺序排序，特殊问题会优先放在最前面，仅开启收集问题时有效 
     :type question_list: Optional[List[V1MeetingsMeetingIdEnrollConfigPutRequestQuestionListInner]]
-
-    :param userid: 用户id 
-    :type userid: Optional[str]
     """  # noqa: E501
 
     approve_type: Optional[int] = None
@@ -1713,15 +1704,16 @@ class V1MeetingsMeetingIdEnrollConfigPutRequest(object):
     instanceid: int
     is_collect_question: Optional[int] = None
     no_registration_needed_for_staff: Optional[bool] = None
-    operator_id: Optional[str] = None
-    operator_id_type: Optional[int] = None
+    operator_id: str
+    operator_id_type: int
     question_list: Optional[List[V1MeetingsMeetingIdEnrollConfigPutRequestQuestionListInner]] = None
-    userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         instanceid: int,
+        operator_id: str,
+        operator_id_type: int,
         approve_type: Optional[int] = None,
         cover_image: Optional[List[str]] = None,
         display_number_of_participants: Optional[int] = None,
@@ -1731,10 +1723,7 @@ class V1MeetingsMeetingIdEnrollConfigPutRequest(object):
         enroll_push_type: Optional[List[int]] = None,
         is_collect_question: Optional[int] = None,
         no_registration_needed_for_staff: Optional[bool] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[int] = None,
         question_list: Optional[List[V1MeetingsMeetingIdEnrollConfigPutRequestQuestionListInner] | List[Dict[str, Any]]] = None,
-        userid: Optional[str] = None,
         **kwargs
     ):
         self.approve_type = approve_type
@@ -1759,7 +1748,6 @@ class V1MeetingsMeetingIdEnrollConfigPutRequest(object):
         if question_list and isinstance(question_list, (list, List)):
             self.question_list = [V1MeetingsMeetingIdEnrollConfigPutRequestQuestionListInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in question_list]
         
-        self.userid = userid
 
 
 class V1MeetingsMeetingIdEnrollConfigPutRequestQuestionListInner(object):
@@ -1885,35 +1873,30 @@ class V1MeetingsMeetingIdEnrollIdsPostRequest(object):
     :param ms_open_id_list: 当场会议的用户临时 ID（适用于所有用户）数组，单次最多支持500条。 (required) 
     :type ms_open_id_list: List[str]
 
-    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 operator_id_type=2，operator_id 必须和公共参数的 openid 一致。 operator_id 和 userid 至少填写一个，两个参数如果都传了以 operator_id 为准。 使用 OAuth 公参鉴权后不能使用 userid 为入参。 
-    :type operator_id: Optional[str]
+    :param operator_id: 操作者 ID。会议创建者可以导入报名信息。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 operator_id_type=2，operator_id 必须和公共参数的 openid 一致。 operator_id 和 userid 至少填写一个，两个参数如果都传了以 operator_id 为准。 使用 OAuth 公参鉴权后不能使用 userid 为入参。 (required) 
+    :type operator_id: str
 
     :param operator_id_type: 操作者 ID 的类型： 1：userid 2：open_id 如果 operator_id 和 userid 具有值，则以 operator_id 为准。 
     :type operator_id_type: Optional[int]
 
     :param sorting_rules: 查询报名 ID 的排序规则。当该账号存在多条报名记录（手机号导入、手动报名等）时，该接口返回的顺序。 1：优先查询手机号导入报名，再查询用户手动报名，默认值。 2：优先查询用户手动报名，再查手机号导入。 
     :type sorting_rules: Optional[int]
-
-    :param userid: 会议创建者的用户 ID。为了防止现网应用报错，此参数实则仍然兼容 openid，如无 oauth 应用使用报名接口则也可做成不兼容变更。 
-    :type userid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
     ms_open_id_list: List[str]
-    operator_id: Optional[str] = None
+    operator_id: str
     operator_id_type: Optional[int] = None
     sorting_rules: Optional[int] = None
-    userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         instanceid: int,
         ms_open_id_list: List[str],
-        operator_id: Optional[str] = None,
+        operator_id: str,
         operator_id_type: Optional[int] = None,
         sorting_rules: Optional[int] = None,
-        userid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
@@ -1924,7 +1907,6 @@ class V1MeetingsMeetingIdEnrollIdsPostRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.sorting_rules = sorting_rules
-        self.userid = userid
 
 
 class V1MeetingsMeetingIdEnrollImportPost200Response(object):
@@ -2563,8 +2545,8 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings(object):
     :param only_allow_enterprise_user_join:
     :type only_allow_enterprise_user_join: Optional[bool]
 
-    :param only_invitees_allowed: 是否仅受邀成员可入会，默认值为false，true：仅受邀成员可入会，false：所有成员可入会 
-    :type only_invitees_allowed: Optional[bool]
+    :param only_user_join_type: 成员入会限制，1：所有成员可入会，2：仅受邀成员可入会，3：仅企业内部成员可入会 ；当only_user_join_type和only_allow_enterprise_user_join同时传的时候，以only_user_join_type为准 
+    :type only_user_join_type: Optional[int]
 
     :param participant_join_auto_record:
     :type participant_join_auto_record: Optional[bool]
@@ -2583,7 +2565,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings(object):
     mute_enable_join: Optional[bool] = None
     mute_enable_type_join: Optional[int] = None
     only_allow_enterprise_user_join: Optional[bool] = None
-    only_invitees_allowed: Optional[bool] = None
+    only_user_join_type: Optional[int] = None
     participant_join_auto_record: Optional[bool] = None
     water_mark_type: Optional[int] = None
     additional_properties: Dict[str, Any] = {}
@@ -2600,7 +2582,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings(object):
         mute_enable_join: Optional[bool] = None,
         mute_enable_type_join: Optional[int] = None,
         only_allow_enterprise_user_join: Optional[bool] = None,
-        only_invitees_allowed: Optional[bool] = None,
+        only_user_join_type: Optional[int] = None,
         participant_join_auto_record: Optional[bool] = None,
         water_mark_type: Optional[int] = None,
         **kwargs
@@ -2615,7 +2597,7 @@ class V1MeetingsMeetingIdGet200ResponseMeetingInfoListInnerSettings(object):
         self.mute_enable_join = mute_enable_join
         self.mute_enable_type_join = mute_enable_type_join
         self.only_allow_enterprise_user_join = only_allow_enterprise_user_join
-        self.only_invitees_allowed = only_invitees_allowed
+        self.only_user_join_type = only_user_join_type
         self.participant_join_auto_record = participant_join_auto_record
         self.water_mark_type = water_mark_type
 
