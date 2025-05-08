@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.5
+    API version: v1.0.7
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -1711,18 +1711,39 @@ class V1MeetingsMeetingIdBookRoomsPost200ResponseMeetingRoomListInner(object):
 class V1MeetingsMeetingIdBookRoomsPostRequest(object):
     """V1MeetingsMeetingIdBookRoomsPostRequest
 
+    :param meeting_room_id_list: 会议室ID列表 (required) 
+    :type meeting_room_id_list: List[str]
+
+    :param operator_id:(required) 
+    :type operator_id: str
+
+    :param operator_id_type:(required) 
+    :type operator_id_type: int
+
     :param subject_visible: true：在会议开始前的一小时内，在 Room 上显示会议主题。默认值为 true。 false：在会议开始前的一小时内，在 Room 上不显示会议主题。 说明：该参数并不影响预定时间晚过当前时间一个小时以上的会议。超过一小时的会议默认不显示会议主题。 
     :type subject_visible: Optional[bool]
     """  # noqa: E501
 
+    meeting_room_id_list: List[str]
+    operator_id: str
+    operator_id_type: int
     subject_visible: Optional[bool] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        meeting_room_id_list: List[str],
+        operator_id: str,
+        operator_id_type: int,
         subject_visible: Optional[bool] = None,
         **kwargs
     ):
+        
+        if meeting_room_id_list and isinstance(meeting_room_id_list, (list, List)):
+            self.meeting_room_id_list = meeting_room_id_list
+        
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.subject_visible = subject_visible
 
 
