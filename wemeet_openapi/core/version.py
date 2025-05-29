@@ -1,2 +1,2 @@
 # Version SDK 版本
-VERSION = "openapi-sdk-python/v1.0.7"
+VERSION = "openapi-sdk-python/v1.0.8"
