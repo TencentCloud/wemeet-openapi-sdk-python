@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -26,19 +26,19 @@ class V1MeetingMeetingIdPhoneCalloutPost200Response(object):
     :type meeting_id: Optional[str]
 
     :param phone_numbers: 外呼的电话号码对象列表。 
-    :type phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner]]
+    :type phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponsePhoneNumbersInner]]
     """  # noqa: E501
 
     invalid_phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner]] = None
     meeting_id: Optional[str] = None
-    phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner]] = None
+    phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponsePhoneNumbersInner]] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         invalid_phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner] | List[Dict[str, Any]]] = None,
         meeting_id: Optional[str] = None,
-        phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner] | List[Dict[str, Any]]] = None,
+        phone_numbers: Optional[List[V1MeetingMeetingIdPhoneCalloutPost200ResponsePhoneNumbersInner] | List[Dict[str, Any]]] = None,
         **kwargs
     ):
         
@@ -48,11 +48,47 @@ class V1MeetingMeetingIdPhoneCalloutPost200Response(object):
         self.meeting_id = meeting_id
         
         if phone_numbers and isinstance(phone_numbers, (list, List)):
-            self.phone_numbers = [V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in phone_numbers]
+            self.phone_numbers = [V1MeetingMeetingIdPhoneCalloutPost200ResponsePhoneNumbersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in phone_numbers]
         
 
 
 class V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner(object):
+    """电话号码对象
+
+    :param area: 电话区号 
+    :type area: Optional[int]
+
+    :param error_msg: 错误信息 
+    :type error_msg: Optional[str]
+
+    :param extension_number:
+    :type extension_number: Optional[str]
+
+    :param phone:
+    :type phone: Optional[str]
+    """  # noqa: E501
+
+    area: Optional[int] = None
+    error_msg: Optional[str] = None
+    extension_number: Optional[str] = None
+    phone: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        area: Optional[int] = None,
+        error_msg: Optional[str] = None,
+        extension_number: Optional[str] = None,
+        phone: Optional[str] = None,
+        **kwargs
+    ):
+        self.area = area
+        self.error_msg = error_msg
+        self.extension_number = extension_number
+        self.phone = phone
+
+
+class V1MeetingMeetingIdPhoneCalloutPost200ResponsePhoneNumbersInner(object):
     """电话号码对象
 
     :param area: 电话区号 
@@ -63,11 +99,15 @@ class V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner(obje
 
     :param phone:
     :type phone: Optional[str]
+
+    :param status:
+    :type status: Optional[str]
     """  # noqa: E501
 
     area: Optional[int] = None
     extension_number: Optional[str] = None
     phone: Optional[str] = None
+    status: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -75,11 +115,13 @@ class V1MeetingMeetingIdPhoneCalloutPost200ResponseInvalidPhoneNumbersInner(obje
         area: Optional[int] = None,
         extension_number: Optional[str] = None,
         phone: Optional[str] = None,
+        status: Optional[str] = None,
         **kwargs
     ):
         self.area = area
         self.extension_number = extension_number
         self.phone = phone
+        self.status = status
 
 
 class V1MeetingMeetingIdPhoneCalloutPostRequest(object):
@@ -121,12 +163,6 @@ class V1MeetingMeetingIdPhoneCalloutPostRequestPhoneNumbersInner(object):
     :param area: 电话区号 (required) 
     :type area: int
 
-    :param calling_party_area: 国家/地区代码。（例如：中国是86） 当前仅支持呼叫中国大陆、中国香港、美国的号码。 
-    :type calling_party_area: Optional[int]
-
-    :param calling_party_phone_number: 电话号码或固定电话总机号。 
-    :type calling_party_phone_number: Optional[str]
-
     :param extension_number:
     :type extension_number: Optional[str]
 
@@ -138,8 +174,6 @@ class V1MeetingMeetingIdPhoneCalloutPostRequestPhoneNumbersInner(object):
     """  # noqa: E501
 
     area: int
-    calling_party_area: Optional[int] = None
-    calling_party_phone_number: Optional[str] = None
     extension_number: Optional[str] = None
     nick_name: Optional[str] = None
     phone: str
@@ -149,15 +183,11 @@ class V1MeetingMeetingIdPhoneCalloutPostRequestPhoneNumbersInner(object):
         self,
         area: int,
         phone: str,
-        calling_party_area: Optional[int] = None,
-        calling_party_phone_number: Optional[str] = None,
         extension_number: Optional[str] = None,
         nick_name: Optional[str] = None,
         **kwargs
     ):
         self.area = area
-        self.calling_party_area = calling_party_area
-        self.calling_party_phone_number = calling_party_phone_number
         self.extension_number = extension_number
         self.nick_name = nick_name
         self.phone = phone

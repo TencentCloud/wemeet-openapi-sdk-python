@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -28,6 +28,12 @@ class ApiV1DevicesGetRequest(object):
 
     查询企业下的可用设备列表。<span class=\"colour\" style=\"color:rgb(51, 51, 51)\">目前暂不支持 OAuth2.0 鉴权访问。</span>
     
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
     :param page: 页码，从1开始，默认1。
     :type page: str
 
@@ -44,11 +50,15 @@ class ApiV1DevicesGetRequest(object):
 
     def __init__(
         self,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
         meeting_room_name: Optional[str] = None,
         body: Optional[object] = None
     ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.page = page
         self.page_size = page_size
         self.meeting_room_name = meeting_room_name
@@ -101,6 +111,12 @@ class ApiV1MeetingRoomsGetRequest(object):
 
     查询企业下的会议室列表。<span class=\"colour\" style=\"color:rgb(51, 51, 51)\">目前暂不支持 OAuth2.0 鉴权访问。</span>
     
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
     :param page: 页码
     :type page: str
 
@@ -117,11 +133,15 @@ class ApiV1MeetingRoomsGetRequest(object):
 
     def __init__(
         self,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
         meeting_room_name: Optional[str] = None,
         body: Optional[object] = None
     ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.page = page
         self.page_size = page_size
         self.meeting_room_name = meeting_room_name
@@ -148,6 +168,12 @@ class ApiV1MeetingRoomsMeetingRoomIdActiveCodePostRequest(object):
     :param meeting_room_id: 会议室id (required)
     :type meeting_room_id: str
 
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -156,9 +182,13 @@ class ApiV1MeetingRoomsMeetingRoomIdActiveCodePostRequest(object):
     def __init__(
         self,
         meeting_room_id: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_room_id = meeting_room_id
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1MeetingRoomsMeetingRoomIdActiveCodePostResponse(ApiResponse):
@@ -255,6 +285,12 @@ class ApiV1MeetingRoomsMeetingRoomIdGetRequest(object):
     :param meeting_room_id: 会议室ID (required)
     :type meeting_room_id: str
 
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
+    :param operator_id: 作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -263,9 +299,13 @@ class ApiV1MeetingRoomsMeetingRoomIdGetRequest(object):
     def __init__(
         self,
         meeting_room_id: str,
+        operator_id_type: Optional[str] = None,
+        operator_id: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_room_id = meeting_room_id
+        self.operator_id_type = operator_id_type
+        self.operator_id = operator_id
         self.body = body
 
 class ApiV1MeetingRoomsMeetingRoomIdGetResponse(ApiResponse):
@@ -344,6 +384,12 @@ class ApiV1MeetingRoomsMonitorDeviceControllerInfoGetRequest(object):
 
     \\*\\*描述：\\*\\*查询企业下的控制器列表，目前暂不支持 OAuth2\\.0 鉴权访问。
     
+    :param operator_id_type: 操作者 ID 的类型： 1：useri (required)
+    :type operator_id_type: str
+
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
     :param controller_name: 需要查询的设备名称（支持模糊匹配查找），如需获取全量列表，则不需要传入。
     :type controller_name: str
 
@@ -352,18 +398,27 @@ class ApiV1MeetingRoomsMonitorDeviceControllerInfoGetRequest(object):
 
     :param page_size: 分页大小，从1开始，最大50，默认20。
     :type page_size: str
+
+    :param body:
+    :type body: object
     """  # noqa: E501
 
 
     def __init__(
         self,
+        operator_id_type: Optional[str] = None,
+        operator_id: Optional[str] = None,
         controller_name: Optional[str] = None,
         page: Optional[str] = None,
-        page_size: Optional[str] = None
+        page_size: Optional[str] = None,
+        body: Optional[object] = None
     ):
+        self.operator_id_type = operator_id_type
+        self.operator_id = operator_id
         self.controller_name = controller_name
         self.page = page
         self.page_size = page_size
+        self.body = body
 
 class ApiV1MeetingRoomsMonitorDeviceControllerInfoGetResponse(ApiResponse):
     data: Optional[V1MeetingRoomsMonitorDeviceControllerInfoGet200Response] = None
@@ -392,12 +447,6 @@ class ApiV1MeetingRoomsOperatorIdMeetingsGetRequest(object):
     :param instanceid: 用户的终端设备类型： 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch Mac 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch Iphone (required)
     :type instanceid: str
 
-    :param target_rooms_id: 目标查询 roomsid。 (required)
-    :type target_rooms_id: str
-
-    :param target_rooms_id_type: 目标查询 roomsid 的类型： 3：rooms 设备 rooms_id 5：会议室 ID meeting_room_id (required)
-    :type target_rooms_id_type: str
-
     :param start_time: Unix 时间戳。查询起始时间，时间区间不超过90天。
     :type start_time: str
 
@@ -410,6 +459,12 @@ class ApiV1MeetingRoomsOperatorIdMeetingsGetRequest(object):
     :param page_size: 分页大小，默认20条，最大20条。
     :type page_size: str
 
+    :param target_rooms_id: 目标查询 roomsid。
+    :type target_rooms_id: str
+
+    :param target_rooms_id_type: 目标查询 roomsid 的类型： 3：rooms 设备 rooms_id 5：会议室 ID meeting_room_id
+    :type target_rooms_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -420,23 +475,23 @@ class ApiV1MeetingRoomsOperatorIdMeetingsGetRequest(object):
         operator_id: str,
         operator_id_type: Optional[str] = None,
         instanceid: Optional[str] = None,
-        target_rooms_id: Optional[str] = None,
-        target_rooms_id_type: Optional[str] = None,
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         page: Optional[str] = None,
         page_size: Optional[str] = None,
+        target_rooms_id: Optional[str] = None,
+        target_rooms_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.instanceid = instanceid
-        self.target_rooms_id = target_rooms_id
-        self.target_rooms_id_type = target_rooms_id_type
         self.start_time = start_time
         self.end_time = end_time
         self.page = page
         self.page_size = page_size
+        self.target_rooms_id = target_rooms_id
+        self.target_rooms_id_type = target_rooms_id_type
         self.body = body
 
 class ApiV1MeetingRoomsOperatorIdMeetingsGetResponse(ApiResponse):
@@ -546,6 +601,12 @@ class ApiV1MeetingRoomsScreencastCodeRoomsInfoGetRequest(object):
     :param screencast_code: 投屏码 (required)
     :type screencast_code: str
 
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -554,9 +615,13 @@ class ApiV1MeetingRoomsScreencastCodeRoomsInfoGetRequest(object):
     def __init__(
         self,
         screencast_code: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.screencast_code = screencast_code
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1MeetingRoomsScreencastCodeRoomsInfoGetResponse(ApiResponse):
@@ -615,14 +680,14 @@ class ApiV1MeetingsMeetingIdReleaseRoomsPostRequest(object):
     :type meeting_id: str
 
     :param body:
-    :type body: object
+    :type body: V1MeetingsMeetingIdReleaseRoomsPostRequest
     """  # noqa: E501
 
 
     def __init__(
         self,
         meeting_id: str,
-        body: Optional[object] = None
+        body: Optional[V1MeetingsMeetingIdReleaseRoomsPostRequest] = None
     ):
         self.meeting_id = meeting_id
         self.body = body
@@ -645,6 +710,12 @@ class ApiV1RoomsInventoryAccountStatisticsGetRequest(object):
 
     查询 Rooms 账号资源使用情况，暂不支持 OAuth 2.0鉴权访问。
     
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -652,8 +723,12 @@ class ApiV1RoomsInventoryAccountStatisticsGetRequest(object):
 
     def __init__(
         self,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1RoomsInventoryAccountStatisticsGetResponse(ApiResponse):
@@ -673,8 +748,27 @@ class ApiV1RoomsInventoryGetRequest(object):
     """查询账户下 Rooms 资源
 
     查询企业购买的 Rooms 资源。<span class=\"colour\" style=\"color: rgb(51, 51, 51);\">目前暂不支持 OAuth2.0 鉴权访问。</span>
-        """  # noqa: E501
+    
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required)
+    :type operator_id: str
 
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required)
+    :type operator_id_type: str
+
+    :param body:
+    :type body: object
+    """  # noqa: E501
+
+
+    def __init__(
+        self,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
+        body: Optional[object] = None
+    ):
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
+        self.body = body
 
 class ApiV1RoomsInventoryGetResponse(ApiResponse):
     data: Optional[V1RoomsInventoryGet200Response] = None
@@ -720,6 +814,12 @@ class MeetingRoomApi:
                                  body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.page is not None:
@@ -728,6 +828,10 @@ class MeetingRoomApi:
                 api_req.query_params.append(('page_size', request.page_size))
             if request.meeting_room_name is not None:
                 api_req.query_params.append(('meeting_room_name', request.meeting_room_name))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -818,6 +922,12 @@ class MeetingRoomApi:
                                  body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.page is not None:
@@ -826,6 +936,10 @@ class MeetingRoomApi:
                 api_req.query_params.append(('page_size', request.page_size))
             if request.meeting_room_name is not None:
                 api_req.query_params.append(('meeting_room_name', request.meeting_room_name))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -873,10 +987,20 @@ class MeetingRoomApi:
             # verify the required parameter 'meeting_room_id' is set
             if request.meeting_room_id is None:
                 raise Exception("meeting_room_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.meeting_room_id is not None:
                 api_req.path_params['meeting_room_id'] = request.meeting_room_id
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.post(api_req)
 
@@ -1035,10 +1159,20 @@ class MeetingRoomApi:
             # verify the required parameter 'meeting_room_id' is set
             if request.meeting_room_id is None:
                 raise Exception("meeting_room_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
             # path 参数
             if request.meeting_room_id is not None:
                 api_req.path_params['meeting_room_id'] = request.meeting_room_id
             # query 参数
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1172,8 +1306,15 @@ class MeetingRoomApi:
             api_req = ApiRequest(api_uri="/v1/meeting-rooms-monitor/device-controller-info",
                                  authenticators=authenticators,
                                  header=header, 
+                                 body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
             # path 参数
             # query 参数
             if request.controller_name is not None:
@@ -1182,6 +1323,10 @@ class MeetingRoomApi:
                 api_req.query_params.append(('page', request.page))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1235,12 +1380,6 @@ class MeetingRoomApi:
             # verify the required parameter 'instanceid' is set
             if request.instanceid is None:
                 raise Exception("instanceid is required and must be specified")
-            # verify the required parameter 'target_rooms_id' is set
-            if request.target_rooms_id is None:
-                raise Exception("target_rooms_id is required and must be specified")
-            # verify the required parameter 'target_rooms_id_type' is set
-            if request.target_rooms_id_type is None:
-                raise Exception("target_rooms_id_type is required and must be specified")
             # path 参数
             if request.operator_id is not None:
                 api_req.path_params['operator_id'] = request.operator_id
@@ -1445,10 +1584,20 @@ class MeetingRoomApi:
             # verify the required parameter 'screencast_code' is set
             if request.screencast_code is None:
                 raise Exception("screencast_code is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.screencast_code is not None:
                 api_req.path_params['screencast_code'] = request.screencast_code
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1595,8 +1744,18 @@ class MeetingRoomApi:
                                  body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1638,10 +1797,21 @@ class MeetingRoomApi:
             api_req = ApiRequest(api_uri="/v1/rooms-inventory",
                                  authenticators=authenticators,
                                  header=header, 
+                                 body=request.body,
                                  serializer=serializer)
 
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 

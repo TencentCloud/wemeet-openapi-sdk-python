@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -682,21 +682,21 @@ class V1MeetingsMeetingIdLayoutsPostRequest(object):
 class V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner(object):
     """V1MeetingsMeetingIdLayoutsPostRequestLayoutListInner
 
-    :param layout_id:(required) 
-    :type layout_id: str
+    :param layout_id:
+    :type layout_id: Optional[str]
 
     :param page_list: 布局单页对象列表 (required) 
     :type page_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInnerPageListInner]
     """  # noqa: E501
 
-    layout_id: str
+    layout_id: Optional[str] = None
     page_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInnerPageListInner]
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
-        layout_id: str,
         page_list: List[V1MeetingsMeetingIdLayoutsPostRequestLayoutListInnerPageListInner] | List[Dict[str, Any]],
+        layout_id: Optional[str] = None,
         **kwargs
     ):
         self.layout_id = layout_id

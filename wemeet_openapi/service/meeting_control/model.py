@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -111,6 +111,12 @@ class V1RealControlMeetingsMeetingIdAsrPutRequest(object):
 
     :param operator_id_type: 操作者 ID 的类型： 1：userid (required) 
     :type operator_id_type: int
+
+    :param target_rooms_id: 目标 Rooms ID。 当 Rooms 为会议创建者时，需要填写此 Rooms ID。 target_rooms_id 需与 target_rooms_id_type 配合使用。 
+    :type target_rooms_id: Optional[str]
+
+    :param target_rooms_id_type: 目标 RoomsID 类型： 3：rooms 设备 rooms_id 5：会议室 ID meeting_room_id 
+    :type target_rooms_id_type: Optional[int]
     """  # noqa: E501
 
     instance_id: int
@@ -118,6 +124,8 @@ class V1RealControlMeetingsMeetingIdAsrPutRequest(object):
     open_asr_view: Optional[int] = None
     operator_id: str
     operator_id_type: int
+    target_rooms_id: Optional[str] = None
+    target_rooms_id_type: Optional[int] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -127,6 +135,8 @@ class V1RealControlMeetingsMeetingIdAsrPutRequest(object):
         operator_id: str,
         operator_id_type: int,
         open_asr_view: Optional[int] = None,
+        target_rooms_id: Optional[str] = None,
+        target_rooms_id_type: Optional[int] = None,
         **kwargs
     ):
         self.instance_id = instance_id
@@ -134,6 +144,8 @@ class V1RealControlMeetingsMeetingIdAsrPutRequest(object):
         self.open_asr_view = open_asr_view
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
+        self.target_rooms_id = target_rooms_id
+        self.target_rooms_id_type = target_rooms_id_type
 
 
 class V1RealControlMeetingsMeetingIdCohostsPutRequest(object):
@@ -306,15 +318,11 @@ class V1RealControlMeetingsMeetingIdKickoutPutRequestUsersInner(object):
 
     :param to_operator_id_type: 用户ID的类型： 4: ms_open_id 
     :type to_operator_id_type: Optional[int]
-
-    :param uuid: 用户的唯一标识uuid 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     instanceid: int
     to_operator_id: Optional[str] = None
     to_operator_id_type: Optional[int] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -322,13 +330,11 @@ class V1RealControlMeetingsMeetingIdKickoutPutRequestUsersInner(object):
         instanceid: int,
         to_operator_id: Optional[str] = None,
         to_operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.instanceid = instanceid
         self.to_operator_id = to_operator_id
         self.to_operator_id_type = to_operator_id_type
-        self.uuid = uuid
 
 
 class V1RealControlMeetingsMeetingIdMutesPutRequest(object):
@@ -725,7 +731,7 @@ class V1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
     :type operator_id_type: Optional[int]
 
     :param users: 被操作用户对象信息列表 (required) 
-    :type users: List[V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner]
+    :type users: List[V1RealControlMeetingsMeetingIdMutesPutRequestUser]
     """  # noqa: E501
 
     allow_rejoin: Optional[bool] = None
@@ -733,14 +739,14 @@ class V1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
     operate_type: int
     operator_id: Optional[str] = None
     operator_id_type: Optional[int] = None
-    users: List[V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner]
+    users: List[V1RealControlMeetingsMeetingIdMutesPutRequestUser]
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         instanceid: int,
         operate_type: int,
-        users: List[V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner] | List[Dict[str, Any]],
+        users: List[V1RealControlMeetingsMeetingIdMutesPutRequestUser] | List[Dict[str, Any]],
         allow_rejoin: Optional[bool] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[int] = None,
@@ -753,42 +759,6 @@ class V1RealControlMeetingsMeetingIdWaitingRoomPutRequest(object):
         self.operator_id_type = operator_id_type
         
         if users and isinstance(users, (list, List)):
-            self.users = [V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in users]
+            self.users = [V1RealControlMeetingsMeetingIdMutesPutRequestUser(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in users]
         
-
-
-class V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner(object):
-    """V1RealControlMeetingsMeetingIdWaitingRoomPutRequestUsersInner
-
-    :param instanceid: 用户的终端设备类型： 0：PSTN 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch MacOS 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch iOS 说明：请与被操作者的设备类型保持一致，否则不生效。 (required) 
-    :type instanceid: int
-
-    :param to_operator_id: 用户ID，根据to_operator_id_type的值，使用不同的类型 
-    :type to_operator_id: Optional[str]
-
-    :param to_operator_id_type: 用户ID的类型：  4: ms_open_id 
-    :type to_operator_id_type: Optional[int]
-
-    :param uuid: 用户的唯一标识uuid 
-    :type uuid: Optional[str]
-    """  # noqa: E501
-
-    instanceid: int
-    to_operator_id: Optional[str] = None
-    to_operator_id_type: Optional[int] = None
-    uuid: Optional[str] = None
-    additional_properties: Dict[str, Any] = {}
-
-    def __init__(
-        self,
-        instanceid: int,
-        to_operator_id: Optional[str] = None,
-        to_operator_id_type: Optional[int] = None,
-        uuid: Optional[str] = None,
-        **kwargs
-    ):
-        self.instanceid = instanceid
-        self.to_operator_id = to_operator_id
-        self.to_operator_id_type = to_operator_id_type
-        self.uuid = uuid
 

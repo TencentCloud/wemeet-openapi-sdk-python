@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -525,6 +525,12 @@ class ApiV1MeetingsMeetingIdCustomerShortUrlGetRequest(object):
     :param meeting_id: (required)
     :type meeting_id: str
 
+    :param operator_id: (required)
+    :type operator_id: str
+
+    :param operator_id_type: (required)
+    :type operator_id_type: str
+
     :param body:
     :type body: object
     """  # noqa: E501
@@ -533,9 +539,13 @@ class ApiV1MeetingsMeetingIdCustomerShortUrlGetRequest(object):
     def __init__(
         self,
         meeting_id: str,
+        operator_id: Optional[str] = None,
+        operator_id_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
         self.body = body
 
 class ApiV1MeetingsMeetingIdCustomerShortUrlGetResponse(ApiResponse):
@@ -842,14 +852,14 @@ class ApiV1MeetingsMeetingIdGetRequest(object):
     :param meeting_id: (required)
     :type meeting_id: str
 
-    :param instanceid: 用户的终端设备类型： 0：PSTN 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch MacOS 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch iOS (required)
-    :type instanceid: str
-
-    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型 (required)
     :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型：1.userid 2.openid 3.rooms_id
+    :param operator_id_type: 操作者ID的类型：1.userid 2.openid 3.rooms_id (required)
     :type operator_id_type: str
+
+    :param instanceid: 用户的终端设备类型： 0：PSTN 1：PC 2：Mac 3：Android 4：iOS 5：Web 6：iPad 7：Android Pad 8：小程序 9：voip、sip 设备 10：linux 20：Rooms for Touch Windows 21：Rooms for Touch MacOS 22：Rooms for Touch Android 30：Controller for Touch Windows 32：Controller for Touch Android 33：Controller for Touch iOS (required)
+    :type instanceid: str
 
     :param body:
     :type body: object
@@ -859,15 +869,15 @@ class ApiV1MeetingsMeetingIdGetRequest(object):
     def __init__(
         self,
         meeting_id: str,
-        instanceid: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
+        instanceid: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_id = meeting_id
-        self.instanceid = instanceid
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
+        self.instanceid = instanceid
         self.body = body
 
 class ApiV1MeetingsMeetingIdGetResponse(ApiResponse):
@@ -954,9 +964,9 @@ class ApiV1MeetingsMeetingIdInviteesPutRequest(object):
         self.body = body
 
 class ApiV1MeetingsMeetingIdInviteesPutResponse(ApiResponse):
-    data: Optional[object] = None
+    data: Optional[V1MeetingsMeetingIdInviteesPut200Response] = None
 
-    def __init__(self, api_resp: ApiResponse, data: Optional[object] = None):
+    def __init__(self, api_resp: ApiResponse, data: Optional[V1MeetingsMeetingIdInviteesPut200Response] = None):
         super().__init__(
             status_code=api_resp.status_code,
             raw_body=api_resp.raw_body,
@@ -2153,10 +2163,20 @@ class MeetingsApi:
             # verify the required parameter 'meeting_id' is set
             if request.meeting_id is None:
                 raise Exception("meeting_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.meeting_id is not None:
                 api_req.path_params['meeting_id'] = request.meeting_id
             # query 参数
+            if request.operator_id is not None:
+                api_req.query_params.append(('operator_id', request.operator_id))
+            if request.operator_id_type is not None:
+                api_req.query_params.append(('operator_id_type', request.operator_id_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -2603,6 +2623,12 @@ class MeetingsApi:
             # verify the required parameter 'meeting_id' is set
             if request.meeting_id is None:
                 raise Exception("meeting_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # verify the required parameter 'instanceid' is set
             if request.instanceid is None:
                 raise Exception("instanceid is required and must be specified")
@@ -2737,7 +2763,7 @@ class MeetingsApi:
                 raise ServiceException(api_resp=api_resp)
             try:
                 response = ApiV1MeetingsMeetingIdInviteesPutResponse(api_resp=api_resp)
-                response.data = api_resp.translate(dst_t=object)
+                response.data = api_resp.translate(dst_t=V1MeetingsMeetingIdInviteesPut200Response)
             except Exception as e:
                 raise ClientException(Exception(f"http status code: {api_resp.status_code}, "
                                                 f"response: {api_resp.raw_body}, err: {e.__str__()}"))

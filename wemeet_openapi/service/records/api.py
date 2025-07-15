@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -31,23 +31,17 @@ class ApiV1AddressesGetRequest(object):
     :param meeting_record_id: 会议录制 ID。 (required)
     :type meeting_record_id: str
 
-    :param operator_id: 操作者ID 必须与operator_id_type 同时提供
+    :param operator_id: 操作者ID 必须与operator_id_type 同时提供 (required)
     :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型 3为rooms_id 必须与operator_id_type 同时提供
+    :param operator_id_type: 操作者ID的类型 3为rooms_id 必须与operator_id_type 同时提供 (required)
     :type operator_id_type: str
-
-    :param userid: 用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。
-    :type userid: str
 
     :param page_size: 分页size
     :type page_size: str
 
     :param page: 分页page
     :type page: str
-
-    :param address_type:
-    :type address_type: str
 
     :param body:
     :type body: object
@@ -59,19 +53,15 @@ class ApiV1AddressesGetRequest(object):
         meeting_record_id: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
         page_size: Optional[str] = None,
         page: Optional[str] = None,
-        address_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_record_id = meeting_record_id
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
         self.page_size = page_size
         self.page = page
-        self.address_type = address_type
         self.body = body
 
 class ApiV1AddressesGetResponse(ApiResponse):
@@ -95,17 +85,11 @@ class ApiV1AddressesRecordFileIdGetRequest(object):
     :param record_file_id: (required)
     :type record_file_id: str
 
-    :param operator_id: 操作者ID，必须与operator_id_type同时出现。
+    :param operator_id: 操作者ID，必须与operator_id_type同时出现。 (required)
     :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型 rooms_Id是3，必须与operator_id同时出现。
+    :param operator_id_type: 操作者ID的类型 rooms_Id是3，必须与operator_id同时出现。 (required)
     :type operator_id_type: str
-
-    :param userid: 用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。
-    :type userid: str
-
-    :param address_type:
-    :type address_type: str
 
     :param body:
     :type body: object
@@ -117,15 +101,11 @@ class ApiV1AddressesRecordFileIdGetRequest(object):
         record_file_id: str,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
-        address_type: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.record_file_id = record_file_id
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
-        self.address_type = address_type
         self.body = body
 
 class ApiV1AddressesRecordFileIdGetResponse(ApiResponse):
@@ -482,17 +462,14 @@ class ApiV1RecordsDeleteRequest(object):
     :param meeting_record_id: 会议录制 ID。 (required)
     :type meeting_record_id: str
 
-    :param meeting_id: 会议 ID。
-    :type meeting_id: str
-
-    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型 (required)
     :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型，必须与operator_id同时出现
+    :param operator_id_type: 操作者ID的类型，必须与operator_id同时出现 (required)
     :type operator_id_type: str
 
-    :param userid: 用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。
-    :type userid: str
+    :param meeting_id: 会议 ID。
+    :type meeting_id: str
 
     :param body:
     :type body: object
@@ -502,17 +479,15 @@ class ApiV1RecordsDeleteRequest(object):
     def __init__(
         self,
         meeting_record_id: Optional[str] = None,
-        meeting_id: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
+        meeting_id: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.meeting_record_id = meeting_record_id
-        self.meeting_id = meeting_id
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
+        self.meeting_id = meeting_id
         self.body = body
 
 class ApiV1RecordsDeleteResponse(ApiResponse):
@@ -550,6 +525,9 @@ class ApiV1RecordsEventsGetRequest(object):
 
     :param end_time: 查询结束时间戳，UNIX 时间戳（单位秒）。说明：时间区间不允许超过31天。
     :type end_time: str
+
+    :param body:
+    :type body: object
     """  # noqa: E501
 
 
@@ -560,7 +538,8 @@ class ApiV1RecordsEventsGetRequest(object):
         page_size: Optional[str] = None,
         page: Optional[str] = None,
         start_time: Optional[str] = None,
-        end_time: Optional[str] = None
+        end_time: Optional[str] = None,
+        body: Optional[object] = None
     ):
         self.meeting_record_id = meeting_record_id
         self.event_type = event_type
@@ -568,6 +547,7 @@ class ApiV1RecordsEventsGetRequest(object):
         self.page = page
         self.start_time = start_time
         self.end_time = end_time
+        self.body = body
 
 class ApiV1RecordsEventsGetResponse(ApiResponse):
     data: Optional[V1RecordsEventsGet200Response] = None
@@ -669,17 +649,14 @@ class ApiV1RecordsRecordFileIdDeleteRequest(object):
     :param record_file_id: 录制文件 ID。 (required)
     :type record_file_id: str
 
-    :param meeting_id: 会议 ID。
-    :type meeting_id: str
-
-    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型，必须与operator_id_type同时出现
+    :param operator_id: 操作者ID，根据operator_id_type的值，使用不同的类型，必须与operator_id_type同时出现 (required)
     :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型，必须与operator_id同时出现
+    :param operator_id_type: 操作者ID的类型，必须与operator_id同时出现 (required)
     :type operator_id_type: str
 
-    :param userid: 用户 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。
-    :type userid: str
+    :param meeting_id: 会议 ID。
+    :type meeting_id: str
 
     :param body:
     :type body: object
@@ -689,17 +666,15 @@ class ApiV1RecordsRecordFileIdDeleteRequest(object):
     def __init__(
         self,
         record_file_id: str,
-        meeting_id: Optional[str] = None,
         operator_id: Optional[str] = None,
         operator_id_type: Optional[str] = None,
-        userid: Optional[str] = None,
+        meeting_id: Optional[str] = None,
         body: Optional[object] = None
     ):
         self.record_file_id = record_file_id
-        self.meeting_id = meeting_id
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
-        self.userid = userid
+        self.meeting_id = meeting_id
         self.body = body
 
 class ApiV1RecordsRecordFileIdDeleteResponse(ApiResponse):
@@ -1102,6 +1077,12 @@ class RecordsApi:
             # verify the required parameter 'meeting_record_id' is set
             if request.meeting_record_id is None:
                 raise Exception("meeting_record_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.meeting_record_id is not None:
@@ -1110,14 +1091,10 @@ class RecordsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             if request.page_size is not None:
                 api_req.query_params.append(('page_size', request.page_size))
             if request.page is not None:
                 api_req.query_params.append(('page', request.page))
-            if request.address_type is not None:
-                api_req.query_params.append(('address_type', request.address_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1165,6 +1142,12 @@ class RecordsApi:
             # verify the required parameter 'record_file_id' is set
             if request.record_file_id is None:
                 raise Exception("record_file_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.record_file_id is not None:
                 api_req.path_params['record_file_id'] = request.record_file_id
@@ -1173,10 +1156,6 @@ class RecordsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
-            if request.address_type is not None:
-                api_req.query_params.append(('address_type', request.address_type))
             # 发送请求
             api_resp = self.__config.clt.get(api_req)
 
@@ -1722,6 +1701,12 @@ class RecordsApi:
             # verify the required parameter 'meeting_record_id' is set
             if request.meeting_record_id is None:
                 raise Exception("meeting_record_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             # query 参数
             if request.meeting_id is not None:
@@ -1732,8 +1717,6 @@ class RecordsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             # 发送请求
             api_resp = self.__config.clt.delete(api_req)
 
@@ -1775,6 +1758,7 @@ class RecordsApi:
             api_req = ApiRequest(api_uri="/v1/records/events",
                                  authenticators=authenticators,
                                  header=header, 
+                                 body=request.body,
                                  serializer=serializer)
 
             # verify the required parameter 'meeting_record_id' is set
@@ -1922,6 +1906,12 @@ class RecordsApi:
             # verify the required parameter 'record_file_id' is set
             if request.record_file_id is None:
                 raise Exception("record_file_id is required and must be specified")
+            # verify the required parameter 'operator_id' is set
+            if request.operator_id is None:
+                raise Exception("operator_id is required and must be specified")
+            # verify the required parameter 'operator_id_type' is set
+            if request.operator_id_type is None:
+                raise Exception("operator_id_type is required and must be specified")
             # path 参数
             if request.record_file_id is not None:
                 api_req.path_params['record_file_id'] = request.record_file_id
@@ -1932,8 +1922,6 @@ class RecordsApi:
                 api_req.query_params.append(('operator_id', request.operator_id))
             if request.operator_id_type is not None:
                 api_req.query_params.append(('operator_id_type', request.operator_id_type))
-            if request.userid is not None:
-                api_req.query_params.append(('userid', request.userid))
             # 发送请求
             api_resp = self.__config.clt.delete(api_req)
 

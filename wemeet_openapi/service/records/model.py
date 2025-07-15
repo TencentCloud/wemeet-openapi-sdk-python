@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -169,11 +169,20 @@ class V1AddressesGet200ResponseRecordFilesInnerMeetingSummaryInner(object):
 class V1AddressesRecordFileIdGet200Response(object):
     """V1AddressesRecordFileIdGet200Response
 
+    :param ai_ds_minutes: ds-摘要 
+    :type ai_ds_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner]]
+
     :param ai_meeting_transcripts: 录制转写文件（智能优化版）列表。OAuth 鉴权方式下，账号类型为个人免费版、企微创建企业时，该值返回为空。 
     :type ai_meeting_transcripts: Optional[List[V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner]]
 
-    :param ai_minutes: 智能纪要列表。OAuth 鉴权方式下，账号类型为个人免费版、企微创建企业时，该值返回为空。 
+    :param ai_minutes: 智能纪要列表。OAuth 鉴权方式下，账号类型为个人免费版、企微创建企业时，该值返回为空。 注：如会议录制不允许导出或被关闭下载，则不出现在此返回结果中。 
     :type ai_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner]]
+
+    :param ai_speaker_minutes: 混元-发言人纪要 
+    :type ai_speaker_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner]]
+
+    :param ai_topic_minutes: 混元-主题纪要 
+    :type ai_topic_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner]]
 
     :param audio_address: 音频下载地址。OAuth 鉴权方式下，账号类型为个人免费版、企微创建企业时，该值返回为空。 
     :type audio_address: Optional[str]
@@ -203,8 +212,11 @@ class V1AddressesRecordFileIdGet200Response(object):
     :type view_address: Optional[str]
     """  # noqa: E501
 
+    ai_ds_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner]] = None
     ai_meeting_transcripts: Optional[List[V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner]] = None
     ai_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner]] = None
+    ai_speaker_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner]] = None
+    ai_topic_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner]] = None
     audio_address: Optional[str] = None
     audio_address_file_type: Optional[str] = None
     download_address: Optional[str] = None
@@ -218,8 +230,11 @@ class V1AddressesRecordFileIdGet200Response(object):
 
     def __init__(
         self,
+        ai_ds_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner] | List[Dict[str, Any]]] = None,
         ai_meeting_transcripts: Optional[List[V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner] | List[Dict[str, Any]]] = None,
         ai_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner] | List[Dict[str, Any]]] = None,
+        ai_speaker_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner] | List[Dict[str, Any]]] = None,
+        ai_topic_minutes: Optional[List[V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner] | List[Dict[str, Any]]] = None,
         audio_address: Optional[str] = None,
         audio_address_file_type: Optional[str] = None,
         download_address: Optional[str] = None,
@@ -232,12 +247,24 @@ class V1AddressesRecordFileIdGet200Response(object):
         **kwargs
     ):
         
+        if ai_ds_minutes and isinstance(ai_ds_minutes, (list, List)):
+            self.ai_ds_minutes = [V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in ai_ds_minutes]
+        
+        
         if ai_meeting_transcripts and isinstance(ai_meeting_transcripts, (list, List)):
             self.ai_meeting_transcripts = [V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in ai_meeting_transcripts]
         
         
         if ai_minutes and isinstance(ai_minutes, (list, List)):
             self.ai_minutes = [V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in ai_minutes]
+        
+        
+        if ai_speaker_minutes and isinstance(ai_speaker_minutes, (list, List)):
+            self.ai_speaker_minutes = [V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in ai_speaker_minutes]
+        
+        
+        if ai_topic_minutes and isinstance(ai_topic_minutes, (list, List)):
+            self.ai_topic_minutes = [V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in ai_topic_minutes]
         
         self.audio_address = audio_address
         self.audio_address_file_type = audio_address_file_type
@@ -251,6 +278,30 @@ class V1AddressesRecordFileIdGet200Response(object):
         
         self.record_file_id = record_file_id
         self.view_address = view_address
+
+
+class V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner(object):
+    """V1AddressesRecordFileIdGet200ResponseAiDsMinutesInner
+
+    :param download_address:
+    :type download_address: Optional[str]
+
+    :param file_type:
+    :type file_type: Optional[str]
+    """  # noqa: E501
+
+    download_address: Optional[str] = None
+    file_type: Optional[str] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        download_address: Optional[str] = None,
+        file_type: Optional[str] = None,
+        **kwargs
+    ):
+        self.download_address = download_address
+        self.file_type = file_type
 
 
 class V1AddressesRecordFileIdGet200ResponseAiMeetingTranscriptsInner(object):
@@ -1057,40 +1108,34 @@ class V1RecordsSettingsMeetingRecordIdPutRequest(object):
     :param meeting_id: 会议id 
     :type meeting_id: Optional[str]
 
-    :param operator_id: 操作者ID 
-    :type operator_id: Optional[str]
+    :param operator_id: 操作者ID (required) 
+    :type operator_id: str
 
-    :param operator_id_type: 操作者ID的类型。3. rooms_id 说明：当前仅支持 rooms_id。如操作者为企业内 userid 或 openId，请使用 userid 字段。 
-    :type operator_id_type: Optional[int]
+    :param operator_id_type: 操作者ID的类型。3. rooms_id 说明：当前仅支持 rooms_id。如操作者为企业内 userid 或 openId，请使用 userid 字段。 (required) 
+    :type operator_id_type: int
 
     :param sharing_config:
     :type sharing_config: Optional[V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig]
-
-    :param userid: 用户id。仅会议创建者、企业超级管理员或有企业录制管理权限的用户可调用。调用方用于标示用户的唯一 ID（企业内部请使用企业唯一用户标识；OAuth2.0 鉴权用户请使用 openId）。 企业唯一用户标识说明： 1. 企业对接 SSO 时使用的员工唯一标识 ID。 2. 企业调用创建用户接口时传递的 userid 参数。 
-    :type userid: Optional[str]
     """  # noqa: E501
 
     meeting_id: Optional[str] = None
-    operator_id: Optional[str] = None
-    operator_id_type: Optional[int] = None
+    operator_id: str
+    operator_id_type: int
     sharing_config: Optional[V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig] = None
-    userid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        operator_id: str,
+        operator_id_type: int,
         meeting_id: Optional[str] = None,
-        operator_id: Optional[str] = None,
-        operator_id_type: Optional[int] = None,
         sharing_config: Optional[V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig | Dict[str, Any]] = None,
-        userid: Optional[str] = None,
         **kwargs
     ):
         self.meeting_id = meeting_id
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.sharing_config = V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig(**sharing_config) if isinstance(sharing_config, (dict, Dict)) else sharing_config
-        self.userid = userid
 
 
 class V1RecordsSettingsMeetingRecordIdPutRequestSharingConfig(object):
@@ -1195,21 +1240,30 @@ class V1RecordsTranscriptsDetailsGet200ResponseMinutes(object):
     :param audio_detect: 声纹识别状态0-未完成 1-已完成。说明：声纹识别是针对 Rooms 等设备出现一台设备多人讲话场景时，自动区分为多个发言人的能力。声纹识别与纪要生成的过程独立。无需声纹识别或声纹识别已完成时，该值为1。 
     :type audio_detect: Optional[int]
 
+    :param keywords:
+    :type keywords: Optional[List[str]]
+
     :param paragraphs: 段落对象列表 
     :type paragraphs: Optional[List[V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInner]]
     """  # noqa: E501
 
     audio_detect: Optional[int] = None
+    keywords: Optional[List[str]] = None
     paragraphs: Optional[List[V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInner]] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         audio_detect: Optional[int] = None,
+        keywords: Optional[List[str]] = None,
         paragraphs: Optional[List[V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInner] | List[Dict[str, Any]]] = None,
         **kwargs
     ):
         self.audio_detect = audio_detect
+        
+        if keywords and isinstance(keywords, (list, List)):
+            self.keywords = keywords
+        
         
         if paragraphs and isinstance(paragraphs, (list, List)):
             self.paragraphs = [V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in paragraphs]
@@ -1339,6 +1393,9 @@ class V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInnerSentencesIn
 class V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInnerSpeakerInfo(object):
     """发言人信息对象。
 
+    :param ms_open_id: 会议中为每个参会成员授予的临时 ID，以会议为维度，表示同一场会议内用户的唯一标识 
+    :type ms_open_id: Optional[str]
+
     :param userid: 同企业返回企业用户 userid。 
     :type userid: Optional[str]
 
@@ -1346,16 +1403,19 @@ class V1RecordsTranscriptsDetailsGet200ResponseMinutesParagraphsInnerSpeakerInfo
     :type username: Optional[str]
     """  # noqa: E501
 
+    ms_open_id: Optional[str] = None
     userid: Optional[str] = None
     username: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        ms_open_id: Optional[str] = None,
         userid: Optional[str] = None,
         username: Optional[str] = None,
         **kwargs
     ):
+        self.ms_open_id = ms_open_id
         self.userid = userid
         self.username = username
 

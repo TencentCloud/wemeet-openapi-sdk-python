@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -379,6 +379,12 @@ class V1UsersAccountAiAccountPostRequest(object):
 class V1UsersAccountStatisticsGet200Response(object):
     """V1UsersAccountStatisticsGet200Response
 
+    :param add_on_largemeeting_details: 房间规模升级许可详情。 
+    :type add_on_largemeeting_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAddOnLargemeetingDetailsInner]]
+
+    :param add_on_webinar_details: 网络研讨会（Webinar）观众规模升级许可详情。 
+    :type add_on_webinar_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAddOnWebinarDetailsInner]]
+
     :param ai_account_details: ai账号类型使用对象（商业版不返回） 
     :type ai_account_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAiAccountDetailsInner]]
 
@@ -389,6 +395,8 @@ class V1UsersAccountStatisticsGet200Response(object):
     :type user_count: Optional[int]
     """  # noqa: E501
 
+    add_on_largemeeting_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAddOnLargemeetingDetailsInner]] = None
+    add_on_webinar_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAddOnWebinarDetailsInner]] = None
     ai_account_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAiAccountDetailsInner]] = None
     user_account_details: Optional[List[V1UsersAccountStatisticsGet200ResponseUserAccountDetailsInner]] = None
     user_count: Optional[int] = None
@@ -396,11 +404,21 @@ class V1UsersAccountStatisticsGet200Response(object):
 
     def __init__(
         self,
+        add_on_largemeeting_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAddOnLargemeetingDetailsInner] | List[Dict[str, Any]]] = None,
+        add_on_webinar_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAddOnWebinarDetailsInner] | List[Dict[str, Any]]] = None,
         ai_account_details: Optional[List[V1UsersAccountStatisticsGet200ResponseAiAccountDetailsInner] | List[Dict[str, Any]]] = None,
         user_account_details: Optional[List[V1UsersAccountStatisticsGet200ResponseUserAccountDetailsInner] | List[Dict[str, Any]]] = None,
         user_count: Optional[int] = None,
         **kwargs
     ):
+        
+        if add_on_largemeeting_details and isinstance(add_on_largemeeting_details, (list, List)):
+            self.add_on_largemeeting_details = [V1UsersAccountStatisticsGet200ResponseAddOnLargemeetingDetailsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in add_on_largemeeting_details]
+        
+        
+        if add_on_webinar_details and isinstance(add_on_webinar_details, (list, List)):
+            self.add_on_webinar_details = [V1UsersAccountStatisticsGet200ResponseAddOnWebinarDetailsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in add_on_webinar_details]
+        
         
         if ai_account_details and isinstance(ai_account_details, (list, List)):
             self.ai_account_details = [V1UsersAccountStatisticsGet200ResponseAiAccountDetailsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in ai_account_details]
@@ -410,6 +428,66 @@ class V1UsersAccountStatisticsGet200Response(object):
             self.user_account_details = [V1UsersAccountStatisticsGet200ResponseUserAccountDetailsInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in user_account_details]
         
         self.user_count = user_count
+
+
+class V1UsersAccountStatisticsGet200ResponseAddOnLargemeetingDetailsInner(object):
+    """V1UsersAccountStatisticsGet200ResponseAddOnLargemeetingDetailsInner
+
+    :param add_on_largemeeting_count: 升级许可数。 
+    :type add_on_largemeeting_count: Optional[int]
+
+    :param add_on_largemeeting_type: 房间规模升级许可类型 1：500方房间规模升级许可 2：1000方房间规模升级许可 3：2000方房间规模升级许可 
+    :type add_on_largemeeting_type: Optional[int]
+
+    :param add_on_largemeeting_used_count: 已分配升级许可数。 
+    :type add_on_largemeeting_used_count: Optional[int]
+    """  # noqa: E501
+
+    add_on_largemeeting_count: Optional[int] = None
+    add_on_largemeeting_type: Optional[int] = None
+    add_on_largemeeting_used_count: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        add_on_largemeeting_count: Optional[int] = None,
+        add_on_largemeeting_type: Optional[int] = None,
+        add_on_largemeeting_used_count: Optional[int] = None,
+        **kwargs
+    ):
+        self.add_on_largemeeting_count = add_on_largemeeting_count
+        self.add_on_largemeeting_type = add_on_largemeeting_type
+        self.add_on_largemeeting_used_count = add_on_largemeeting_used_count
+
+
+class V1UsersAccountStatisticsGet200ResponseAddOnWebinarDetailsInner(object):
+    """V1UsersAccountStatisticsGet200ResponseAddOnWebinarDetailsInner
+
+    :param add_on_webinar_count: 升级许可数。 
+    :type add_on_webinar_count: Optional[int]
+
+    :param add_on_webinar_type: 增强会议体验：网络研讨会（Webinar）观众规模升级许可类型。 1：Webinar 观众规模提升至 300 观众 2：Webinar 观众规模提升至 500 观众 3：Webinar 观众规模提升至 1000 观众 4：Webinar 观众规模提升至 2000 观众 5：Webinar 观众规模提升至 3000 观众 6：Webinar 观众规模提升至 5000 观众 7：Webinar 观众规模提升至 8000 观众 8：Webinar 观众规模提升至 10000 观众 
+    :type add_on_webinar_type: Optional[int]
+
+    :param add_on_webinar_used_count: 已分配升级许可数。 
+    :type add_on_webinar_used_count: Optional[int]
+    """  # noqa: E501
+
+    add_on_webinar_count: Optional[int] = None
+    add_on_webinar_type: Optional[int] = None
+    add_on_webinar_used_count: Optional[int] = None
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        add_on_webinar_count: Optional[int] = None,
+        add_on_webinar_type: Optional[int] = None,
+        add_on_webinar_used_count: Optional[int] = None,
+        **kwargs
+    ):
+        self.add_on_webinar_count = add_on_webinar_count
+        self.add_on_webinar_type = add_on_webinar_type
+        self.add_on_webinar_used_count = add_on_webinar_used_count
 
 
 class V1UsersAccountStatisticsGet200ResponseAiAccountDetailsInner(object):
@@ -511,6 +589,12 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
     :param account_version: 账号版本。 0：其他 1：商业版 2：企业版 3：教育版 
     :type account_version: Optional[int]
 
+    :param add_on_largemeeting: 增强会议体验：房间规模升级许可。 1：500方房间规模升级许可 2：1000方房间规模升级许可 3：2000方房间规模升级许可 
+    :type add_on_largemeeting: Optional[int]
+
+    :param add_on_webinar: 增强会议体验：网络研讨会（Webinar）观众规模升级许可。 1：Webinar 观众规模提升至 300 观众 2：Webinar 观众规模提升至 500 观众 3：Webinar 观众规模提升至 1000 观众 4：Webinar 观众规模提升至 2000 观众 5：Webinar 观众规模提升至 3000 观众 6：Webinar 观众规模提升至 5000 观众 7：Webinar 观众规模提升至 8000 观众 8：Webinar 观众规模提升至 10000 观众 
+    :type add_on_webinar: Optional[int]
+
     :param ai_account_type: AI 账号类型。 0：无账号 1：购买版 2：赠送版 
     :type ai_account_type: Optional[int]
 
@@ -526,11 +610,17 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
     :param email: 邮箱 
     :type email: Optional[str]
 
+    :param email_status: 邮箱验证状态： 1：已验证 2：未验证 
+    :type email_status: Optional[int]
+
     :param enable_ai_account: 是否有 AI 账号能力。 true：有  false：无  教育版/企业版存在有 AI 账号，商业版都具有 AI 能力，其余为 false。 
     :type enable_ai_account: Optional[bool]
 
     :param entry_time: 入职时间 
     :type entry_time: Optional[str]
+
+    :param is_voov: 是否为 VooV Meeting 客户端（国际账号），默认为0。 0：否 1：是 
+    :type is_voov: Optional[int]
 
     :param job_title: 员工职位 
     :type job_title: Optional[str]
@@ -556,7 +646,7 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
     :param update_time: 更新时间 
     :type update_time: Optional[str]
 
-    :param user_account_type: 账号类型。 1：高级账号（企业版/教育版） 2：免费账号（企业版/教育版） 3：免费账号100方 （商业版） 4：高级账号300方（商业版） 5：高级账号500方（商业版） 6：高级账号1000方（商业版） 7：高级账号2000方（商业版） 8：高级账号100方（商业版） 
+    :param user_account_type: 账号类型。 1：高级账号（企业版/教育版） 2：免费账号（企业版/教育版） 3：免费账号100方 （商业版） 4：高级账号300方（商业版） 5：高级账号500方（商业版） 6：高级账号1000方（商业版） 7：高级账号2000方（商业版） 8：高级账号100方（商业版）9：高级账号（企业版/教育版/商业版） 
     :type user_account_type: Optional[int]
 
     :param userid: 用户userid 
@@ -564,19 +654,20 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
 
     :param username: 用户名称 
     :type username: Optional[str]
-
-    :param uuid: 用户uuid 
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     account_version: Optional[int] = None
+    add_on_largemeeting: Optional[int] = None
+    add_on_webinar: Optional[int] = None
     ai_account_type: Optional[int] = None
     area: Optional[str] = None
     avatar_url: Optional[str] = None
     department_list: Optional[List[V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner]] = None
     email: Optional[str] = None
+    email_status: Optional[int] = None
     enable_ai_account: Optional[bool] = None
     entry_time: Optional[str] = None
+    is_voov: Optional[int] = None
     job_title: Optional[str] = None
     phone: Optional[str] = None
     phone_status: Optional[int] = None
@@ -588,19 +679,22 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
     user_account_type: Optional[int] = None
     userid: Optional[str] = None
     username: Optional[str] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         account_version: Optional[int] = None,
+        add_on_largemeeting: Optional[int] = None,
+        add_on_webinar: Optional[int] = None,
         ai_account_type: Optional[int] = None,
         area: Optional[str] = None,
         avatar_url: Optional[str] = None,
         department_list: Optional[List[V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner] | List[Dict[str, Any]]] = None,
         email: Optional[str] = None,
+        email_status: Optional[int] = None,
         enable_ai_account: Optional[bool] = None,
         entry_time: Optional[str] = None,
+        is_voov: Optional[int] = None,
         job_title: Optional[str] = None,
         phone: Optional[str] = None,
         phone_status: Optional[int] = None,
@@ -612,10 +706,11 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
         user_account_type: Optional[int] = None,
         userid: Optional[str] = None,
         username: Optional[str] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.account_version = account_version
+        self.add_on_largemeeting = add_on_largemeeting
+        self.add_on_webinar = add_on_webinar
         self.ai_account_type = ai_account_type
         self.area = area
         self.avatar_url = avatar_url
@@ -624,8 +719,10 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
             self.department_list = [V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in department_list]
         
         self.email = email
+        self.email_status = email_status
         self.enable_ai_account = enable_ai_account
         self.entry_time = entry_time
+        self.is_voov = is_voov
         self.job_title = job_title
         self.phone = phone
         self.phone_status = phone_status
@@ -637,7 +734,6 @@ class V1UsersAdvanceListGet200ResponseUsersInner(object):
         self.user_account_type = user_account_type
         self.userid = userid
         self.username = username
-        self.uuid = uuid
 
 
 class V1UsersAdvanceListGet200ResponseUsersInnerDepartmentListInner(object):
@@ -886,14 +982,26 @@ class V1UsersInfoBasicGet200Response(object):
     :param account_version: 商企版计费需求，账号版本 
     :type account_version: Optional[int]
 
+    :param add_on_largemeeting: 增强会议体验：房间规模升级许可。 1：500方房间规模升级许可 2：1000方房间规模升级许可 3：2000方房间规模升级许可 
+    :type add_on_largemeeting: Optional[int]
+
+    :param add_on_webinar: 增强会议体验：网络研讨会（Webinar）观众规模升级许可。 1：Webinar 观众规模提升至 300 观众 2：Webinar 观众规模提升至 500 观众 3：Webinar 观众规模提升至 1000 观众 4：Webinar 观众规模提升至 2000 观众 5：Webinar 观众规模提升至 3000 观众 6：Webinar 观众规模提升至 5000 观众 7：Webinar 观众规模提升至 8000 观众 8：Webinar 观众规模提升至 10000 观众 
+    :type add_on_webinar: Optional[int]
+
     :param ai_account_type: AI账号类型 1:购买版 2:赠送版 
     :type ai_account_type: Optional[int]
 
     :param avatar_url:
     :type avatar_url: Optional[str]
 
+    :param email_status: 邮箱验证状态。 1：已验证 2：未验证 
+    :type email_status: Optional[int]
+
     :param enable_ai_account: 是否有AI账号能力，true：有， false：无，教育版/企业版存在ai账号，商业版都是ai账号，其余为false 
     :type enable_ai_account: Optional[bool]
+
+    :param is_voov: 是否为 VooV Meeting 客户端（国际账号），默认为0。 0：否 1：是 
+    :type is_voov: Optional[int]
 
     :param open_corp_id:
     :type open_corp_id: Optional[str]
@@ -907,7 +1015,7 @@ class V1UsersInfoBasicGet200Response(object):
     :param status:
     :type status: Optional[str]
 
-    :param user_account_type: 账号类型 1：高级账号  2：免费账号  3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方 
+    :param user_account_type: 账号类型 1：高级账号  2：免费账号  3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方 8：高级账号100方（商业版） 9：高级账号（企业版/教育版/商业版） 
     :type user_account_type: Optional[int]
 
     :param username:
@@ -916,9 +1024,13 @@ class V1UsersInfoBasicGet200Response(object):
 
     account_type: Optional[int] = None
     account_version: Optional[int] = None
+    add_on_largemeeting: Optional[int] = None
+    add_on_webinar: Optional[int] = None
     ai_account_type: Optional[int] = None
     avatar_url: Optional[str] = None
+    email_status: Optional[int] = None
     enable_ai_account: Optional[bool] = None
+    is_voov: Optional[int] = None
     open_corp_id: Optional[str] = None
     open_corp_name: Optional[str] = None
     phone_status: Optional[int] = None
@@ -931,9 +1043,13 @@ class V1UsersInfoBasicGet200Response(object):
         self,
         account_type: Optional[int] = None,
         account_version: Optional[int] = None,
+        add_on_largemeeting: Optional[int] = None,
+        add_on_webinar: Optional[int] = None,
         ai_account_type: Optional[int] = None,
         avatar_url: Optional[str] = None,
+        email_status: Optional[int] = None,
         enable_ai_account: Optional[bool] = None,
+        is_voov: Optional[int] = None,
         open_corp_id: Optional[str] = None,
         open_corp_name: Optional[str] = None,
         phone_status: Optional[int] = None,
@@ -944,9 +1060,13 @@ class V1UsersInfoBasicGet200Response(object):
     ):
         self.account_type = account_type
         self.account_version = account_version
+        self.add_on_largemeeting = add_on_largemeeting
+        self.add_on_webinar = add_on_webinar
         self.ai_account_type = ai_account_type
         self.avatar_url = avatar_url
+        self.email_status = email_status
         self.enable_ai_account = enable_ai_account
+        self.is_voov = is_voov
         self.open_corp_id = open_corp_id
         self.open_corp_name = open_corp_name
         self.phone_status = phone_status
@@ -1357,18 +1477,27 @@ class V1UsersListGet200ResponseUsersInnerDepartmentListInner(object):
 class V1UsersOpenIdToUseridPost200Response(object):
     """V1UsersOpenIdToUseridPost200Response
 
+    :param invalid_open_id_list: 所有没有转换成功的open_id列表。 例如：open_id和sdkid不一致、open_id和自建应用不是同企业、open_id非法等情况。 
+    :type invalid_open_id_list: Optional[List[str]]
+
     :param userid_list: 转换成功的该自建应用所在企业下的userid、open_id对应关系列表。 
     :type userid_list: Optional[List[V1UsersOpenIdToUseridPost200ResponseUseridListInner]]
     """  # noqa: E501
 
+    invalid_open_id_list: Optional[List[str]] = None
     userid_list: Optional[List[V1UsersOpenIdToUseridPost200ResponseUseridListInner]] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        invalid_open_id_list: Optional[List[str]] = None,
         userid_list: Optional[List[V1UsersOpenIdToUseridPost200ResponseUseridListInner] | List[Dict[str, Any]]] = None,
         **kwargs
     ):
+        
+        if invalid_open_id_list and isinstance(invalid_open_id_list, (list, List)):
+            self.invalid_open_id_list = invalid_open_id_list
+        
         
         if userid_list and isinstance(userid_list, (list, List)):
             self.userid_list = [V1UsersOpenIdToUseridPost200ResponseUseridListInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in userid_list]
@@ -1402,6 +1531,9 @@ class V1UsersOpenIdToUseridPost200ResponseUseridListInner(object):
 class V1UsersOpenIdToUseridPostRequest(object):
     """V1UsersOpenIdToUseridPostRequest
 
+    :param open_id_list: 需要转换的open_id列表 。一次最多1000个。 (required) 
+    :type open_id_list: List[str]
+
     :param operator_id: 操作者ID (required) 
     :type operator_id: str
 
@@ -1412,6 +1544,7 @@ class V1UsersOpenIdToUseridPostRequest(object):
     :type sdkid: str
     """  # noqa: E501
 
+    open_id_list: List[str]
     operator_id: str
     operator_id_type: int
     sdkid: str
@@ -1419,11 +1552,16 @@ class V1UsersOpenIdToUseridPostRequest(object):
 
     def __init__(
         self,
+        open_id_list: List[str],
         operator_id: str,
         operator_id_type: int,
         sdkid: str,
         **kwargs
     ):
+        
+        if open_id_list and isinstance(open_id_list, (list, List)):
+            self.open_id_list = open_id_list
+        
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.sdkid = sdkid
@@ -1443,16 +1581,12 @@ class V1UsersPost200Response(object):
 
     :param username:
     :type username: Optional[str]
-
-    :param uuid:
-    :type uuid: Optional[str]
     """  # noqa: E501
 
     email: Optional[str] = None
     phone: Optional[str] = None
     userid: Optional[str] = None
     username: Optional[str] = None
-    uuid: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
@@ -1461,18 +1595,22 @@ class V1UsersPost200Response(object):
         phone: Optional[str] = None,
         userid: Optional[str] = None,
         username: Optional[str] = None,
-        uuid: Optional[str] = None,
         **kwargs
     ):
         self.email = email
         self.phone = phone
         self.userid = userid
         self.username = username
-        self.uuid = uuid
 
 
 class V1UsersPostRequest(object):
     """V1UsersPostRequest
+
+    :param add_on_largemeeting: 增强会议体验：房间规模升级许可。 0：回收房间规模升级许可 1：500方房间规模升级许可 2：1000方房间规模升级许可 3：2000方房间规模升级许可 
+    :type add_on_largemeeting: Optional[int]
+
+    :param add_on_webinar: 增强会议体验：网络研讨会（Webinar）观众规模升级许可。 0：回收 Webinar 观众规模升级许可 1：Webinar 观众规模提升至 300 观众 2：Webinar 观众规模提升至 500 观众 3：Webinar 观众规模提升至 1000 观众 4：Webinar 观众规模提升至 2000 观众 5：Webinar 观众规模提升至 3000 观众 6：Webinar 观众规模提升至 5000 观众 7：Webinar 观众规模提升至 8000 观众 8：Webinar 观众规模提升至 10000 观众 
+    :type add_on_webinar: Optional[int]
 
     :param area:
     :type area: Optional[str]
@@ -1480,11 +1618,17 @@ class V1UsersPostRequest(object):
     :param auto_invite: 自动发送邀请，开启之后调用接口后自动发送激活邀请 true：开启，默认开启;false：关闭 
     :type auto_invite: Optional[bool]
 
+    :param department_list:
+    :type department_list: Optional[List[str]]
+
     :param email:
     :type email: Optional[str]
 
     :param entry_time:
     :type entry_time: Optional[int]
+
+    :param is_voov: 是否为voov用户， 0:否  1:是 
+    :type is_voov: Optional[int]
 
     :param job_title:
     :type job_title: Optional[str]
@@ -1501,7 +1645,7 @@ class V1UsersPostRequest(object):
     :param staff_id:
     :type staff_id: Optional[str]
 
-    :param user_account_type: 1：高级账号  2：免费账号  3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方     其中企业版/教育版：1，2 。免费组织 2。 商业版：2-7      根据传入的参数判断是否有该类型账号，没有则报错。创建成功即锁定该账号资源。默认值：商业版默认为高级账号，绑定资源为由小到大，资源消耗完账号为免费账号，企业版-高级账号 
+    :param user_account_type: 1：高级账号  2：免费账号  3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方    8：高级账号100方（商业版） 9：高级账号（企业版/教育版/商业版）其中旧商业版：企业版/教育版：1，2 。免费组织 2。 商业版：2-7      新商业版：免费账号：2，高级账号：9。 
     :type user_account_type: Optional[int]
 
     :param userid:(required) 
@@ -1511,10 +1655,14 @@ class V1UsersPostRequest(object):
     :type username: str
     """  # noqa: E501
 
+    add_on_largemeeting: Optional[int] = None
+    add_on_webinar: Optional[int] = None
     area: Optional[str] = None
     auto_invite: Optional[bool] = None
+    department_list: Optional[List[str]] = None
     email: Optional[str] = None
     entry_time: Optional[int] = None
+    is_voov: Optional[int] = None
     job_title: Optional[str] = None
     operator_id: str
     operator_id_type: int
@@ -1532,19 +1680,30 @@ class V1UsersPostRequest(object):
         phone: str,
         userid: str,
         username: str,
+        add_on_largemeeting: Optional[int] = None,
+        add_on_webinar: Optional[int] = None,
         area: Optional[str] = None,
         auto_invite: Optional[bool] = None,
+        department_list: Optional[List[str]] = None,
         email: Optional[str] = None,
         entry_time: Optional[int] = None,
+        is_voov: Optional[int] = None,
         job_title: Optional[str] = None,
         staff_id: Optional[str] = None,
         user_account_type: Optional[int] = None,
         **kwargs
     ):
+        self.add_on_largemeeting = add_on_largemeeting
+        self.add_on_webinar = add_on_webinar
         self.area = area
         self.auto_invite = auto_invite
+        
+        if department_list and isinstance(department_list, (list, List)):
+            self.department_list = department_list
+        
         self.email = email
         self.entry_time = entry_time
+        self.is_voov = is_voov
         self.job_title = job_title
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
@@ -1669,6 +1828,12 @@ class V1UsersUseridGet200Response(object):
     :param account_version: 账号版本 
     :type account_version: Optional[int]
 
+    :param add_on_largemeeting: 增强会议体验：房间规模升级许可。 1：500方房间规模升级许可 2：1000方房间规模升级许可 3：2000方房间规模升级许可 
+    :type add_on_largemeeting: Optional[int]
+
+    :param add_on_webinar: 增强会议体验：网络研讨会（Webinar）观众规模升级许可。 1：Webinar 观众规模提升至 300 观众 2：Webinar 观众规模提升至 500 观众 3：Webinar 观众规模提升至 1000 观众 4：Webinar 观众规模提升至 2000 观众 5：Webinar 观众规模提升至 3000 观众 6：Webinar 观众规模提升至 5000 观众 7：Webinar 观众规模提升至 8000 观众 8：Webinar 观众规模提升至 10000 观众 
+    :type add_on_webinar: Optional[int]
+
     :param ai_account_type: ai账号类型 1:购买版 2:赠送版 
     :type ai_account_type: Optional[int]
 
@@ -1684,11 +1849,17 @@ class V1UsersUseridGet200Response(object):
     :param email:
     :type email: Optional[str]
 
+    :param email_status: 邮箱验证状态： 1：已验证 2：未验证 
+    :type email_status: Optional[int]
+
     :param enable_ai_account: 是否有ai账号能力，true：有，false：无 
     :type enable_ai_account: Optional[bool]
 
     :param entry_time:
     :type entry_time: Optional[str]
+
+    :param is_voov: 是否为 VooV Meeting 客户端（国际账号），默认为0。 0：否 1：是 
+    :type is_voov: Optional[int]
 
     :param job_title:
     :type job_title: Optional[str]
@@ -1714,7 +1885,7 @@ class V1UsersUseridGet200Response(object):
     :param update_time:
     :type update_time: Optional[str]
 
-    :param user_account_type:  1：高级账号  2：免费账号  3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方 
+    :param user_account_type:  1：高级账号  2：免费账号  3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方8：高级账号100方（商业版） 9：高级账号（企业版/教育版/商业版） 
     :type user_account_type: Optional[int]
 
     :param userid:
@@ -1729,13 +1900,17 @@ class V1UsersUseridGet200Response(object):
 
     account_type: Optional[int] = None
     account_version: Optional[int] = None
+    add_on_largemeeting: Optional[int] = None
+    add_on_webinar: Optional[int] = None
     ai_account_type: Optional[int] = None
     area: Optional[str] = None
     avatar_url: Optional[str] = None
     department_list: Optional[List[V1UsersUseridGet200ResponseDepartmentListInner]] = None
     email: Optional[str] = None
+    email_status: Optional[int] = None
     enable_ai_account: Optional[bool] = None
     entry_time: Optional[str] = None
+    is_voov: Optional[int] = None
     job_title: Optional[str] = None
     phone: Optional[str] = None
     phone_status: Optional[int] = None
@@ -1754,13 +1929,17 @@ class V1UsersUseridGet200Response(object):
         self,
         account_type: Optional[int] = None,
         account_version: Optional[int] = None,
+        add_on_largemeeting: Optional[int] = None,
+        add_on_webinar: Optional[int] = None,
         ai_account_type: Optional[int] = None,
         area: Optional[str] = None,
         avatar_url: Optional[str] = None,
         department_list: Optional[List[V1UsersUseridGet200ResponseDepartmentListInner] | List[Dict[str, Any]]] = None,
         email: Optional[str] = None,
+        email_status: Optional[int] = None,
         enable_ai_account: Optional[bool] = None,
         entry_time: Optional[str] = None,
+        is_voov: Optional[int] = None,
         job_title: Optional[str] = None,
         phone: Optional[str] = None,
         phone_status: Optional[int] = None,
@@ -1777,6 +1956,8 @@ class V1UsersUseridGet200Response(object):
     ):
         self.account_type = account_type
         self.account_version = account_version
+        self.add_on_largemeeting = add_on_largemeeting
+        self.add_on_webinar = add_on_webinar
         self.ai_account_type = ai_account_type
         self.area = area
         self.avatar_url = avatar_url
@@ -1785,8 +1966,10 @@ class V1UsersUseridGet200Response(object):
             self.department_list = [V1UsersUseridGet200ResponseDepartmentListInner(**_item) if isinstance(_item, (dict, Dict)) else _item for _item in department_list]
         
         self.email = email
+        self.email_status = email_status
         self.enable_ai_account = enable_ai_account
         self.entry_time = entry_time
+        self.is_voov = is_voov
         self.job_title = job_title
         self.phone = phone
         self.phone_status = phone_status
@@ -1804,25 +1987,37 @@ class V1UsersUseridGet200Response(object):
 class V1UsersUseridGet200ResponseDepartmentListInner(object):
     """V1UsersUseridGet200ResponseDepartmentListInner
 
+    :param department_full_name:
+    :type department_full_name: Optional[str]
+
     :param department_id:
     :type department_id: Optional[str]
 
     :param department_name:
     :type department_name: Optional[str]
+
+    :param is_main:
+    :type is_main: Optional[bool]
     """  # noqa: E501
 
+    department_full_name: Optional[str] = None
     department_id: Optional[str] = None
     department_name: Optional[str] = None
+    is_main: Optional[bool] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        department_full_name: Optional[str] = None,
         department_id: Optional[str] = None,
         department_name: Optional[str] = None,
+        is_main: Optional[bool] = None,
         **kwargs
     ):
+        self.department_full_name = department_full_name
         self.department_id = department_id
         self.department_name = department_name
+        self.is_main = is_main
 
 
 class V1UsersUseridInviteAuthPutRequest(object):
@@ -1852,17 +2047,29 @@ class V1UsersUseridInviteAuthPutRequest(object):
 class V1UsersUseridPutRequest(object):
     """V1UsersUseridPutRequest
 
+    :param add_on_largemeeting: 增强会议体验：房间规模升级许可。 0：回收房间规模升级许可 1：500方房间规模升级许可 2：1000方房间规模升级许可 3：2000方房间规模升级许可 
+    :type add_on_largemeeting: Optional[int]
+
+    :param add_on_webinar: 增强会议体验：网络研讨会（Webinar）观众规模升级许可。 0：回收 Webinar 观众规模升级许可 1：Webinar 观众规模提升至 300 观众 2：Webinar 观众规模提升至 500 观众 3：Webinar 观众规模提升至 1000 观众 4：Webinar 观众规模提升至 2000 观众 5：Webinar 观众规模提升至 3000 观众 6：Webinar 观众规模提升至 5000 观众 7：Webinar 观众规模提升至 8000 观众 8：Webinar 观众规模提升至 10000 观众 
+    :type add_on_webinar: Optional[int]
+
     :param area:
     :type area: Optional[str]
 
     :param avatar_url:
     :type avatar_url: Optional[str]
 
+    :param department_list:
+    :type department_list: Optional[List[str]]
+
     :param email:
     :type email: Optional[str]
 
     :param entry_time:
     :type entry_time: Optional[int]
+
+    :param is_voov: 是否为voov用户，默认为0  0:否  1:是 
+    :type is_voov: Optional[int]
 
     :param job_title:
     :type job_title: Optional[str]
@@ -1879,7 +2086,7 @@ class V1UsersUseridPutRequest(object):
     :param staff_id:
     :type staff_id: Optional[str]
 
-    :param user_account_type: 1：高级账号 2：免费账号 3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方 其中企业版/教育版：1，2 。免费组织 2。 商业版：2-7 根据传入的参数判断是否有该类型账号，没有则报错。更新后，原类型账号资源释放。 
+    :param user_account_type: 1：高级账号 2：免费账号 3：免费账号100方 4:高级账号300方，5:高级账号500方，6：高级账号1000方，7:高级账号2000方 8：高级账号100方（商业版） 9：高级账号（企业版/教育版/商业版）其中企业版/教育版：1，2 。免费组织 2。 商业版：2-7 ，新商业版：免费账号：2，高级账号：9。根据传入的参数判断是否有该类型账号，没有则报错。更新后，原类型账号资源释放。 
     :type user_account_type: Optional[int]
 
     :param userid:
@@ -1889,10 +2096,14 @@ class V1UsersUseridPutRequest(object):
     :type username: Optional[str]
     """  # noqa: E501
 
+    add_on_largemeeting: Optional[int] = None
+    add_on_webinar: Optional[int] = None
     area: Optional[str] = None
     avatar_url: Optional[str] = None
+    department_list: Optional[List[str]] = None
     email: Optional[str] = None
     entry_time: Optional[int] = None
+    is_voov: Optional[int] = None
     job_title: Optional[str] = None
     operator_id: str
     operator_id_type: int
@@ -1907,10 +2118,14 @@ class V1UsersUseridPutRequest(object):
         self,
         operator_id: str,
         operator_id_type: int,
+        add_on_largemeeting: Optional[int] = None,
+        add_on_webinar: Optional[int] = None,
         area: Optional[str] = None,
         avatar_url: Optional[str] = None,
+        department_list: Optional[List[str]] = None,
         email: Optional[str] = None,
         entry_time: Optional[int] = None,
+        is_voov: Optional[int] = None,
         job_title: Optional[str] = None,
         phone: Optional[str] = None,
         staff_id: Optional[str] = None,
@@ -1919,10 +2134,17 @@ class V1UsersUseridPutRequest(object):
         username: Optional[str] = None,
         **kwargs
     ):
+        self.add_on_largemeeting = add_on_largemeeting
+        self.add_on_webinar = add_on_webinar
         self.area = area
         self.avatar_url = avatar_url
+        
+        if department_list and isinstance(department_list, (list, List)):
+            self.department_list = department_list
+        
         self.email = email
         self.entry_time = entry_time
+        self.is_voov = is_voov
         self.job_title = job_title
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type

@@ -5,7 +5,7 @@
 
     SAAS版RESTFUL风格API
 
-    API version: v1.0.8
+    API version: v1.0.10
 
     Do not edit the class manually.
 """  # noqa: E501
@@ -493,16 +493,12 @@ class V1MeetingRoomsMeetingRoomIdGet200ResponseAccountInfo(object):
     :param account_type: 账号类型，0：普通 1：专款 2：试用 
     :type account_type: Optional[int]
 
-    :param pro_account_type: 1-预装 2-体验 3-付费 
-    :type pro_account_type: Optional[int]
-
     :param valid_period: 有效期限 
     :type valid_period: Optional[str]
     """  # noqa: E501
 
     account_new_type: Optional[int] = None
     account_type: Optional[int] = None
-    pro_account_type: Optional[int] = None
     valid_period: Optional[str] = None
     additional_properties: Dict[str, Any] = {}
 
@@ -510,18 +506,22 @@ class V1MeetingRoomsMeetingRoomIdGet200ResponseAccountInfo(object):
         self,
         account_new_type: Optional[int] = None,
         account_type: Optional[int] = None,
-        pro_account_type: Optional[int] = None,
         valid_period: Optional[str] = None,
         **kwargs
     ):
         self.account_new_type = account_new_type
         self.account_type = account_type
-        self.pro_account_type = pro_account_type
         self.valid_period = valid_period
 
 
 class V1MeetingRoomsMeetingRoomIdGet200ResponseBasicInfo(object):
     """会议室基本信息
+
+    :param admin_password: 管理员密码（base64编码）。 当 admin_password_enabled 为 false 时，则此键值对不返回。 
+    :type admin_password: Optional[str]
+
+    :param admin_password_enabled: 管理员密码启用状态。 true：已启用  false：未启用 
+    :type admin_password_enabled: Optional[bool]
 
     :param building: 建筑 
     :type building: Optional[str]
@@ -544,10 +544,12 @@ class V1MeetingRoomsMeetingRoomIdGet200ResponseBasicInfo(object):
     :param participant_number: 容纳人数 
     :type participant_number: Optional[int]
 
-    :param password: 管理员密码（base64） 
-    :type password: Optional[str]
+    :param rooms_id_list: roomsID列表 
+    :type rooms_id_list: Optional[List[str]]
     """  # noqa: E501
 
+    admin_password: Optional[str] = None
+    admin_password_enabled: Optional[bool] = None
     building: Optional[str] = None
     city: Optional[str] = None
     desc: Optional[str] = None
@@ -555,11 +557,13 @@ class V1MeetingRoomsMeetingRoomIdGet200ResponseBasicInfo(object):
     floor: Optional[str] = None
     meeting_room_name: Optional[str] = None
     participant_number: Optional[int] = None
-    password: Optional[str] = None
+    rooms_id_list: Optional[List[str]] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
+        admin_password: Optional[str] = None,
+        admin_password_enabled: Optional[bool] = None,
         building: Optional[str] = None,
         city: Optional[str] = None,
         desc: Optional[str] = None,
@@ -567,9 +571,11 @@ class V1MeetingRoomsMeetingRoomIdGet200ResponseBasicInfo(object):
         floor: Optional[str] = None,
         meeting_room_name: Optional[str] = None,
         participant_number: Optional[int] = None,
-        password: Optional[str] = None,
+        rooms_id_list: Optional[List[str]] = None,
         **kwargs
     ):
+        self.admin_password = admin_password
+        self.admin_password_enabled = admin_password_enabled
         self.building = building
         self.city = city
         self.desc = desc
@@ -577,7 +583,10 @@ class V1MeetingRoomsMeetingRoomIdGet200ResponseBasicInfo(object):
         self.floor = floor
         self.meeting_room_name = meeting_room_name
         self.participant_number = participant_number
-        self.password = password
+        
+        if rooms_id_list and isinstance(rooms_id_list, (list, List)):
+            self.rooms_id_list = rooms_id_list
+        
 
 
 class V1MeetingRoomsMeetingRoomIdGet200ResponseHardwareInfo(object):
@@ -799,6 +808,12 @@ class V1MeetingRoomsModifyPutRequest(object):
 class V1MeetingRoomsModifyPutRequestMeetingRoomInfo(object):
     """编辑会议室基本信息
 
+    :param admin_password: 配置管理员密码。 格式要求：输入应为1 - 16位的数字、字母或字符。 依赖说明：若启用管理员密码，此密码不可为空；若不启用，此密码无需输入。 
+    :type admin_password: Optional[str]
+
+    :param admin_password_enabled: 会议室类型为1时，可选择是否启用管理员密码。 true：启用  false：不启用（默认值） 
+    :type admin_password_enabled: Optional[bool]
+
     :param building: 建筑。若非输入城市下现有建筑则自动创建该建筑与楼层。长度不超过36个字符或18个汉字。 
     :type building: Optional[str]
 
@@ -814,6 +829,9 @@ class V1MeetingRoomsModifyPutRequestMeetingRoomInfo(object):
     :param floor: 楼层。若非输入建筑下现有楼层则自动创建楼层。输入应为数字或字母，长度不超过36个字符。 
     :type floor: Optional[str]
 
+    :param label: 标签。非现有标签则自动创建，最多设置10个标签，每个标签不超过40个字。 
+    :type label: Optional[List[str]]
+
     :param meeting_room_name: 会议室名称。长度不超过36个字符。 (required) 
     :type meeting_room_name: str
 
@@ -828,44 +846,42 @@ class V1MeetingRoomsModifyPutRequestMeetingRoomInfo(object):
 
     :param participant_number: 容纳人数。不超过9位数。 
     :type participant_number: Optional[int]
-
-    :param password: 使用管理员密码时必须填写管理员密码（base64）。若不使用密码，该字段无效。输入应为1-16位的数字、字母或字符。 
-    :type password: Optional[str]
-
-    :param use_password: 会议室类型为1时选择是否使用管理员密码，默认为 false。 true：使用 false：不使用 
-    :type use_password: Optional[bool]
     """  # noqa: E501
 
+    admin_password: Optional[str] = None
+    admin_password_enabled: Optional[bool] = None
     building: Optional[str] = None
     city: Optional[str] = None
     desc: Optional[str] = None
     device: Optional[List[str]] = None
     floor: Optional[str] = None
+    label: Optional[List[str]] = None
     meeting_room_name: str
     meeting_room_type: int
     mra_address: Optional[str] = None
     mra_register_account: Optional[str] = None
     participant_number: Optional[int] = None
-    password: Optional[str] = None
-    use_password: Optional[bool] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         meeting_room_name: str,
         meeting_room_type: int,
+        admin_password: Optional[str] = None,
+        admin_password_enabled: Optional[bool] = None,
         building: Optional[str] = None,
         city: Optional[str] = None,
         desc: Optional[str] = None,
         device: Optional[List[str]] = None,
         floor: Optional[str] = None,
+        label: Optional[List[str]] = None,
         mra_address: Optional[str] = None,
         mra_register_account: Optional[str] = None,
         participant_number: Optional[int] = None,
-        password: Optional[str] = None,
-        use_password: Optional[bool] = None,
         **kwargs
     ):
+        self.admin_password = admin_password
+        self.admin_password_enabled = admin_password_enabled
         self.building = building
         self.city = city
         self.desc = desc
@@ -874,13 +890,15 @@ class V1MeetingRoomsModifyPutRequestMeetingRoomInfo(object):
             self.device = device
         
         self.floor = floor
+        
+        if label and isinstance(label, (list, List)):
+            self.label = label
+        
         self.meeting_room_name = meeting_room_name
         self.meeting_room_type = meeting_room_type
         self.mra_address = mra_address
         self.mra_register_account = mra_register_account
         self.participant_number = participant_number
-        self.password = password
-        self.use_password = use_password
 
 
 class V1MeetingRoomsModifyRoomConfigInfoPostRequest(object):
@@ -985,6 +1003,9 @@ class V1MeetingRoomsModifyRoomConfigInfoPostRequestMeetingSettingsRoomPmiSetting
     :param allow_in_before_host:
     :type allow_in_before_host: Optional[bool]
 
+    :param hosts:
+    :type hosts: Optional[List[str]]
+
     :param mute_enable_type_join:
     :type mute_enable_type_join: Optional[int]
 
@@ -999,6 +1020,7 @@ class V1MeetingRoomsModifyRoomConfigInfoPostRequestMeetingSettingsRoomPmiSetting
     """  # noqa: E501
 
     allow_in_before_host: Optional[bool] = None
+    hosts: Optional[List[str]] = None
     mute_enable_type_join: Optional[int] = None
     only_enterprise_user_allowed: Optional[bool] = None
     room_pmi_psw: Optional[str] = None
@@ -1008,6 +1030,7 @@ class V1MeetingRoomsModifyRoomConfigInfoPostRequestMeetingSettingsRoomPmiSetting
     def __init__(
         self,
         allow_in_before_host: Optional[bool] = None,
+        hosts: Optional[List[str]] = None,
         mute_enable_type_join: Optional[int] = None,
         only_enterprise_user_allowed: Optional[bool] = None,
         room_pmi_psw: Optional[str] = None,
@@ -1015,6 +1038,10 @@ class V1MeetingRoomsModifyRoomConfigInfoPostRequestMeetingSettingsRoomPmiSetting
         **kwargs
     ):
         self.allow_in_before_host = allow_in_before_host
+        
+        if hosts and isinstance(hosts, (list, List)):
+            self.hosts = hosts
+        
         self.mute_enable_type_join = mute_enable_type_join
         self.only_enterprise_user_allowed = only_enterprise_user_allowed
         self.room_pmi_psw = room_pmi_psw
@@ -1368,17 +1395,23 @@ class V1MeetingRoomsRoomCallPut200Response(object):
 
     :param invite_id: 呼叫ID 
     :type invite_id: Optional[str]
+
+    :param status:
+    :type status: Optional[int]
     """  # noqa: E501
 
     invite_id: Optional[str] = None
+    status: Optional[int] = None
     additional_properties: Dict[str, Any] = {}
 
     def __init__(
         self,
         invite_id: Optional[str] = None,
+        status: Optional[int] = None,
         **kwargs
     ):
         self.invite_id = invite_id
+        self.status = status
 
 
 class V1MeetingRoomsRoomCallPutRequest(object):
@@ -1745,6 +1778,39 @@ class V1MeetingsMeetingIdBookRoomsPostRequest(object):
         self.operator_id = operator_id
         self.operator_id_type = operator_id_type
         self.subject_visible = subject_visible
+
+
+class V1MeetingsMeetingIdReleaseRoomsPostRequest(object):
+    """V1MeetingsMeetingIdReleaseRoomsPostRequest
+
+    :param meeting_room_id_list: 会议室ID列表 (required) 
+    :type meeting_room_id_list: List[str]
+
+    :param operator_id: 操作者 ID。 operator_id 必须与 operator_id_type 配合使用。根据 operator_id_type 的值，operator_id 代表不同类型。 (required) 
+    :type operator_id: str
+
+    :param operator_id_type: 操作者 ID 的类型： 1：userid (required) 
+    :type operator_id_type: int
+    """  # noqa: E501
+
+    meeting_room_id_list: List[str]
+    operator_id: str
+    operator_id_type: int
+    additional_properties: Dict[str, Any] = {}
+
+    def __init__(
+        self,
+        meeting_room_id_list: List[str],
+        operator_id: str,
+        operator_id_type: int,
+        **kwargs
+    ):
+        
+        if meeting_room_id_list and isinstance(meeting_room_id_list, (list, List)):
+            self.meeting_room_id_list = meeting_room_id_list
+        
+        self.operator_id = operator_id
+        self.operator_id_type = operator_id_type
 
 
 class V1RoomsInventoryAccountStatisticsGet200Response(object):
